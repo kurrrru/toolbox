@@ -11,7 +11,7 @@ struct unionfind {
 	/**
 	* @brief Constructs a union-find data structure with the specified number of elements.
 	* @param n The number of elements.
-	* @pre n > 0
+	* @note [constraint]: n > 0
 	*/
 	unionfind(int n)
 	{
@@ -25,7 +25,7 @@ struct unionfind {
 	* @brief Finds the representative of the set that the specified element belongs to.
 	* @param x The element to find.
 	* @return The representative of the set that the element belongs to.
-	* @pre 0 <= x < _n
+	* @note [constraint]: 0 <= x < _n
 	*/
 	int find(int x)
 	{
@@ -41,8 +41,7 @@ struct unionfind {
 	* @param x The first element.
 	* @param y The second element.
 	* @return True if the sets were successfully united, false otherwise.
-	* @pre 0 <= x < _n
-	* @pre 0 <= y < _n
+	* @note [constraint]: 0 <= x < _n, 0 <= y < _n
 	*/
 	bool unite(int x, int y)
 	{
@@ -65,8 +64,7 @@ struct unionfind {
 	* @param x The first element.
 	* @param y The second element.
 	* @return True if the elements belong to the same set, false otherwise.
-	* @pre 0 <= x < _n
-	* @pre 0 <= y < _n
+	* @note [constraint]: 0 <= x < _n, 0 <= y < _n
 	*/
 	bool same(int x, int y)
 	{
