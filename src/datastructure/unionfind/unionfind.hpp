@@ -4,14 +4,24 @@
 #include <vector>
 #include <cassert>
 
+namespace toolbox
+{
 /**
-* @brief A data structure for efficient union-find operations.
+* @brief A data structure for union-find operations.
 */
 struct unionfind {
+	unionfind() = default;
+	unionfind(const unionfind&) = default;
+	unionfind(unionfind&&) = default;
+	unionfind& operator=(const unionfind&) = default;
+	unionfind& operator=(unionfind&&) = default;
+	~unionfind() = default;
+
 	/**
-	* @brief Constructs a union-find data structure with the specified number of elements.
+	* @brief Constructs a union-find data structure with n elements.
 	* @param n The number of elements.
 	* @note [constraint]: n > 0
+	* @note [complexity]: O(n)
 	*/
 	unionfind(int n)
 	{
@@ -26,6 +36,7 @@ struct unionfind {
 	* @param x The element to find.
 	* @return The representative of the set that the element belongs to.
 	* @note [constraint]: 0 <= x < _n
+	* @note [complexity]: O(alpha(n)), where alpha(n) is the inverse Ackermann function.
 	*/
 	int find(int x)
 	{
@@ -42,6 +53,7 @@ struct unionfind {
 	* @param y The second element.
 	* @return True if the sets were successfully united, false otherwise.
 	* @note [constraint]: 0 <= x < _n, 0 <= y < _n
+	* @note [complexity]: O(alpha(n)), where alpha(n) is the inverse Ackermann function.
 	*/
 	bool unite(int x, int y)
 	{
@@ -65,6 +77,7 @@ struct unionfind {
 	* @param y The second element.
 	* @return True if the elements belong to the same set, false otherwise.
 	* @note [constraint]: 0 <= x < _n, 0 <= y < _n
+	* @note [complexity]: O(alpha(n)), where alpha(n) is the inverse Ackermann function.
 	*/
 	bool same(int x, int y)
 	{
@@ -77,5 +90,7 @@ private:
 	std::vector<int> _r; // rank array
 	int _n; // number of elements
 };
+
+} // namespace toolbox
 
 #endif // UNIONFIND_HPP
