@@ -9,7 +9,8 @@ namespace toolbox
 /**
 * @brief A data structure for union-find operations.
 */
-struct unionfind {
+struct unionfind
+{
 	unionfind() = default;
 	unionfind(const unionfind&) = default;
 	unionfind(unionfind&&) = default;
