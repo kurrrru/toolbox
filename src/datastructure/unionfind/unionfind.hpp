@@ -87,19 +87,6 @@ struct unionfind
 		return (find(x) == find(y));
 	}
 
-	/**
-	* @brief Returns the size of the set that the specified element belongs to.
-	* @param x The element.
-	* @return The size of the set that the element belongs to.
-	* @note [constraint]: 0 <= x < _n
-	* @note [complexity]: O(alpha(n)), where alpha(n) is the inverse Ackermann function.
-	*/
-	int size(int x)
-	{
-		assert(0 <= x && x < _n);
-		return _r[find(x)];
-	}
-
 private:
 	std::vector<int> _p; // parent array
 	std::vector<int> _r; // rank array
