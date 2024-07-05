@@ -379,6 +379,147 @@ std::pair<long long, long long> chinese_remainder_theorem(long long a1, long lon
 	return chinese_remainder_theorem<long long>(a1, m1, a2, m2);
 }
 
+/**
+* @brief Computes the number x such that x = a[i] (mod m[i]) for all i.
+* @param a The residues.
+* @param m The moduli.
+* @return The pair (x, m) such that x = a (mod m).
+* @note [constraint]: a.size() == m.size(), a.size() > 0
+* @note [complexity]: O(n log(min(m[i])))
+*/
+template <typename T>
+std::pair<T, T> chinese_remainder_theorem(const std::vector<T> &a, const std::vector<T> &m)
+{
+	assert(a.size() == m.size());
+	assert(a.size() > 0);
+	int n = a.size();
+	std::pair<T, T> ret = std::make_pair(a[0], m[0]);
+	for (int i = 1; i < n; i++)
+	{
+		ret = chinese_remainder_theorem(ret.first, ret.second, a[i], m[i]);
+		if (ret.second == 0)
+			break;
+	}
+	return ret;
+}
+
+/**
+* @brief Computes the number x such that x = a[i] (mod m[i]) for all i.
+* @param a The residues.
+* @param m The moduli.
+* @return The pair (x, m) such that x = a (mod m).
+* @note [constraint]: a.size() == m.size(), a.size() > 0
+* @note [complexity]: O(n log(min(m[i])))
+*/
+std::pair<long long, long long> chinese_remainder_theorem(const std::vector<long long> &a, const std::vector<long long> &m)
+{
+	return chinese_remainder_theorem<long long>(a, m);
+}
+
+/**
+* @brief Makes an array fact where fact[i] is i! % mod.
+* @param n The size of the array.
+* @param mod The modulo.
+* @return The array fact.
+* @note [constraint]: n >= 0, mod > 0
+* @note [complexity]: O(n)
+*/
+template <typename T>
+std::vector<T> factorial_mod(T n, T mod)
+{
+	assert(n >= 0);
+	assert(mod > 0);
+	std::vector<T> fact(n + 1, 1);
+	for (T i = 1; i <= n; i++)
+		fact[i] = (fact[i - 1] * i) % mod;
+	return fact;
+}
+
+/**
+* @brief Makes an array fact where fact[i] is i! % mod.
+* @param n The size of the array.
+* @param mod The modulo.
+* @return The array fact.
+* @note [constraint]: n >= 0, mod > 0
+* @note [complexity]: O(n)
+*/
+std::vector<long long> factorial_mod(long long n, long long mod)
+{
+	return factorial_mod<long long>(n, mod);
+}
+
+/**
+* @brief Makes an array fact_inv where fact_inv[i] is the modular inverse of i! % mod.
+* @param n The size of the array.
+* @param mod The modulo.
+* @return The array fact_inv.
+* @note [constraint]: n >= 0, mod > 0
+* @note [complexity]: O(n)
+*/
+template <typename T>
+std::vector<T> factorial_inv_mod(T n, T mod)
+{
+	assert(n >= 0);
+	assert(mod > 0);
+	std::vector<T> fact_inv(n + 1, 1);
+	std::vector<T> fact(n + 1, 1);
+	for (T i = 1; i <= n; i++)
+		fact[i] = (fact[i - 1] * i) % mod;
+	fact_inv[n] = inv_mod(fact[n], mod);
+	for (T i = n - 1; i >= 0; i--)
+		fact_inv[i] = (fact_inv[i + 1] * (i + 1)) % mod;
+	return fact_inv;
+}
+
+/**
+* @brief Makes an array fact_inv where fact_inv[i] is the modular inverse of i! % mod.
+* @param n The size of the array.
+* @param mod The modulo.
+* @return The array fact_inv.
+* @note [constraint]: n >= 0, mod > 0
+* @note [complexity]: O(n)
+*/
+std::vector<long long> factorial_inv_mod(long long n, long long mod)
+{
+	return factorial_inv_mod<long long>(n, mod);
+}
+
+/**
+* @brief Computes nCk % mod.
+* @param n The number of elements.
+* @param k The number of elements to choose.
+* @param mod The modulo.
+* @param fact The array fact.
+* @param fact_inv The array fact_inv.
+* @return nCk % mod.
+* @note [constraint]: n >= 0, k >= 0, n >= k, n < fact.size(), k < fact_inv.size(), n - k < fact_inv.size()
+* @note [complexity]: O(1)
+*/
+template <typename T>
+T combination(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv)
+{
+	assert(n >= 0 && k >= 0 && n >= k);
+	assert(n < fact.size());
+	assert(k < fact_inv.size() && n - k < fact_inv.size());
+	return (fact[n] * fact_inv[k] % mod) * fact_inv[n - k] % mod;
+}
+
+/**
+* @brief Computes nCk % mod.
+* @param n The number of elements.
+* @param k The number of elements to choose.
+* @param mod The modulo.
+* @param fact The array fact.
+* @param fact_inv The array fact_inv.
+* @return nCk % mod.
+* @note [constraint]: n >= 0, k >= 0, n >= k, n < fact.size(), k < fact_inv.size(), n - k < fact_inv.size()
+* @note [complexity]: O(1)
+*/
+long long combination(long long n, long long k, long long mod, const std::vector<long long> &fact, const std::vector<long long> &fact_inv)
+{
+	return combination<long long>(n, k, mod, fact, fact_inv);
+}
+
 } // namespace toolbox
 
 #endif // MATH_HPP
