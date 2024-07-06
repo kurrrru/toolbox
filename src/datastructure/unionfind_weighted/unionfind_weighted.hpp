@@ -46,8 +46,9 @@ struct unionfind_weighted
 		assert(0 <= x && x < _n);
 		if (_p[x] == -1)
 			return x;
+		int r = find(_p[x]);
 		_diff_weight[x] += _diff_weight[_p[x]];
-		return (_p[x] = find(_p[x]));
+		return (_p[x] = r);
 	}
 
 	/**
