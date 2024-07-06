@@ -304,10 +304,10 @@ std::vector<long long> prime_list(long long n)
 * @note [complexity]: O(sqrt(n))
 */
 template <typename T>
-std::vector<std::pair<T, int> > factorize(T n)
+std::vector<std::pair<T, T> > factorize(T n)
 {
 	assert(n > 0);
-	std::vector<std::pair<T, int> > ret;
+	std::vector<std::pair<T, T> > ret;
 	for (T i = 2; i <= n / i; i++)
 	{
 		if (n % i == 0)
@@ -334,7 +334,7 @@ std::vector<std::pair<T, int> > factorize(T n)
 * @note [constraint]: n > 0
 * @note [complexity]: O(sqrt(n))
 */
-std::vector<std::pair<long long, int> > factorize(long long n)
+std::vector<std::pair<long long, long long> > factorize(long long n)
 {
 	return factorize<long long>(n);
 }
@@ -518,6 +518,43 @@ T combination(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> 
 long long combination(long long n, long long k, long long mod, const std::vector<long long> &fact, const std::vector<long long> &fact_inv)
 {
 	return combination<long long>(n, k, mod, fact, fact_inv);
+}
+
+/**
+* @brief Computes the square root of a number.
+* @param n The number.
+* @return The square root of n.
+* @note [constraint]: n >= 0
+* @note [complexity]: O(log(n))
+*/
+template <typename T>
+T sqrt(T n)
+{
+	assert(n >= 0);
+	if (n == 0)
+		return 0;
+	T left = 0, right = n + 1;
+	while (right - left > 1)
+	{
+		T mid = (left + right) / 2;
+		if (mid <= n / mid)
+			left = mid;
+		else
+			right = mid;
+	}
+	return left;
+}
+
+/**
+* @brief Computes the square root of a number.
+* @param n The number.
+* @return The square root of n.
+* @note [constraint]: n >= 0
+* @note [complexity]: O(log(n))
+*/
+long long sqrt(long long n)
+{
+	return sqrt<long long>(n);
 }
 
 } // namespace toolbox
