@@ -6,6 +6,9 @@
 namespace toolbox
 {
 
+namespace math
+{
+
 /**
 * @brief Counts the number of set bits in an integer.
 * @param x The integer for which to count the set bits.
@@ -75,6 +78,8 @@ int bit_width(long long x)
 	if (x == 0) return 0;
 	return 64 - clz(x);
 }
+
+} // namespace math
 
 } // namespace toolbox
 

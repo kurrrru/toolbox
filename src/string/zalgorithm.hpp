@@ -7,6 +7,9 @@
 namespace toolbox
 {
 
+namespace string
+{
+
 /**
 * @brief Computes the Z-array, which satisfies Z[i] = the length of lcp(S, S[i:]).
 * @param S The string for which to compute the Z-algorithm.
@@ -40,6 +43,8 @@ std::vector<int> zalgorithm(const std::string &S)
 	}
 	return ans;
 }
+
+} // namespace string
 
 } // namespace toolbox
 

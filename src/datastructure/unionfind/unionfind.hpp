@@ -7,6 +7,9 @@
 namespace toolbox
 {
 
+namespace datastructure
+{
+
 /**
 * @brief A data structure for union-find operations.
 */
@@ -92,6 +95,8 @@ private:
 	std::vector<int> _r; // rank array
 	int _n; // number of elements
 };
+
+} // namespace datastructure
 
 } // namespace toolbox
 

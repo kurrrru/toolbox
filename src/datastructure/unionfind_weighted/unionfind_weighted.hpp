@@ -7,6 +7,9 @@
 namespace toolbox
 {
 
+namespace datastructure
+{
+
 /**
 * @brief A data structure for union-find operations with weights.
 */
@@ -133,6 +136,8 @@ private:
 	int _n;
 	std::vector<int> _p, _r, _diff_weight;
 };
+
+} // namespace datastructure
 
 } // namespace toolbox
 

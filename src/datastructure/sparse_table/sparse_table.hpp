@@ -6,6 +6,9 @@
 namespace toolbox
 {
 
+namespace datastructure
+{
+
 template <typename T, T (*op)(const T, const T)>
 struct sparse_table
 {
@@ -100,6 +103,8 @@ private:
 
 	sparse_table<T, max> st;
 };
+
+} // namespace datastructure
 
 } // namespace toolbox
 

@@ -3,10 +3,11 @@
 
 #include <cassert>
 #include <vector>
-#include <iostream>
-
 
 namespace toolbox
+{
+
+namespace math
 {
 
 /**
@@ -556,6 +557,8 @@ long long sqrt(long long n)
 {
 	return sqrt<long long>(n);
 }
+
+} // namespace math
 
 } // namespace toolbox
 
