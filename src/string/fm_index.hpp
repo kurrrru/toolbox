@@ -24,6 +24,12 @@ struct fm_index
 	fm_index(const std::string &s) {build(s);}
 	fm_index(const std::string &s, const std::string &order) {build(s, order);}
 
+	/**
+	* @brief Counts the number of occurrences of a pattern in the indexed string.
+	* @param p The pattern to search for.
+	* @return The number of occurrences of the pattern in the indexed string.
+	* @note [complexity]: O(m + log n), where m is the length of the pattern and n is the length of the indexed string.
+	*/
 	int count(const std::string &p)
 	{
 		int m = p.size();
@@ -41,6 +47,12 @@ struct fm_index
 		return r - l + 1;
 	}
 
+	/**
+	* @brief Locates the occurrences of a pattern in the indexed string.
+	* @param p The pattern to search for.
+	* @return A vector containing the starting positions of the occurrences of the pattern in the indexed string.
+	* @note [complexity]: O(m + log n), where m is the length of the pattern, n is the length of the indexed string.
+	*/
 	std::vector<int> locate(const std::string &p)
 	{
 		int m = p.size();
