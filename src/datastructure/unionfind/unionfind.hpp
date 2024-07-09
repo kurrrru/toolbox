@@ -16,10 +16,10 @@ namespace datastructure
 struct unionfind
 {
 	unionfind() = default;
-	unionfind(const unionfind&) = default;
-	unionfind(unionfind&&) = default;
-	unionfind& operator=(const unionfind&) = default;
-	unionfind& operator=(unionfind&&) = default;
+	unionfind(const unionfind &) = default;
+	unionfind(unionfind &&) = default;
+	unionfind &operator=(const unionfind &) = default;
+	unionfind &operator=(unionfind &&) = default;
 	~unionfind() = default;
 
 	/**

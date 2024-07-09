@@ -16,10 +16,10 @@ namespace datastructure
 struct unionfind_weighted
 {
 	unionfind_weighted() = default;
-	unionfind_weighted(const unionfind_weighted&) = default;
-	unionfind_weighted(unionfind_weighted&&) = default;
-	unionfind_weighted& operator=(const unionfind_weighted&) = default;
-	unionfind_weighted& operator=(unionfind_weighted&&) = default;
+	unionfind_weighted(const unionfind_weighted &) = default;
+	unionfind_weighted(unionfind_weighted &&) = default;
+	unionfind_weighted &operator=(const unionfind_weighted &) = default;
+	unionfind_weighted &operator=(unionfind_weighted &&) = default;
 	~unionfind_weighted() = default;
 
 	/**

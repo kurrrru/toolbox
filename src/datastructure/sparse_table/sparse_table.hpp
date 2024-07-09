@@ -13,10 +13,10 @@ template <typename T, T (*op)(const T, const T)>
 struct sparse_table
 {
 	sparse_table() = default;
-	sparse_table(sparse_table &st) = default;
-	sparse_table(sparse_table &&st) = default;
-	sparse_table &operator=(sparse_table &st) = default;
-	sparse_table &operator=(sparse_table &&st) = default;
+	sparse_table(sparse_table &) = default;
+	sparse_table(sparse_table &&) = default;
+	sparse_table &operator=(sparse_table &) = default;
+	sparse_table &operator=(sparse_table &&) = default;
 	~sparse_table() = default;
 
 	sparse_table(std::vector<T> &arr)
