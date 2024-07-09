@@ -275,6 +275,19 @@ std::vector<int> suffixarray(const std::vector<int> &s, const int max_s)
 	return helper::sais(s, max_s);
 }
 
+
+/**
+* @brief Computes the suffix array of a given string.
+* @param s The string for which to compute the suffix array, represented as a vector of integers.
+* @return A suffix array for the given string.
+* @note [Complexity]: O(n)
+*/
+std::vector<int> suffixarray(const std::vector<int> &s)
+{
+	int max_s = *std::max_element(s.begin(), s.end());
+	return helper::sais(s, max_s);
+}
+
 /**
 * @brief Computes the suffix array of a given string.
 * @param str The string for which to compute the suffix array.
