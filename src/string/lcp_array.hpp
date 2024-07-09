@@ -19,7 +19,7 @@ namespace string
 * @return A longest common prefix array for the given string.
 * @note [Complexity]: O(n), where n is the size of the string.
 */
-std::vector<int> lcp_kasai(const std::string &s, const std::vector<int> &sa)
+std::vector<int> lcp_array(const std::string &s, const std::vector<int> &sa)
 {
 	int n = s.size();
 	std::vector<int> isa(n + 1);
