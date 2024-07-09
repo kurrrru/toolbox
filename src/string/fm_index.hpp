@@ -121,7 +121,7 @@ private:
 		_order.assign(256, -1);
 		_order[(int)'$'] = 0;
 		int rank = 0;
-		for (int i = 0; i < order.size(); i++)
+		for (int i = 0; i < 256; i++)
 		{
 			if (_order[(int)order[i]] != -1)
 				continue;
