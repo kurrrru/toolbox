@@ -28,7 +28,7 @@ struct fm_index
 	* @brief Counts the number of occurrences of a pattern in the indexed string.
 	* @param p The pattern to search for.
 	* @return The number of occurrences of the pattern in the indexed string.
-	* @note [complexity]: O(m + log n), where m is the length of the pattern and n is the length of the indexed string.
+	* @note [complexity]: O(m), where m is the length of the pattern.
 	*/
 	int count(const std::string &p)
 	{
@@ -51,7 +51,7 @@ struct fm_index
 	* @brief Locates the occurrences of a pattern in the indexed string.
 	* @param p The pattern to search for.
 	* @return A vector containing the starting positions of the occurrences of the pattern in the indexed string.
-	* @note [complexity]: O(m + log n), where m is the length of the pattern, n is the length of the indexed string.
+	* @note [complexity]: O(m), where m is the length of the pattern.
 	*/
 	std::vector<int> locate(const std::string &p)
 	{
