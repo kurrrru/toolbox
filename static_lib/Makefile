@@ -1,6 +1,6 @@
-NAME = toolbox
-SRCS = $(shell find ../src -type f -name '*.hpp')
-OBJS = $(SRCS:.hpp=.o)
+NAME = toolbox.a
+SRCS = $(shell find ./src -type f -name '*.cpp')
+OBJS = $(SRCS:.cpp=.o)
 
 .DEFAULT_GOAL := all
 
@@ -11,15 +11,16 @@ list: $(SRCS)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rcs $@ $^
+	ar rcs $(NAME) $(OBJS)
 
-%.o: %.hpp
+%.o: %.cpp
 	g++ -c -o $@ $<
 
 clean:
 	rm -f $(OBJS)
 
 fclean: clean
+	rm -f $(NAME)
 
 re: fclean all
 
