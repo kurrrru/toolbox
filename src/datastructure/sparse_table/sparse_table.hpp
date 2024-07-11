@@ -46,64 +46,6 @@ private:
 	std::vector<std::vector<T>> _table;
 };
 
-template <typename T>
-struct sparse_table_min
-{
-	sparse_table_min() = default;
-	sparse_table_min(sparse_table_min &st) = default;
-	sparse_table_min(sparse_table_min &&st) = default;
-	sparse_table_min &operator=(sparse_table_min &st) = default;
-	sparse_table_min &operator=(sparse_table_min &&st) = default;
-	~sparse_table_min() = default;
-
-	sparse_table_min(std::vector<T> &arr)
-	{
-		st = sparse_table<T, min>(arr);
-	}
-
-	T staticRMQ(int i, int j)
-	{
-		return st.staticRMQ(i, j);
-	}
-
-private:
-	static T min(const T a, const T b)
-	{
-		return std::min(a, b);
-	}
-
-	sparse_table<T, min> st;
-};
-
-template <typename T>
-struct sparse_table_max
-{
-	sparse_table_max() = default;
-	sparse_table_max(sparse_table_max &st) = default;
-	sparse_table_max(sparse_table_max &&st) = default;
-	sparse_table_max &operator=(sparse_table_max &st) = default;
-	sparse_table_max &operator=(sparse_table_max &&st) = default;
-	~sparse_table_max() = default;
-
-	sparse_table_max(std::vector<T> &arr)
-	{
-		st = sparse_table<T, max>(arr);
-	}
-
-	T staticRMQ(int i, int j)
-	{
-		return st.staticRMQ(i, j);
-	}
-
-private:
-	static T max(const T a, const T b)
-	{
-		return std::max(a, b);
-	}
-
-	sparse_table<T, max> st;
-};
-
 } // namespace datastructure
 
 } // namespace toolbox

@@ -63,49 +63,15 @@ private:
 	std::vector<std::vector<T>> _table;
 };
 
-template <typename T>
-struct sparse_table_min
-{
-	sparse_table_min();
-	sparse_table_min(sparse_table_min &st);
-	sparse_table_min(sparse_table_min &&st);
-	sparse_table_min &operator=(sparse_table_min &st);
-	sparse_table_min &operator=(sparse_table_min &&st);
-	~sparse_table_min();
-
-	sparse_table_min(std::vector<T> &arr);
-	T staticRMQ(int i, int j);
-
-private:
-	sparse_table<T, min> st;
-
-	T min(const T a, const T b);
-};
-
-template <typename T>
-struct sparse_table_max
-{
-	sparse_table_max();
-	sparse_table_max(sparse_table_max &st);
-	sparse_table_max(sparse_table_max &&st);
-	sparse_table_max &operator=(sparse_table_max &st);
-	sparse_table_max &operator=(sparse_table_max &&st);
-	~sparse_table_max();
-
-	sparse_table_max(std::vector<T> &arr);
-	T staticRMQ(int i, int j);
-
-private:
-	sparse_table<T, max> st;
-
-	T max(const T a, const T b);
-};
-
 struct unionfind
 {
 	unionfind();
-	unionfind(int n);
+	unionfind(const unionfind &);
+	unionfind(unionfind &&);
+	unionfind &operator=(const unionfind &);
+	unionfind &operator=(unionfind &&);
 	~unionfind();
+	unionfind(int n);
 
 	int find(int x);
 	bool unite(int x, int y);
@@ -120,8 +86,12 @@ private:
 struct unionfind_weighted
 {
 	unionfind_weighted();
-	unionfind_weighted(int n);
+	unionfind_weighted(const unionfind_weighted &);
+	unionfind_weighted(unionfind_weighted &&);
+	unionfind_weighted &operator=(const unionfind_weighted &);
+	unionfind_weighted &operator=(unionfind_weighted &&);
 	~unionfind_weighted();
+	unionfind_weighted(int n);
 
 	int find(int x);
 	bool unite(int x, int y, int w);
