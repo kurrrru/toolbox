@@ -60,6 +60,12 @@ T diameter_tree(const std::vector<std::vector<std::pair<long long, T> > > &adjac
 	return dist[v];
 }
 
+/**
+* @brief Calculates the diameter of a tree.
+* @param adjacent The adjacency list of the tree.
+* @return The diameter of the tree.
+* @note The time complexity is O(n), where n is the number of vertices in the tree.
+*/
 long long diameter_tree(const std::vector<std::vector<std::pair<long long, long long> > > &adjacent)
 {
 	return diameter_tree<long long>(adjacent);

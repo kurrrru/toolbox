@@ -497,7 +497,7 @@ std::vector<long long> factorial_inv_mod(long long n, long long mod)
 * @note [complexity]: O(1)
 */
 template <typename T>
-T combination(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv)
+T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv)
 {
 	assert(n >= 0 && k >= 0 && n >= k);
 	assert(n < fact.size());
@@ -516,9 +516,9 @@ T combination(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> 
 * @note [constraint]: n >= 0, k >= 0, n >= k, n < fact.size(), k < fact_inv.size(), n - k < fact_inv.size()
 * @note [complexity]: O(1)
 */
-long long combination(long long n, long long k, long long mod, const std::vector<long long> &fact, const std::vector<long long> &fact_inv)
+long long combination_mod(long long n, long long k, long long mod, const std::vector<long long> &fact, const std::vector<long long> &fact_inv)
 {
-	return combination<long long>(n, k, mod, fact, fact_inv);
+	return combination_mod<long long>(n, k, mod, fact, fact_inv);
 }
 
 /**
