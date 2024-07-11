@@ -28,7 +28,7 @@ T diameter_tree(const std::vector<std::vector<std::pair<long long, T> > > &adjac
 	long long u = 0, v = 0;
 	while (!que.empty())
 	{
-		u = que.front()
+		u = que.front();
 		que.pop();
 		for (const auto [adj, cost] : adjacent[u])
 		{
