@@ -1,4 +1,5 @@
 test/
 .vscode/
 *.o
-static_lib/toolbox
+static_lib/toolbox.a
+
