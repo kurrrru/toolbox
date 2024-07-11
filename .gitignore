@@ -1,4 +1,4 @@
 test/
 .vscode/
-.o
-.a
+*.o
+*.a
