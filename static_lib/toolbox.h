@@ -116,6 +116,11 @@ T diameter_tree(const std::vector<std::vector<std::pair<long long, T> > > &adjac
 
 long long diameter_tree(const std::vector<std::vector<std::pair<long long, long long> > > &adjacent);
 
+template <typename Vertex, typename Cost, Cost INF, Cost Zero>
+std::vector<Cost> dijkstra(const Vertex s, const std::vector<std::vector<std::pair<Vertex, Cost>>> &cost);
+
+std::vector<long long> dijkstra(const long long s, const std::vector<std::vector<std::pair<long long, long long>>> &cost);
+
 } // namespace graph
 
 namespace math
