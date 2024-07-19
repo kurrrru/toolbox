@@ -121,6 +121,16 @@ std::vector<Cost> dijkstra(const Vertex s, const std::vector<std::vector<std::pa
 
 std::vector<long long> dijkstra(const long long s, const std::vector<std::vector<std::pair<long long, long long>>> &cost);
 
+template <typename Vertex, typename Cost, Cost INF, Cost Zero>
+std::vector<Cost> bellman_ford(const Vertex s, const std::vector<std::vector<std::pair<Vertex, Cost>>> &cost);
+
+std::vector<long long> bellman_ford(const long long s, const std::vector<std::vector<std::pair<long long, long long>>> &cost);
+
+template <typename Vertex, typename Cost, Cost INF, Cost Zero>
+bool negative_cycle(const Vertex s, const std::vector<std::vector<std::pair<Vertex, Cost>>> &cost);
+
+bool negative_cycle(const long long s, const std::vector<std::vector<std::pair<long long, long long>>> &cost);
+
 } // namespace graph
 
 namespace math

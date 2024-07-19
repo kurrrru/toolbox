@@ -29,7 +29,7 @@ std::vector<Cost> dijkstra(const Vertex s, const std::vector<std::vector<std::pa
 	int N = cost.size();
 	std::vector<Cost> dist(N, INF);
     dist[s] = Zero;
-	std::priority_queue<std::pair<Vertex, Cost>, std::vector<std::pair<Vertex, Cost>>, std::greater<std::pair<Vertex, Cost>>> que;
+	std::priority_queue<std::pair<Cost, Vertex>, std::vector<std::pair<Cost, Vertex>>, std::greater<std::pair<Cost, Vertex>>> que;
 	que.push({0, s});
     while (!que.empty())
 	{
