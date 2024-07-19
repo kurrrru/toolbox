@@ -131,6 +131,11 @@ bool negative_cycle(const Vertex s, const std::vector<std::vector<std::pair<Vert
 
 bool negative_cycle(const long long s, const std::vector<std::vector<std::pair<long long, long long>>> &cost);
 
+template <typename Vertex>
+std::vector<Vertex> topological(const std::vector<std::vector<Vertex>> &edge);
+
+std::vector<long long> topological(const std::vector<std::vector<long long>> &edge);
+
 } // namespace graph
 
 namespace math

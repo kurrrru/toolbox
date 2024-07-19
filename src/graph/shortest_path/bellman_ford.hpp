@@ -27,7 +27,7 @@ std::vector<Cost> bellman_ford(const Vertex s, const std::vector<std::vector<std
 	int N = cost.size();
 	std::vector<Cost> dist(N, INF);
 	dist[s] = Zero;
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i <= N; i++)
 	{
 		bool update = false;
 		for (int j = 0; j < N; j++)
