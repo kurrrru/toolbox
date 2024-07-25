@@ -1,6 +1,7 @@
 #include "sparse_table.h"
 #include "unionfind.h"
 #include "unionfind_weighted.h"
+#include "treap.h"
 // #include "segment_tree"
 // #include "fenwick_tree"
 // #include "lazy_segment_tree"
