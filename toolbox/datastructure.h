@@ -2,6 +2,7 @@
 #include "unionfind.h"
 #include "unionfind_weighted.h"
 #include "treap.h"
+#include "implicit_treap.h"
 // #include "segment_tree"
 // #include "fenwick_tree"
 // #include "lazy_segment_tree"
