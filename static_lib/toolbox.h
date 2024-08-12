@@ -41,6 +41,15 @@ int wavefront_all(const std::string &s1, const std::string &s2,
 
 } // namespace alignment
 
+namespace rna_2d
+{
+
+int nussinov_dp(const std::string &seq, std::vector<std::vector<int>> &dp);
+std::string nussinov_traceback(const std::string &seq, const std::vector<std::vector<int>> &dp);
+std::string nussinov_all(const std::string &seq);
+
+} // namespace rna_2d
+
 namespace datastructure
 {
 
