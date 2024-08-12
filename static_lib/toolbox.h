@@ -115,6 +115,124 @@ private:
 	std::vector<int> _diff_weight;
 };
 
+namespace monoid_implicit_treap
+{
+
+struct monoid_range_update_range_sum
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+struct monoid_range_update_range_max
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+struct monoid_range_update_range_min
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+struct monoid_range_add_range_sum
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+struct monoid_range_add_range_max
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+struct monoid_range_add_range_min
+{
+	static long long query_op(long long a, long long b);
+	static long long query_id();
+	static long long update_op(long long a, long long b);
+	static long long update_id();
+	static long long apply(long long a, long long b, int len);
+};
+
+} // namespace monoid_implicit_treap
+
+template <typename S, class operations, unsigned int seed = 1>
+struct implicit_treap
+{
+	implicit_treap();
+	implicit_treap(const implicit_treap &);
+	implicit_treap(implicit_treap &&);
+	implicit_treap &operator=(const implicit_treap &);
+	implicit_treap &operator=(implicit_treap &&);
+	~implicit_treap();
+	implicit_treap(std::vector<S> &vec);
+	implicit_treap(int size, S val);
+
+	S query(int l, int r);
+	void update(int l, int r, S val);
+	S operator[](int pos);
+	void insert(int pos, S val);
+	void erase(int pos);
+	int size() const;
+	void reverse(int l, int r);
+	void rotate(int l, int m, int r);
+	void clear();
+
+private:
+
+	struct xorshift
+	{
+		unsigned int _state;
+		xorshift(unsigned int _seed);
+		unsigned int random();
+	} _rnd;
+
+	struct node
+	{
+		S _value;
+		S _acc;
+		S _lazy;
+		int _priority;
+		int _cnt;
+		bool _rev;
+		node *_child[2];
+		node(S value, int priority);
+	} *_root;
+
+	int cnt(node *t) const;
+	S acc(node *t) const;
+	void update(node *t);
+	void pushup(node *t);
+	void pushdown(node *t);
+	void split(node *t, int key, node *&l, node *&r);
+	void merge(node *&t, node *l, node *r);
+	void insert(node *&t, int key, node *item);
+	void erase(node *&t, int key);
+	void update(node *&t, int l, int r, S val);
+	S query(node *t, int l, int r);
+	void reverse(node *t, int l, int r);
+	void rotate(node *t, int l, int m, int r);
+	void clear(node *t);
+};
+
 } // namespace datastructure
 
 namespace graph

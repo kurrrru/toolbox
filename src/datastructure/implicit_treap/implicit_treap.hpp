@@ -178,11 +178,11 @@ struct implicit_treap
 		for (size_t i = 0; i < vec.size(); i++)
 			insert(i, vec[i]);
 	}
-	implicit_treap(int size, S value) : _rnd(seed)
+	implicit_treap(int size, S val) : _rnd(seed)
 	{
 		assert(size >= 0);
 		for (int i = 0; i < size; i++)
-			insert(i, value);
+			insert(i, val);
 	}
 
 	S query(int l, int r)
@@ -281,9 +281,9 @@ private:
 		int _cnt;
         bool _rev;
         node *_child[2];
-        node(S value, int priority)
+        node(S val, int priority)
 		{
-			_value = value;
+			_value = val;
 			_acc = operations::query_id();
 			_lazy = operations::update_id();
 			_priority = priority;
