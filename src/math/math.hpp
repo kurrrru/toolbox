@@ -558,6 +558,49 @@ long long sqrt(long long n)
 	return sqrt<long long>(n);
 }
 
+template <typename T>
+std::vector<std::vector<T>> matrix_pow(const std::vector<std::vector<T>> &a, long long exp)
+{
+	assert(a.size() == a[0].size());
+	int n = a.size();
+	std::vector<std::vector<T>> ret(n, std::vector<T>(n, 0));
+	for (int i = 0; i < n; i++)
+		ret[i][i] = 1;
+	std::vector<std::vector<T>> base = a;
+	while (exp)
+	{
+		if (exp & 1)
+		{
+			std::vector<std::vector<T>> new_ret(n, std::vector<T>(n, 0));
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = 0; j < n; j++)
+				{
+					for (int k = 0; k < n; k++)
+					{
+						new_ret[i][j] += ret[i][k] * base[k][j];
+					}
+				}
+			}
+			std::swap(ret, new_ret);
+		}
+		std::vector<std::vector<T>> new_base(n, std::vector<T>(n, 0));
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				for (int k = 0; k < n; k++)
+				{
+					new_base[i][j] += base[i][k] * base[k][j];
+				}
+			}
+		}
+		std::swap(base, new_base);
+		exp >>= 1;
+	}
+	return ret;
+}
+
 } // namespace math
 
 } // namespace toolbox
