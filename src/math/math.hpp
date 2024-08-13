@@ -574,9 +574,9 @@ std::vector<std::vector<T>> matrix_pow(const std::vector<std::vector<T>> &a, lon
 			std::vector<std::vector<T>> new_ret(n, std::vector<T>(n, 0));
 			for (int i = 0; i < n; i++)
 			{
-				for (int j = 0; j < n; j++)
+				for (int k = 0; k < n; k++)
 				{
-					for (int k = 0; k < n; k++)
+					for (int j = 0; j < n; j++)
 					{
 						new_ret[i][j] += ret[i][k] * base[k][j];
 					}
@@ -587,9 +587,9 @@ std::vector<std::vector<T>> matrix_pow(const std::vector<std::vector<T>> &a, lon
 		std::vector<std::vector<T>> new_base(n, std::vector<T>(n, 0));
 		for (int i = 0; i < n; i++)
 		{
-			for (int j = 0; j < n; j++)
+			for (int k = 0; k < n; k++)
 			{
-				for (int k = 0; k < n; k++)
+				for (int j = 0; j < n; j++)
 				{
 					new_base[i][j] += base[i][k] * base[k][j];
 				}
