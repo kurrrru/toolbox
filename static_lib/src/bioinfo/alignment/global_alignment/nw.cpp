@@ -27,12 +27,20 @@ int needleman_wunsch_dp(const std::string &s1, const std::string &s2,
 	const int n = (int)s2.size();
 	dp.assign(m + 1, std::vector<int>(n + 1, 0));
 	for (int i = 0; i <= m; i++)
+	{
 		dp[i][0] = i * g;
+	}
 	for (int j = 0; j <= n; j++)
+	{
 		dp[0][j] = j * g;
+	}
 	for (int i = 1; i <= m; i++)
+	{
 		for (int j = 1; j <= n; j++)
+		{
 			dp[i][j] = std::min(dp[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? a : x), std::min(dp[i - 1][j] + g, dp[i][j - 1] + g));
+		}
+	}
 	return (dp[m][n]);
 }
 
