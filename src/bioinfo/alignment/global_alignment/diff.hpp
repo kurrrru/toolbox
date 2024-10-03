@@ -27,7 +27,7 @@ int diff_dp(const std::string &s1, const std::string &s2, std::vector<std::vecto
 {
 	const int m = (int)s1.size();
 	const int n = (int)s2.size();
-	int N = std::max(m, n) * (x + g);
+	const int N = std::max(m, n) * (x + g);
 	int d;
 	int k;
 
