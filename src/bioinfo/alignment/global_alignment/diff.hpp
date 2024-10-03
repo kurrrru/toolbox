@@ -40,7 +40,7 @@ int diff_dp(const std::string &s1, const std::string &s2, std::vector<std::vecto
 	for (d = 1; d <= N; d++)
 	{
 		M.push_back(std::vector<int>(2 * d + 1, -1));
-		for (k = - d; k < d + 1; k++)
+		for (k = -d; k < d + 1; k++)
 		{
 			if (d - x >= 0 && k >= -(d - x) && k <= (d - x) && M[d - x][(d - x) + k] >= 0)
 			{
@@ -56,12 +56,12 @@ int diff_dp(const std::string &s1, const std::string &s2, std::vector<std::vecto
 			}
 			if (M[d][d + k] >= 0)
 			{
-				while (M[d][d + k] < m && M[d][d + k] - k < n && s1[M[d][d + k]] == s2[M[d][d + k] - k])
+				while (M[d][d + k] - k < m && M[d][d + k] < n && s1[M[d][d + k] - k] == s2[M[d][d + k]])
 				{
 					M[d][d + k]++;
 				}
 			}
-			if (M[d][d + k] == m && M[d][d + k] - k == n)
+			if (M[d][d + k] - k == m && M[d][d + k] == n)
 			{
 				return (M.size() - 1);
 			}
@@ -92,8 +92,8 @@ void diff_traceback(const std::string &s1, const std::string &s2, std::vector<st
 	int src;
 	std::vector<std::pair<int, int>> path;
 	d = M.size() - 1;
-	k = m - n;
-	path.push_back(std::make_pair(M[d][d + k], M[d][d + k] - k));
+	k = n - m;
+	path.push_back(std::make_pair(M[d][d + k] - k, M[d][d + k]));
 	while (d > 0)
 	{
 		now_max = -1;
@@ -128,7 +128,7 @@ void diff_traceback(const std::string &s1, const std::string &s2, std::vector<st
 			d = d - g;
 			k = k + 1;
 		}
-		path.push_back(std::make_pair(M[d][d + k], M[d][d + k] - k));
+		path.push_back(std::make_pair(M[d][d + k] - k, M[d][d + k]));
 	}
 	path.push_back(std::make_pair(0, 0));
 
