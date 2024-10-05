@@ -1,5 +1,5 @@
 # Global alignment
-2本の配列の大域アラインメントを求める。コストの最小化問題として定義する。コストは、マッチ $a$、ミスマッチ$x$ 、ギャップ$g$ とする。affine-gapで考える場合は、マッチ$a$ 、ミスマッチ$x$ 、ギャップ開始$o$ 、ギャップ延長$e$ とする。
+2本の配列の大域アラインメントを求める。コストの最小化問題として定義する。コストは、マッチ $a$、ミスマッチ $x$、ギャップ $g$とする。affine-gapで考える場合は、マッチ $a$、ミスマッチ $x$、ギャップ開始 $o$、ギャップ延長 $e$とする。
 ## Needleman-Wunschアルゴリズム
 ```cpp
 int needleman_wunsch_dp(const std::string &s1, const std::string &s2, std::vector<std::vector<int>> &dp, int a = 0, int x = 1, int g = 1);
