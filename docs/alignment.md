@@ -14,6 +14,23 @@ Needleman-Wunschアルゴリズムによって編集距離とアラインメン�
 - `a`,`x`,`g`: 編集操作に対するコスト
 - `s1_aligned`,`s2_aligned`: `s1`,`s2`のアラインメントの結果
 
+初期条件
+$$
+\begin{aligned}
+dp[i][0] &= i \times g \\
+dp[0][j] &= j \times g
+\end{aligned}
+$$
+遷移式
+$$
+dp[i][j] = \min
+\begin{cases}
+dp[i-1][j-1] + \delta(s1[i-1], s2[j-1]) \\
+dp[i-1][j] + g \\
+dp[i][j-1] + g
+\end{cases}
+$$
+ただし、$\delta(a,b)$は$a=b$のとき$a$、それ以外のとき$x$を返す関数である。  
 コストに特に制約はない。`needleman_wunsch_dp`と`needleman_wunsch_all`は最適なアラインメントにおける総コストを返す。
 
 ## Needleman-Wunsch-Gotohアルゴリズム
@@ -29,6 +46,39 @@ Needleman-Wunsch-Gotohアルゴリズムによってaffine-gapにおける編集
 - `M`,`D`,`I`: 編集距離を計算するDP
 - `a`,`x`,`o`,`e`: 編集操作に対するコスト
 - `s1_aligned`,`s2_aligned`: `s1`,`s2`のアラインメントの結果
+
+初期条件
+$$
+\begin{aligned}
+M[i][0] &= i \times e + o \\
+M[0][j] &= j \times e + o \\
+D[i][0] &= i \times e + o \\
+D[0][j] &= \infty \\
+I[i][0] &= \infty \\
+I[0][j] &= j \times e + o
+\end{aligned}
+$$
+遷移式
+$$
+\begin{aligned}
+D[i][j] &= \min
+\begin{cases}
+M[i-1][j] + o + e \\
+D[i-1][j] + e
+\end{cases} \\
+I[i][j] &= \min
+\begin{cases}
+M[i][j-1] + o + e \\
+I[i][j-1] + e
+\end{cases} \\
+M[i][j] &= \min
+\begin{cases}
+M[i-1][j-1] + \delta(s1[i-1], s2[j-1]) \\
+D[i][j] \\
+I[i][j]
+\end{cases}
+\end{aligned}
+$$
 
 コストに特に制約はない。`needleman_wunsch_gotoh_dp`と`needleman_wunsch_gotoh_all`は最適なアラインメントにおける総コストを返す。
 `M`,`D`,`I`はそれぞれmatch/mismatch、deletion、insertionのDPテーブルである。
