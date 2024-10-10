@@ -34,7 +34,7 @@ dp[i][j-1] + g
 \end{cases}
 $$
 
-ただし、$\delta(a,b)$は$a=b$のとき$a$、それ以外のとき$x$を返す関数である。  
+ただし、 $\delta(a,b)$は $a=b$のとき $a$、それ以外のとき $x$を返す関数である。  
 コストに特に制約はない。`needleman_wunsch_dp`と`needleman_wunsch_all`は最適なアラインメントにおける総コストを返す。
 
 ## Needleman-Wunsch-Gotohアルゴリズム
@@ -87,7 +87,7 @@ I[i][j]
 \end{aligned}
 $$
 
-ただし、$\delta(a,b)$は$a=b$のとき$a$、それ以外のとき$x$を返す関数である。  
+ただし、 $\delta(a,b)$は $a=b$のとき $a$、それ以外のとき $x$を返す関数である。  
 コストに特に制約はない。`needleman_wunsch_gotoh_dp`と`needleman_wunsch_gotoh_all`は最適なアラインメントにおける総コストを返す。
 `M`,`D`,`I`はそれぞれmatch/mismatch、deletion、insertionのDPテーブルである。
 
