@@ -43,6 +43,10 @@ int wavefront_dp(const std::string &s1, const std::string &s2,
 	{
 		M[0][0]++;
 	}
+	if (M[0][0] == m && M[0][0] == n)
+	{
+		return (0);
+	}
 	for (s = 1; s <= N; s++)
 	{
 		M.push_back(std::vector<int>(2 * s + 1, -1));

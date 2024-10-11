@@ -37,6 +37,10 @@ int diff_dp(const std::string &s1, const std::string &s2, std::vector<std::vecto
 	{
 		M[0][0]++;
 	}
+	if (M[0][0] == m && M[0][0] == n)
+	{
+		return (0);
+	}
 	for (d = 1; d <= N; d++)
 	{
 		M.push_back(std::vector<int>(2 * d + 1, -1));
