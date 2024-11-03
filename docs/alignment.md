@@ -8,7 +8,7 @@ void needleman_wunsch_traceback(const std::string &s1, const std::string &s2, co
 
 int needleman_wunsch_all(const std::string &s1, const std::string &s2, std::string &s1_aligned, std::string &s2_aligned, int a = 1, int x = 1, int g = 1);
 ```
-Needleman-Wunschアルゴリズムによって編集距離とアラインメントを求める。
+Needleman-Wunschアルゴリズムによって編集距離とアラインメントを求める。オリジナルのものと比べて、コストの最小化という形で定式化している点が異なっている。
 - `s1`,`s2`: 入力文字列
 - `dp`: 編集距離を計算するDP
 - `a`,`x`,`g`: 編集操作に対するコスト
@@ -45,7 +45,7 @@ void needleman_wunsch_gotoh_traceback(const std::string &s1, const std::string &
 
 int needleman_wunsch_gotoh_all(const std::string &s1, const std::string &s2, std::string &s1_aligned, std::string &s2_aligned, int a = 1, int x = 1, int o = 0, int e = 1);
 ```
-Needleman-Wunsch-Gotohアルゴリズムによってaffine-gapにおける編集距離とアラインメントを求める。
+Needleman-Wunsch-Gotohアルゴリズムによってaffine-gapにおける編集距離とアラインメントを求める。オリジナルのものと比べて、コストの最小化という形で定式化している点が異なっている。
 - `s1`,`s2`: 入力文字列
 - `M`,`D`,`I`: 編集距離を計算するDP
 - `a`,`x`,`o`,`e`: 編集操作に対するコスト
