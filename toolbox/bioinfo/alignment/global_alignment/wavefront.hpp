@@ -127,7 +127,7 @@ void wavefront_traceback(const std::string &s1, const std::string &s2,
 			if (s - x >= 0 && k >= -(s - x) && k <= (s - x) && M[s - x][(s - x) + k] + 1 > I[s][s + k] && M[s - x][(s - x) + k] + 1 > D[s][s + k])
 			{
 				s = s - x;
-				k = k;
+				// k = k; // k does not change
 				path.push_back(std::make_pair(M[s][s + k] - k, M[s][s + k]));
 				table_id = table::dp_M;
 			}

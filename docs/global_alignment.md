@@ -1,6 +1,5 @@
-# Global alignment
 2本の配列の大域アラインメントを求める。コストの最小化問題として定義する。コストは、マッチ $a$、ミスマッチ $x$、ギャップ $g$とする。affine-gapで考える場合は、マッチ $a$、ミスマッチ $x$、ギャップ開始 $o$、ギャップ延長 $e$とする。
-## Needleman-Wunschアルゴリズム
+# Needleman-Wunschアルゴリズム
 ```cpp
 int needleman_wunsch_dp(const std::string &s1, const std::string &s2, std::vector<std::vector<int>> &dp, int a = 0, int x = 1, int g = 1);
 
@@ -37,7 +36,10 @@ $$
 ただし、 $\delta(a,b)$は $a=b$のとき $a$、それ以外のとき $x$を返す関数である。  
 コストに特に制約はない。`needleman_wunsch_dp`と`needleman_wunsch_all`は最適なアラインメントにおける総コストを返す。
 
-## Needleman-Wunsch-Gotohアルゴリズム
+## 参考文献
+
+
+# Needleman-Wunsch-Gotohアルゴリズム
 ```cpp
 int needleman_wunsch_gotoh_dp(const std::string &s1, const std::string &s2, std::vector<std::vector<int>> &M, std::vector<std::vector<int>> &D, std::vector<std::vector<int>> &I, int a = 0, int x = 1, int o = 0, int e = 1);
 
@@ -91,7 +93,9 @@ $$
 コストに特に制約はない。`needleman_wunsch_gotoh_dp`と`needleman_wunsch_gotoh_all`は最適なアラインメントにおける総コストを返す。
 `M`,`D`,`I`はそれぞれmatch/mismatch、deletion、insertionのDPテーブルである。
 
-## diffアルゴリズム
+## 参考文献
+
+# diffアルゴリズム
 ```cpp
 int diff_dp(const std::string &s1, const std::string &s2, std::vector<std::vector<int>> &M, int x = 1, int g = 1);
 
@@ -126,9 +130,15 @@ $$
 
 $a=0$, $x>0$, $g>0$が制約となる。`diff_dp`と`diff_all`は最適なアラインメントにおける総コストを返す。
 diagonal $k$は、 $k=j-i$を満たすセルの集合として定義される。
+$M[s][k]$は、diagonal $k$におけるスコア $s$ である最大の $j$ を表す。
 2本の配列が類似している場合、効率良くアラインメントを求めることができる。
 
-## Wavefrontアルゴリズム
+定式化の亜種として、 $k=j-i$ ではなく、 $k=i-j$ としたものや、最大の $j$ ではなく最大の $i$ としたものが考えられる。
+
+
+## 参考文献
+
+# Wavefrontアルゴリズム
 ```cpp
 int wavefront_dp(const std::string &s1, const std::string &s2, std::vector<std::vector<int>> &M, std::vector<std::vector<int>> &I, std::vector<std::vector<int>> &D, int x = 1, int o = 0, int e = 1);
 
@@ -179,3 +189,7 @@ $$
 $a=0$, $x>0$, $o\geq 0$, $e>0$が制約となる。`wavefront_dp`と`wavefront_all`は最適なアラインメントにおける総コストを返す。
 diagonal $k$は、 $k=j-i$を満たすセルの集合として定義される。
 2本の配列が類似している場合、効率良くアラインメントを求めることができる。
+
+diff algorithmと同様に、実装の亜種が存在する
+
+## 参考文献

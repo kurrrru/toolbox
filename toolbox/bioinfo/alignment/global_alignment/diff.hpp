@@ -120,7 +120,7 @@ void diff_traceback(const std::string &s1, const std::string &s2, std::vector<st
 		if (src == 0)
 		{
 			d = d - x;
-			k = k;
+			// k = k; // k does not change
 		}
 		else if (src == 1)
 		{
