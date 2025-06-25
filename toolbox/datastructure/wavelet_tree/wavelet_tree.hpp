@@ -149,8 +149,7 @@ public:
     // assumption: min(arr) = 0
     // Build a wavelet tree in O(n log s) time (s = _size, n = _len)
     // return: void
-    void build(std::vector<uint32_t> &arr)
-    {
+    void build(std::vector<uint32_t> &arr) {
         _len = arr.size();
         if (_len == 0)
             _size = 0;
@@ -164,21 +163,16 @@ public:
     // @ i: index
     // Access the i-th element in O(log s) time (s = _size)
     // return: value of the bit at index i
-    uint32_t access(std::size_t i)
-    {
+    uint32_t access(std::size_t i) {
         assert(i < _len);
         _node *cur = root;
         uint32_t ret = 0;
-        while (cur != nullptr && cur->_l < cur->_r - 1)
-        {
-            if (cur->_bv[i])
-            {
+        while (cur != nullptr && cur->_l < cur->_r - 1) {
+            if (cur->_bv[i]) {
                 ret += (cur->_r - cur->_l) / 2;
                 i = cur->_bv.rank(i);
                 cur = cur->right;
-            }
-            else
-            {
+            } else {
                 i = i - cur->_bv.rank(i);
                 cur = cur->left;
             }
@@ -191,22 +185,17 @@ public:
     // @ c: character
     // Count the occurrence of c in [0, i) in O(log s) time (s = _size)
     // return: the occurrence of c in [0, i)
-    uint32_t rank(std::size_t i, uint32_t c)
-    {
+    uint32_t rank(std::size_t i, uint32_t c) {
         assert(i <= _len);
         if (i == 0 || c >= _size)
             return (0);
         _node *cur = root;
-        while (cur->_l < cur->_r - 1)
-        {
+        while (cur->_l < cur->_r - 1) {
             uint32_t mid = (cur->_r + cur->_l) >> 1;
-            if (c >= mid)
-            {
+            if (c >= mid) {
                 i = cur->_bv.rank(i);
                 cur = cur->right;
-            }
-            else
-            {
+            } else {
                 i = i - cur->_bv.rank(i);
                 cur = cur->left;
             }
@@ -223,8 +212,7 @@ public:
     // @ upper: upper bound of the range of characters (exclusive)
     // Count the number of k that satisfies i <= k < j and lower <= T[k] < upper
     // return: the number of k that satisfies the condition
-    uint32_t range_count(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper)
-    {
+    uint32_t range_count(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
         assert(lower <= upper);
         return (range_count_rec(root, i, j, lower, upper));
     }
@@ -256,8 +244,7 @@ public:
     // @ upper: upper bound of the range of characters (exclusive)
     // list the characters in [i, j) that satisfies lower <= T[k] < upper
     // return: the list of characters
-    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper)
-    {
+    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
         std::vector<uint32_t> v;
         range_list_rec(root, i, j, lower, upper, v);
         return (v);
@@ -281,15 +268,13 @@ private:
     std::size_t _size;
     std::size_t _capacity;
 
-    void build_rec(_node **cur, std::vector<uint32_t> &arr, uint32_t lower, uint32_t upper)
-    {
+    void build_rec(_node **cur, std::vector<uint32_t> &arr, uint32_t lower, uint32_t upper) {
         std::vector<bool> bit(arr.size());
         std::vector<uint32_t> left_arr, right_arr;
         if (lower >= _size || upper == lower)
             return ;
         uint32_t mid = (lower + upper) >> 1;
-        for (std::size_t i = 0; i < arr.size(); i++)
-        {
+        for (std::size_t i = 0; i < arr.size(); i++) {
             bit[i] = (arr[i] >= mid);
             if (bit[i])
                 right_arr.push_back(arr[i]);
@@ -303,8 +288,7 @@ private:
         build_rec(&((*cur)->right), right_arr, mid, upper);
     }
 
-    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper)
-    {
+    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
         if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
             return (0);
         if (lower <= cur->_l && cur->_r <= upper)
@@ -313,12 +297,10 @@ private:
                 range_count_rec(cur->left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
     }
 
-    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper, std::vector<uint32_t> &v)
-    {
+    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper, std::vector<uint32_t> &v) {
         if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
             return ;
-        if (lower <= cur->_l && cur->_r <= upper && cur->_l == cur->_r - 1)
-        {
+        if (lower <= cur->_l && cur->_r <= upper && cur->_l == cur->_r - 1) {
             v.push_back(cur->_l);
             return ;
         }
