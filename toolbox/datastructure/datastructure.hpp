@@ -3,6 +3,7 @@
 #include "unionfind_weighted/unionfind_weighted.hpp"
 #include "treap/treap.hpp"
 #include "implicit_treap/implicit_treap.hpp"
+#include "wavelet_tree/wavelet_tree.hpp"
 // #include "segment_tree"
 // #include "fenwick_tree"
 // #include "lazy_segment_tree"
