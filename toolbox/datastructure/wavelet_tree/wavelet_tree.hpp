@@ -20,15 +20,16 @@ It will support the following operations in the future:
 #include <vector>
 #include <algorithm>
 #include <cassert>
+#include <iostream>
 
 namespace {
 
 uint32_t popcount(uint32_t x) {
-    x = (x & 0b01010101010101010101010101010101) + ((x >> 1) & 0b01010101010101010101010101010101);
-    x = (x & 0b00110011001100110011001100110011) + ((x >> 2) & 0b00110011001100110011001100110011);
-    x = (x & 0b00001111000011110000111100001111) + ((x >> 4) & 0b00001111000011110000111100001111);
-    x = (x & 0b00000000111111110000000011111111) + ((x >> 8) & 0b00000000111111110000000011111111);
-    x = (x & 0b00000000000000001111111111111111) + ((x >> 16) & 0b00000000000000001111111111111111);
+    x = (x & 0x55555555) + ((x >> 1) & 0x55555555);
+    x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+    x = (x & 0x0F0F0F0F) + ((x >> 4) & 0x0F0F0F0F);
+    x = (x & 0x00FF00FF) + ((x >> 8) & 0x00FF00FF);
+    x = (x & 0x0000FFFF) + ((x >> 16) & 0x0000FFFF);
     return (x);
 }
 
@@ -42,6 +43,12 @@ uint32_t bit_width(uint32_t x) {
 }
 
 }  // namespace
+
+namespace toolbox
+{
+
+namespace datastructure
+{
 
 class bitvector {
 public:
@@ -76,7 +83,7 @@ public:
     // operator[]
     // @ i: index
     // return: value of the bit at index i
-    bool operator[](std::size_t i) {
+    bool operator[](std::size_t i) const {
         assert(i < _len);
         return (_bit[i >> 5] & (1u << (i & 0b11111)));
     }
@@ -86,7 +93,7 @@ public:
     // Count the occurrence of 1 in [0, i) in O(1) time
     // O(n) bits are used in this implementation, but it can be reduced to n + o(n) bits
     // return: the occurrence of 1 in [0, i)
-    uint32_t rank(std::size_t i) {
+    uint32_t rank(std::size_t i) const {
         assert(i <= _len);
         if (i == 0)
             return (0);
@@ -97,7 +104,7 @@ public:
     // @ j: the j-th occurrence of 1
     // Ideally, time complexity is O(1), but it is O(log n) in this implementation 
     // return: the index of the j-th occurrence of 1
-    std::size_t select(uint32_t j) {
+    std::size_t select(uint32_t j) const {
         assert(0 < j && j <= _sum[_num_blocks]);
         int left = -1, right = _len;
         while (left + 1 < right) {
@@ -140,8 +147,6 @@ public:
         return (*this);
     }
     ~wavelet_tree() {
-        if (root)
-            root->free_node();
     }
 
     // wavelet_tree::build
@@ -163,7 +168,7 @@ public:
     // @ i: index
     // Access the i-th element in O(log s) time (s = _size)
     // return: value of the bit at index i
-    uint32_t access(std::size_t i) {
+    uint32_t access(std::size_t i) const {
         assert(i < _len);
         _node *cur = root;
         uint32_t ret = 0;
@@ -171,10 +176,10 @@ public:
             if (cur->_bv[i]) {
                 ret += (cur->_r - cur->_l) / 2;
                 i = cur->_bv.rank(i);
-                cur = cur->right;
+                cur = cur->_right;
             } else {
                 i = i - cur->_bv.rank(i);
-                cur = cur->left;
+                cur = cur->_left;
             }
         }
         return (ret);
@@ -185,7 +190,7 @@ public:
     // @ c: character
     // Count the occurrence of c in [0, i) in O(log s) time (s = _size)
     // return: the occurrence of c in [0, i)
-    uint32_t rank(std::size_t i, uint32_t c) {
+    uint32_t rank(std::size_t i, uint32_t c) const {
         assert(i <= _len);
         if (i == 0 || c >= _size)
             return (0);
@@ -194,10 +199,10 @@ public:
             uint32_t mid = (cur->_r + cur->_l) >> 1;
             if (c >= mid) {
                 i = cur->_bv.rank(i);
-                cur = cur->right;
+                cur = cur->_right;
             } else {
                 i = i - cur->_bv.rank(i);
-                cur = cur->left;
+                cur = cur->_left;
             }
             if (cur == nullptr)
                 return (0);
@@ -212,7 +217,7 @@ public:
     // @ upper: upper bound of the range of characters (exclusive)
     // Count the number of k that satisfies i <= k < j and lower <= T[k] < upper
     // return: the number of k that satisfies the condition
-    uint32_t range_count(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
+    uint32_t range_count(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) const {
         assert(lower <= upper);
         return (range_count_rec(root, i, j, lower, upper));
     }
@@ -244,24 +249,41 @@ public:
     // @ upper: upper bound of the range of characters (exclusive)
     // list the characters in [i, j) that satisfies lower <= T[k] < upper
     // return: the list of characters
-    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
+    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) const {
         std::vector<uint32_t> v;
         range_list_rec(root, i, j, lower, upper, v);
         return (v);
     }
 
 private:
-    struct _node {
-        uint32_t _l, _r;
-        bitvector _bv;
-        _node *left, *right;
+    class _node {
+    public:
         _node(uint32_t l, uint32_t r, std::vector<bool> &arr)
-            : _l(l), _r(r), _bv(arr), left(nullptr), right(nullptr) {}
+            : _l(l), _r(r), _bv(arr), _left(nullptr), _right(nullptr) {}
+        _node(const _node &other)
+            : _l(other._l), _r(other._r), _bv(other._bv), _left(other._left), _right(other._right) {}
+        _node &operator=(const _node &other) {
+            if (this != &other) {
+                _l = other._l;
+                _r = other._r;
+                _bv = other._bv;
+                _left = other._left;
+                _right = other._right;
+            }
+            return (*this);
+        }
+        ~_node() {
+            if (_left) _left->free_node();
+            if (_right) _right->free_node();
+        }
         void free_node() {
-            if (left) left->free_node();
-            if (right) right->free_node();
+            if (_left) _left->free_node();
+            if (_right) _right->free_node();
             delete this;
         }
+        uint32_t _l, _r;
+        bitvector _bv;
+        _node *_left, *_right;
     };
     _node *root;
     std::size_t _len;
@@ -284,27 +306,31 @@ private:
         *cur = new _node(lower, upper, bit);
         if (lower == upper - 1)
             return ;
-        build_rec(&((*cur)->left), left_arr, lower, mid);
-        build_rec(&((*cur)->right), right_arr, mid, upper);
+        build_rec(&((*cur)->_left), left_arr, lower, mid);
+        build_rec(&((*cur)->_right), right_arr, mid, upper);
     }
 
-    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) {
+    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) const {
         if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
             return (0);
         if (lower <= cur->_l && cur->_r <= upper)
             return (j - i);
-        return (range_count_rec(cur->right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper) +
-                range_count_rec(cur->left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
+        return (range_count_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper) +
+                range_count_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
     }
 
-    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper, std::vector<uint32_t> &v) {
+    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper, std::vector<uint32_t> &v) const {
         if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
             return ;
         if (lower <= cur->_l && cur->_r <= upper && cur->_l == cur->_r - 1) {
             v.push_back(cur->_l);
             return ;
         }
-        range_list_rec(cur->left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper, v);
-        range_list_rec(cur->right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper, v);
+        range_list_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper, v);
+        range_list_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper, v);
     }
 };
+
+}  // namespace datastructure
+
+}  // namespace toolbox
