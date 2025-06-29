@@ -67,9 +67,7 @@ struct fm_index
 				l = _c[_order[(int)p[i]]] + _occ[_order[(int)p[i]]][l - 1];
 			r = _c[_order[(int)p[i]]] + _occ[_order[(int)p[i]]][r] - 1;
 		}
-		std::vector<int> res;
-		for (int i = l; i <= r; i++)
-			res.push_back(_sa[i]);
+		std::vector<int> res(_sa.begin() + l, _sa.begin() + r + 1);
 		return res;
 	}
 
