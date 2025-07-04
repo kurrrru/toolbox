@@ -16,7 +16,8 @@ const std::string yellow = "\033[33m";
 
 namespace test_utils {
     template <typename ArgType>
-    void runTests(const std::vector<std::pair<std::function<bool(ArgType)>, std::string>> &tests, ArgType arg) {    int test_case = 0, success_case = 0, fail_case = 0;
+    void runTests(const std::vector<std::pair<std::function<bool(ArgType)>, std::string>> &tests, const ArgType &arg) {
+    int test_case = 0, success_case = 0, fail_case = 0;
     for (const auto &test : tests) {
         bool result = test.first(arg);
         if (result) {

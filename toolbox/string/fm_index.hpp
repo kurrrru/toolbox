@@ -1,6 +1,7 @@
 #ifndef FM_INDEX_HPP
 #define FM_INDEX_HPP
 
+#include <iostream>
 #include <cassert>
 #include <algorithm>
 #include <string>
@@ -119,7 +120,7 @@ private:
 		_order.assign(256, -1);
 		_order[(int)'$'] = 0;
 		int rank = 0;
-		for (int i = 0; i < 256; i++)
+		for (std::size_t i = 0; i < order.size(); i++)
 		{
 			if (_order[(int)order[i]] != -1)
 				continue;
@@ -134,8 +135,14 @@ private:
 	void build_sa_bwt()
 	{
 		std::vector<int> s_int(_n);
-		for (int i = 0; i < _n; i++)
+		for (int i = 0; i < _n; i++) {
+			if (_order[(int)_s[i]] == -1)
+			{
+				_order[(int)_s[i]] = _num_c + 1;
+				_num_c++;
+			}
 			s_int[i] = _order[(int)_s[i]];
+		}
 		_sa = toolbox::string::suffixarray(s_int, _num_c);
 		_bwt.resize(_n);
 		for (int i = 0; i < _n; i++)
