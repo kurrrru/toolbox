@@ -5,7 +5,7 @@ FM-indexは、Burrows-Wheeler Transform (BWT) と補助的なデータ構造を�
 本実装は、クエリの実行速度を重視した設計となっており、以下の性質を持つ。
 
 - **空間計算量**: $O(n\sigma)$ ワード（ $O(n\sigma\log n)$ ビット）。ただし $n$ はテキスト長、 $\sigma$ は文字の種類数。
-- **構築時間**: $O(n)$ time（SA-ISなどの線形時間アルゴリズムを利用）。
+- **構築時間**: $O(n\sigma)$ time（SA-ISなどの線形時間アルゴリズムを利用）。
 - **`count` 操作**: $O(m)$ time（ $m$ はパターン長）。
 - **`locate` 操作**: $O(m + k)$ time（ $k$ はパターンの出現回数）。
 
