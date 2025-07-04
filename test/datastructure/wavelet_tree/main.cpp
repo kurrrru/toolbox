@@ -30,13 +30,13 @@ bool test_rank(std::pair<std::vector<uint32_t>, toolbox::datastructure::wavelet_
     const auto &arr = test_case.first;
     const auto &wt = test_case.second;
     for (std::size_t i = 0; i < arr.size(); ++i) {
-        if (wt.rank(i + 1, arr[i]) != std::count(arr.begin(), arr.begin() + i + 1, arr[i])) {
+        if (wt.rank(i, arr[i]) != std::count(arr.begin(), arr.begin() + i, arr[i])) {
             std::cerr << "Rank failed at index "
                 << i 
                 << ": expected " 
-                << std::count(arr.begin(), arr.begin() + i + 1, arr[i])
+                << std::count(arr.begin(), arr.begin() + i, arr[i])
                 << ", got "
-                << wt.rank(i + 1, arr[i])
+                << wt.rank(i, arr[i])
                 << std::endl;
             return false;
         }

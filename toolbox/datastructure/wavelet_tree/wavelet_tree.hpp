@@ -123,7 +123,7 @@ private:
     std::size_t _num_blocks;
     std::size_t _len;
 
-    void    _set(std::vector<bool> &arr) {
+    void _set(std::vector<bool> &arr) {
         for (std::size_t i = 0; i < _len; i++)
             if (arr[i])
                 _bit[i >> 5] |= 1u << (i & 0b11111);
@@ -133,20 +133,44 @@ private:
 class wavelet_tree {
 public:
     wavelet_tree(): root(nullptr), _len(0), _size(0), _capacity(0) {}
-    explicit wavelet_tree(std::vector<uint32_t> &arr) {
+    explicit wavelet_tree(std::vector<uint32_t> &arr): root(nullptr), _len(0), _size(0), _capacity(0) {
         build(arr);
     }
-    wavelet_tree(const wavelet_tree &other): root(other.root), _len(other._len), _size(other._size), _capacity(other._capacity) {}
+    wavelet_tree(const wavelet_tree &other): root(nullptr), _len(other._len), _size(other._size), _capacity(other._capacity) {
+        if (other.root) {
+            try {
+                root = new _node(*other.root);
+            } catch (const std::bad_alloc &e) {
+                std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what() << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
     wavelet_tree &operator=(const wavelet_tree &other) {
         if (this != &other) {
-            root = other.root;
             _len = other._len;
             _size = other._size;
             _capacity = other._capacity;
+            if (root) {
+                delete root;
+            }
+            root = nullptr;
+            if (other.root) {
+                try {
+                    root = new _node(*other.root);
+                } catch (const std::bad_alloc &e) {
+                    std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            }
         }
         return (*this);
     }
     ~wavelet_tree() {
+        if (root) {
+            delete root;
+            root = nullptr;
+        }
     }
 
     // wavelet_tree::build
@@ -261,26 +285,64 @@ private:
         _node(uint32_t l, uint32_t r, std::vector<bool> &arr)
             : _l(l), _r(r), _bv(arr), _left(nullptr), _right(nullptr) {}
         _node(const _node &other)
-            : _l(other._l), _r(other._r), _bv(other._bv), _left(other._left), _right(other._right) {}
+            : _l(other._l), _r(other._r), _bv(other._bv), _left(nullptr), _right(nullptr) {
+                if (other._left) {
+                    try {
+                        _left = new _node(*other._left);
+                    } catch (const std::bad_alloc &e) {
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                }
+                if (other._right) {
+                    try {
+                        _right = new _node(*other._right);
+                    } catch (const std::bad_alloc &e) {
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                }
+            }
         _node &operator=(const _node &other) {
             if (this != &other) {
                 _l = other._l;
                 _r = other._r;
                 _bv = other._bv;
-                _left = other._left;
-                _right = other._right;
+                if (_left) {
+                    delete _left;
+                }
+                if (_right) {
+                    delete _right;
+                }
+                _left = nullptr;
+                _right = nullptr;
+                if (other._left) {
+                    try {
+                        _left = new _node(*other._left);
+                    } catch (const std::bad_alloc &e) {
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                }
+                if (other._right) {
+                    try {
+                        _right = new _node(*other._right);
+                    } catch (const std::bad_alloc &e) {
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                }
             }
             return (*this);
         }
         ~_node() {
-            if (_left) _left->free_node();
-            if (_right) _right->free_node();
+            if (_left) delete _left;
+            if (_right) delete _right;
         }
-        void free_node() {
-            if (_left) _left->free_node();
-            if (_right) _right->free_node();
-            delete this;
-        }
+        // void free_node() {
+        //     if (_left) _left->free_node();
+        //     if (_right) _right->free_node();
+        // }
         uint32_t _l, _r;
         bitvector _bv;
         _node *_left, *_right;
@@ -303,7 +365,12 @@ private:
             else
                 left_arr.push_back(arr[i]);
         }
-        *cur = new _node(lower, upper, bit);
+        try {
+            *cur = new _node(lower, upper, bit);
+        } catch (const std::bad_alloc &e) {
+            std::cerr << "Memory allocation failed while building wavelet tree: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
         if (lower == upper - 1)
             return ;
         build_rec(&((*cur)->_left), left_arr, lower, mid);
