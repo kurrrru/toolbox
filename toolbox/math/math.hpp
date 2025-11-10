@@ -326,9 +326,11 @@ std::vector<T> factorial_inv_mod(T n, T mod)
 * @note [complexity]: O(1)
 */
 template <typename T>
-T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv)
-{
-	assert(n >= 0 && k >= 0 && n >= k);
+T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv) {
+    if (k < 0) return 0;
+    if (k == 0) return 1;
+    if (k > n) return 0;
+	assert(n >= 0);
 	assert(n < fact.size());
 	assert(k < fact_inv.size() && n - k < fact_inv.size());
 	return (fact[n] * fact_inv[k] % mod) * fact_inv[n - k] % mod;
