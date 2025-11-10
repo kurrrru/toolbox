@@ -315,16 +315,22 @@ std::vector<T> factorial_inv_mod(T n, T mod)
 }
 
 /**
-* @brief Computes nCk % mod.
-* @param n The number of elements.
-* @param k The number of elements to choose.
-* @param mod The modulo.
-* @param fact The array fact.
-* @param fact_inv The array fact_inv.
-* @return nCk % mod.
-* @note [constraint]: n >= 0, k >= 0, n >= k, n < fact.size(), k < fact_inv.size(), n - k < fact_inv.size()
-* @note [complexity]: O(1)
-*/
+ * @brief Computes nCk % mod, extended to handle generalized cases safely.
+ * @param n The number of elements (can be negative for generalized cases).
+ * @param k The number of elements to choose (can be negative).
+ * @param mod The modulo.
+ * @param fact The array fact.
+ * @param fact_inv The array fact_inv.
+ * @return nCk % mod.
+ * @note [behavior]: This function handles generalized inputs based on standard conventions:
+ * - Returns 0 if k < 0.
+ * - Returns 1 if k == 0 (this handles C(-1, 0) == 1).
+ * - Returns 0 if k > n (this handles C(0, 1) == 0).
+ * @note [constraint]:
+ * - For the standard case (n >= k >= 1), array bounds (n < fact.size(), etc.) must be respected.
+ * - This implementation is safe for inputs common in FPS, while also serving as a general nCk calculator.
+ * @note [complexity]: O(1)
+ */
 template <typename T>
 T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv) {
     if (k < 0) return 0;
