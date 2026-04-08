@@ -6,7 +6,7 @@
 #include <iterator>
 #include <vector>
 
-#include "toolbox/sorting/binary_insertion_sort.hpp"
+#include "toolbox/sorting/insertion_sort/binary_insertion_sort.hpp"
 
 namespace toolbox {
 namespace sorting {

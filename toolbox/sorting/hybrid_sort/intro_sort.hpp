@@ -5,9 +5,9 @@
 #include <functional>
 #include <iterator>
 
-#include "toolbox/sorting/heap_sort.hpp"
-#include "toolbox/sorting/insertion_sort.hpp"
-#include "toolbox/sorting/quick_sort.hpp"
+#include "toolbox/sorting/selection_sort/heap_sort.hpp"
+#include "toolbox/sorting/insertion_sort/insertion_sort.hpp"
+#include "toolbox/sorting/exchange_sort/quick_sort.hpp"
 
 namespace toolbox {
 namespace sorting {
