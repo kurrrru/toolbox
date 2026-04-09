@@ -5,7 +5,7 @@ SRCS = main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -Werror
+CXXFLAGS = -std=c++11 -Wall -Wextra -O2 -I../../..
 LDFLAGS = -lm
 
 .DEFAULT_GOAL := run

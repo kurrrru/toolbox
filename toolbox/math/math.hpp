@@ -174,6 +174,8 @@ template <typename T>
 std::vector<T> prime_list(T n)
 {
 	assert(n >= 0);
+	if (n < 2)
+		return std::vector<T>();
 	std::vector<bool> is_prime(n, true);
 	is_prime[0] = is_prime[1] = false;
 	for (T i = 2; i <= n / i; i++)

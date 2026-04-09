@@ -157,7 +157,7 @@ std::vector<SortTestCase> make_test_cases() {
     {
         SortTestCase tc;
         tc.name = "random_1000";
-        tc.data = make_random(1000, 999);
+        tc.data = make_random(10000, 999);
         cases.push_back(tc);
     }
     return cases;

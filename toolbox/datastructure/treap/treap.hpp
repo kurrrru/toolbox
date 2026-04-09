@@ -151,7 +151,7 @@ private:
 
 	size_t _size;
 
-	node *search(node *&t, Key key) const
+	node *search(node *t, Key key) const
 	{
 		if (!t)
 			return (nullptr);
