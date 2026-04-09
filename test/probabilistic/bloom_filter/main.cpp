@@ -8,11 +8,6 @@
 
 namespace {
 
-bool check(bool cond, const std::string &label) {
-    if (!cond) std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 bool test_membership() {
     toolbox::datastructure::BloomFilter<1000, 5> bf;
     std::vector<std::string> keys = {"apple", "orange", "banana", "grape", "melon",
@@ -20,7 +15,7 @@ bool test_membership() {
     for (const auto &k : keys) bf.add(k);
     bool ok = true;
     for (const auto &k : keys)
-        ok &= check(bf.contains(k), "contains after add: " + k);
+        ok &= toolbox::test_utils::check(bf.contains(k), "contains after add: " + k);
     return ok;
 }
 
@@ -43,14 +38,14 @@ bool test_non_member_unlikely() {
     int false_pos = 0;
     for (const auto &k : absent)
         if (bf.contains(k)) false_pos++;
-    return check(false_pos <= 1, "false positive count <= 1 for 4096-bit filter");
+    return toolbox::test_utils::check(false_pos <= 1, "false positive count <= 1 for 4096-bit filter");
 }
 
 bool test_repeated_add() {
     toolbox::datastructure::BloomFilter<1024, 4> bf;
     bf.add("duplicate");
     bf.add("duplicate");
-    return check(bf.contains("duplicate"), "duplicate add: still contains");
+    return toolbox::test_utils::check(bf.contains("duplicate"), "duplicate add: still contains");
 }
 
 bool test_large_insertion() {
@@ -62,32 +57,18 @@ bool test_large_insertion() {
     for (const auto &k : keys) bf.add(k);
     bool ok = true;
     for (const auto &k : keys)
-        ok &= check(bf.contains(k), "large insertion: " + k);
+        ok &= toolbox::test_utils::check(bf.contains(k), "large insertion: " + k);
     return ok;
 }
-
-struct Test { std::string name; bool (*fn)(); };
 
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"membership",          test_membership},
         {"non_member_unlikely", test_non_member_unlikely},
         {"repeated_add",        test_repeated_add},
         {"large_insertion",     test_large_insertion},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) { std::cout << toolbox::color::cyan  << "PASS " << tests[i].name << toolbox::color::reset << "\n"; ++pass; }
-        else    { std::cout << toolbox::color::yellow << "FAIL " << tests[i].name << toolbox::color::reset << "\n"; ++fail; }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!" << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail) << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

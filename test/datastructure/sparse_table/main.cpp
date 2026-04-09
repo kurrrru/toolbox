@@ -9,11 +9,6 @@
 
 namespace {
 
-bool check(bool cond, const std::string &label) {
-    if (!cond) std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 int op_min(const int a, const int b) { return std::min(a, b); }
 int op_max(const int a, const int b) { return std::max(a, b); }
 
@@ -71,15 +66,15 @@ bool test_rmq_max() {
 bool test_single_element() {
     std::vector<int> arr = {42};
     toolbox::datastructure::sparse_table<int, op_min> st(arr);
-    return check(st.staticRMQ(0, 1) == 42, "single element RMQ == 42");
+    return toolbox::test_utils::check(st.staticRMQ(0, 1) == 42, "single element RMQ == 42");
 }
 
 bool test_all_same() {
     std::vector<int> arr(8, 7);
     toolbox::datastructure::sparse_table<int, op_min> st(arr);
     bool ok = true;
-    ok &= check(st.staticRMQ(0, 8) == 7, "all-same full range");
-    ok &= check(st.staticRMQ(2, 5) == 7, "all-same sub range");
+    ok &= toolbox::test_utils::check(st.staticRMQ(0, 8) == 7, "all-same full range");
+    ok &= toolbox::test_utils::check(st.staticRMQ(2, 5) == 7, "all-same sub range");
     return ok;
 }
 
@@ -87,35 +82,21 @@ bool test_sorted_array() {
     std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8};
     toolbox::datastructure::sparse_table<int, op_min> st(arr);
     bool ok = true;
-    ok &= check(st.staticRMQ(0, 8) == 1, "sorted: min full == 1");
-    ok &= check(st.staticRMQ(4, 8) == 5, "sorted: min [4,8) == 5");
-    ok &= check(st.staticRMQ(3, 5) == 4, "sorted: min [3,5) == 4");
+    ok &= toolbox::test_utils::check(st.staticRMQ(0, 8) == 1, "sorted: min full == 1");
+    ok &= toolbox::test_utils::check(st.staticRMQ(4, 8) == 5, "sorted: min [4,8) == 5");
+    ok &= toolbox::test_utils::check(st.staticRMQ(3, 5) == 4, "sorted: min [3,5) == 4");
     return ok;
 }
-
-struct Test { std::string name; bool (*fn)(); };
 
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"rmq_min",        test_rmq_min},
         {"rmq_max",        test_rmq_max},
         {"single_element", test_single_element},
         {"all_same",       test_all_same},
         {"sorted_array",   test_sorted_array},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) { std::cout << toolbox::color::cyan  << "PASS " << tests[i].name << toolbox::color::reset << "\n"; ++pass; }
-        else    { std::cout << toolbox::color::yellow << "FAIL " << tests[i].name << toolbox::color::reset << "\n"; ++fail; }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!" << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail) << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

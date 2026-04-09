@@ -9,11 +9,6 @@
 
 namespace {
 
-bool check(bool cond, const std::string &label) {
-    if (!cond) std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 // Verify an alignment: aligned strings must have equal length, and when
 // gap characters are removed, the original sequences are recovered.
 bool is_valid_alignment(const std::string &s1, const std::string &s2,
@@ -36,8 +31,8 @@ bool test_nw_identical() {
     // Use a=0 so match cost is zero, allowing meaningful score check.
     int score = toolbox::alignment::needleman_wunsch_all(s, s, a1, a2, 0, 1, 1);
     bool ok = true;
-    ok &= check(score == 0, "NW identical (a=0): score==0");
-    ok &= check(is_valid_alignment(s, s, a1, a2), "NW identical: alignment valid");
+    ok &= toolbox::test_utils::check(score == 0, "NW identical (a=0): score==0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s, s, a1, a2), "NW identical: alignment valid");
     return ok;
 }
 
@@ -47,8 +42,8 @@ bool test_nw_empty_vs_string() {
     // gap cost=1 per character, 3 gaps needed
     int score = toolbox::alignment::needleman_wunsch_all("", s2, a1, a2, 0, 1, 1);
     bool ok = true;
-    ok &= check(score == 3, "NW empty vs ACG (a=0): score==3");
-    ok &= check(is_valid_alignment("", s2, a1, a2), "NW empty vs string: alignment valid");
+    ok &= toolbox::test_utils::check(score == 3, "NW empty vs ACG (a=0): score==3");
+    ok &= toolbox::test_utils::check(is_valid_alignment("", s2, a1, a2), "NW empty vs string: alignment valid");
     return ok;
 }
 
@@ -59,8 +54,8 @@ bool test_nw_one_mismatch() {
     std::string a1, a2;
     int score = toolbox::alignment::needleman_wunsch_all(s1, s2, a1, a2, 0, 1, 1);
     bool ok = true;
-    ok &= check(score == 1, "NW one mismatch (a=0): score==1");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "NW one mismatch: alignment valid");
+    ok &= toolbox::test_utils::check(score == 1, "NW one mismatch (a=0): score==1");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "NW one mismatch: alignment valid");
     return ok;
 }
 
@@ -70,8 +65,8 @@ bool test_nw_general() {
     std::string a1, a2;
     int score = toolbox::alignment::needleman_wunsch_all(s1, s2, a1, a2, 0, 1, 1);
     bool ok = true;
-    ok &= check(score >= 0, "NW general: score >= 0");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "NW general: alignment valid");
+    ok &= toolbox::test_utils::check(score >= 0, "NW general: score >= 0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "NW general: alignment valid");
     return ok;
 }
 
@@ -82,8 +77,8 @@ bool test_nw_completely_different() {
     std::string a1, a2;
     int score = toolbox::alignment::needleman_wunsch_all(s1, s2, a1, a2, 0, 1, 1);
     bool ok = true;
-    ok &= check(score == 4, "NW completely different (a=0): score==4");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "NW completely different: alignment valid");
+    ok &= toolbox::test_utils::check(score == 4, "NW completely different (a=0): score==4");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "NW completely different: alignment valid");
     return ok;
 }
 
@@ -95,8 +90,8 @@ bool test_nwg_identical() {
     std::string a1, a2;
     int score = toolbox::alignment::needleman_wunsch_gotoh_all(s, s, a1, a2, 0, 1, 0, 1);
     bool ok = true;
-    ok &= check(score == 0, "NWG identical (a=0): score==0");
-    ok &= check(is_valid_alignment(s, s, a1, a2), "NWG identical: alignment valid");
+    ok &= toolbox::test_utils::check(score == 0, "NWG identical (a=0): score==0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s, s, a1, a2), "NWG identical: alignment valid");
     return ok;
 }
 
@@ -106,8 +101,8 @@ bool test_nwg_general() {
     std::string a1, a2;
     int score = toolbox::alignment::needleman_wunsch_gotoh_all(s1, s2, a1, a2, 0, 1, 0, 1);
     bool ok = true;
-    ok &= check(score >= 0, "NWG general: score >= 0");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "NWG general: alignment valid");
+    ok &= toolbox::test_utils::check(score >= 0, "NWG general: score >= 0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "NWG general: alignment valid");
     return ok;
 }
 
@@ -119,8 +114,8 @@ bool test_diff_identical() {
     std::string a1, a2;
     int score = toolbox::alignment::diff_all(s, s, a1, a2);
     bool ok = true;
-    ok &= check(score == 0, "Diff identical: score==0");
-    ok &= check(is_valid_alignment(s, s, a1, a2), "Diff identical: alignment valid");
+    ok &= toolbox::test_utils::check(score == 0, "Diff identical: score==0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s, s, a1, a2), "Diff identical: alignment valid");
     return ok;
 }
 
@@ -128,8 +123,8 @@ bool test_diff_empty() {
     std::string a1, a2;
     int score = toolbox::alignment::diff_all("", "ABC", a1, a2);
     bool ok = true;
-    ok &= check(score == 3, "Diff empty vs ABC: score==3");
-    ok &= check(is_valid_alignment("", "ABC", a1, a2), "Diff empty vs ABC: alignment valid");
+    ok &= toolbox::test_utils::check(score == 3, "Diff empty vs ABC: score==3");
+    ok &= toolbox::test_utils::check(is_valid_alignment("", "ABC", a1, a2), "Diff empty vs ABC: alignment valid");
     return ok;
 }
 
@@ -139,8 +134,8 @@ bool test_diff_general() {
     std::string a1, a2;
     int score = toolbox::alignment::diff_all(s1, s2, a1, a2);
     bool ok = true;
-    ok &= check(score >= 0, "Diff general: score >= 0");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "Diff general: alignment valid");
+    ok &= toolbox::test_utils::check(score >= 0, "Diff general: score >= 0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "Diff general: alignment valid");
     return ok;
 }
 
@@ -152,8 +147,8 @@ bool test_wavefront_identical() {
     std::string a1, a2;
     int score = toolbox::alignment::wavefront_all(s, s, a1, a2);
     bool ok = true;
-    ok &= check(score == 0, "Wavefront identical: score==0");
-    ok &= check(is_valid_alignment(s, s, a1, a2), "Wavefront identical: alignment valid");
+    ok &= toolbox::test_utils::check(score == 0, "Wavefront identical: score==0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s, s, a1, a2), "Wavefront identical: alignment valid");
     return ok;
 }
 
@@ -163,8 +158,8 @@ bool test_wavefront_general() {
     std::string a1, a2;
     int score = toolbox::alignment::wavefront_all(s1, s2, a1, a2);
     bool ok = true;
-    ok &= check(score >= 0, "Wavefront general: score >= 0");
-    ok &= check(is_valid_alignment(s1, s2, a1, a2), "Wavefront general: alignment valid");
+    ok &= toolbox::test_utils::check(score >= 0, "Wavefront general: score >= 0");
+    ok &= toolbox::test_utils::check(is_valid_alignment(s1, s2, a1, a2), "Wavefront general: alignment valid");
     return ok;
 }
 
@@ -182,21 +177,19 @@ bool test_score_consistency() {
     int df  = toolbox::alignment::diff_all(s1, s2, a1, a2);
     int wf  = toolbox::alignment::wavefront_all(s1, s2, a1, a2);
     bool ok = true;
-    ok &= check(nw == 1,  "NW one-mismatch score==1");
-    ok &= check(df == 1,  "Diff one-mismatch score==1");
-    ok &= check(wf == 1,  "Wavefront one-mismatch score==1");
-    ok &= check(nw == df, "NW score == Diff score (linear gap)");
-    ok &= check(nw == wf, "NW score == Wavefront score (linear gap)");
-    ok &= check(nwg <= nw, "NWG score <= NW score (affine gap never worse)");
+    ok &= toolbox::test_utils::check(nw == 1,  "NW one-mismatch score==1");
+    ok &= toolbox::test_utils::check(df == 1,  "Diff one-mismatch score==1");
+    ok &= toolbox::test_utils::check(wf == 1,  "Wavefront one-mismatch score==1");
+    ok &= toolbox::test_utils::check(nw == df, "NW score == Diff score (linear gap)");
+    ok &= toolbox::test_utils::check(nw == wf, "NW score == Wavefront score (linear gap)");
+    ok &= toolbox::test_utils::check(nwg <= nw, "NWG score <= NW score (affine gap never worse)");
     return ok;
 }
-
-struct Test { std::string name; bool (*fn)(); };
 
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"nw_identical",           test_nw_identical},
         {"nw_empty_vs_string",     test_nw_empty_vs_string},
         {"nw_one_mismatch",        test_nw_one_mismatch},
@@ -211,17 +204,5 @@ int main() {
         {"wavefront_general",      test_wavefront_general},
         {"score_consistency",      test_score_consistency},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) { std::cout << toolbox::color::cyan  << "PASS " << tests[i].name << toolbox::color::reset << "\n"; ++pass; }
-        else    { std::cout << toolbox::color::yellow << "FAIL " << tests[i].name << toolbox::color::reset << "\n"; ++fail; }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!" << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail) << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

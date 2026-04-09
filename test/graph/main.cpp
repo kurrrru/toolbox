@@ -13,12 +13,6 @@ namespace {
 
 const long long INF = 1LL << 60;
 
-bool check(bool cond, const std::string &label) {
-    if (!cond)
-        std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 // ---- helper: build adjacency list ------------------------------------------
 
 typedef std::vector<std::vector<std::pair<long long, long long>>> Graph;
@@ -44,10 +38,10 @@ bool test_dijkstra_basic() {
     add_edge(g, 2, 3, 1);
     auto dist = toolbox::graph::dijkstra(0LL, g);
     bool ok = true;
-    ok &= check(dist[0] == 0, "dijkstra: dist[0]==0");
-    ok &= check(dist[1] == 1, "dijkstra: dist[1]==1");
-    ok &= check(dist[2] == 3, "dijkstra: dist[2]==3");
-    ok &= check(dist[3] == 4, "dijkstra: dist[3]==4");
+    ok &= toolbox::test_utils::check(dist[0] == 0, "dijkstra: dist[0]==0");
+    ok &= toolbox::test_utils::check(dist[1] == 1, "dijkstra: dist[1]==1");
+    ok &= toolbox::test_utils::check(dist[2] == 3, "dijkstra: dist[2]==3");
+    ok &= toolbox::test_utils::check(dist[3] == 4, "dijkstra: dist[3]==4");
     return ok;
 }
 
@@ -57,16 +51,16 @@ bool test_dijkstra_disconnected() {
     add_edge(g, 0, 1, 1);
     auto dist = toolbox::graph::dijkstra(0LL, g);
     bool ok = true;
-    ok &= check(dist[0] == 0,   "dijkstra disconnected: dist[0]==0");
-    ok &= check(dist[1] == 1,   "dijkstra disconnected: dist[1]==1");
-    ok &= check(dist[2] == INF, "dijkstra disconnected: dist[2]==INF");
+    ok &= toolbox::test_utils::check(dist[0] == 0,   "dijkstra disconnected: dist[0]==0");
+    ok &= toolbox::test_utils::check(dist[1] == 1,   "dijkstra disconnected: dist[1]==1");
+    ok &= toolbox::test_utils::check(dist[2] == INF, "dijkstra disconnected: dist[2]==INF");
     return ok;
 }
 
 bool test_dijkstra_single_node() {
     Graph g = make_graph(1);
     auto dist = toolbox::graph::dijkstra(0LL, g);
-    return check(dist[0] == 0, "dijkstra single node: dist[0]==0");
+    return toolbox::test_utils::check(dist[0] == 0, "dijkstra single node: dist[0]==0");
 }
 
 bool test_dijkstra_multiple_paths() {
@@ -78,7 +72,7 @@ bool test_dijkstra_multiple_paths() {
     add_directed_edge(g, 2, 3, 2);
     auto dist = toolbox::graph::dijkstra(0LL, g);
     bool ok = true;
-    ok &= check(dist[3] == 3, "dijkstra multiple paths: shortest is 3");
+    ok &= toolbox::test_utils::check(dist[3] == 3, "dijkstra multiple paths: shortest is 3");
     return ok;
 }
 
@@ -91,11 +85,11 @@ bool test_bellman_ford_basic() {
     add_directed_edge(g, 2, 3, 1);
     auto dist = toolbox::graph::bellman_ford(0LL, g);
     bool ok = true;
-    ok &= check(!dist.empty(), "bellman_ford basic: no negative cycle");
-    ok &= check(dist[0] == 0, "bellman_ford: dist[0]==0");
-    ok &= check(dist[1] == 1, "bellman_ford: dist[1]==1");
-    ok &= check(dist[2] == 3, "bellman_ford: dist[2]==3");
-    ok &= check(dist[3] == 4, "bellman_ford: dist[3]==4");
+    ok &= toolbox::test_utils::check(!dist.empty(), "bellman_ford basic: no negative cycle");
+    ok &= toolbox::test_utils::check(dist[0] == 0, "bellman_ford: dist[0]==0");
+    ok &= toolbox::test_utils::check(dist[1] == 1, "bellman_ford: dist[1]==1");
+    ok &= toolbox::test_utils::check(dist[2] == 3, "bellman_ford: dist[2]==3");
+    ok &= toolbox::test_utils::check(dist[3] == 4, "bellman_ford: dist[3]==4");
     return ok;
 }
 
@@ -107,8 +101,8 @@ bool test_bellman_ford_negative_edges() {
     add_directed_edge(g, 2, 3,  2);
     auto dist = toolbox::graph::bellman_ford(0LL, g);
     bool ok = true;
-    ok &= check(!dist.empty(), "bellman_ford negative: no negative cycle");
-    ok &= check(dist[3] == 0,  "bellman_ford negative edges: dist[3]==0");
+    ok &= toolbox::test_utils::check(!dist.empty(), "bellman_ford negative: no negative cycle");
+    ok &= toolbox::test_utils::check(dist[3] == 0,  "bellman_ford negative edges: dist[3]==0");
     return ok;
 }
 
@@ -119,7 +113,7 @@ bool test_bellman_ford_negative_cycle() {
     add_directed_edge(g, 1, 2,  2);
     add_directed_edge(g, 2, 1, -4); // forms negative cycle
     auto dist = toolbox::graph::bellman_ford(0LL, g);
-    return check(dist.empty(), "bellman_ford detects negative cycle");
+    return toolbox::test_utils::check(dist.empty(), "bellman_ford detects negative cycle");
 }
 
 bool test_bellman_ford_disconnected() {
@@ -127,8 +121,8 @@ bool test_bellman_ford_disconnected() {
     add_directed_edge(g, 0, 1, 5);
     auto dist = toolbox::graph::bellman_ford(0LL, g);
     bool ok = true;
-    ok &= check(!dist.empty(), "bellman_ford disconnected: no negative cycle");
-    ok &= check(dist[2] == INF, "bellman_ford disconnected: unreachable is INF");
+    ok &= toolbox::test_utils::check(!dist.empty(), "bellman_ford disconnected: no negative cycle");
+    ok &= toolbox::test_utils::check(dist[2] == INF, "bellman_ford disconnected: unreachable is INF");
     return ok;
 }
 
@@ -154,8 +148,8 @@ bool test_topological_basic() {
     edge[1].push_back(3); edge[2].push_back(3);
     auto order = toolbox::graph::topological(edge);
     bool ok = true;
-    ok &= check(order.size() == 4, "topological basic: all nodes in order");
-    ok &= check(is_valid_topological(order, edge), "topological basic: valid ordering");
+    ok &= toolbox::test_utils::check(order.size() == 4, "topological basic: all nodes in order");
+    ok &= toolbox::test_utils::check(is_valid_topological(order, edge), "topological basic: valid ordering");
     return ok;
 }
 
@@ -164,15 +158,15 @@ bool test_topological_cycle() {
     std::vector<std::vector<long long>> edge(3);
     edge[0].push_back(1); edge[1].push_back(2); edge[2].push_back(0);
     auto order = toolbox::graph::topological(edge);
-    return check(order.empty(), "topological cycle: returns empty");
+    return toolbox::test_utils::check(order.empty(), "topological cycle: returns empty");
 }
 
 bool test_topological_single() {
     std::vector<std::vector<long long>> edge(1);
     auto order = toolbox::graph::topological(edge);
     bool ok = true;
-    ok &= check(order.size() == 1, "topological single: size==1");
-    ok &= check(order[0] == 0,     "topological single: order[0]==0");
+    ok &= toolbox::test_utils::check(order.size() == 1, "topological single: size==1");
+    ok &= toolbox::test_utils::check(order[0] == 0,     "topological single: order[0]==0");
     return ok;
 }
 
@@ -183,8 +177,8 @@ bool test_topological_chain() {
         edge[i].push_back(i + 1);
     auto order = toolbox::graph::topological(edge);
     bool ok = true;
-    ok &= check(order.size() == 5, "topological chain: all nodes");
-    ok &= check(is_valid_topological(order, edge), "topological chain: valid");
+    ok &= toolbox::test_utils::check(order.size() == 5, "topological chain: all nodes");
+    ok &= toolbox::test_utils::check(is_valid_topological(order, edge), "topological chain: valid");
     return ok;
 }
 
@@ -204,7 +198,7 @@ bool test_diameter_path() {
     add_tree_edge(g, 1, 2, 2);
     add_tree_edge(g, 2, 3, 3);
     long long d = toolbox::graph::diameter_tree(g);
-    return check(d == 6, "diameter path graph: 6");
+    return toolbox::test_utils::check(d == 6, "diameter path graph: 6");
 }
 
 bool test_diameter_star() {
@@ -215,14 +209,14 @@ bool test_diameter_star() {
     add_tree_edge(g, 0, 3, 3);
     add_tree_edge(g, 0, 4, 2);
     long long d = toolbox::graph::diameter_tree(g);
-    return check(d == 8, "diameter star: 8 (5+3)");
+    return toolbox::test_utils::check(d == 8, "diameter star: 8 (5+3)");
 }
 
 bool test_diameter_single_edge() {
     TreeGraph g(2);
     add_tree_edge(g, 0, 1, 7);
     long long d = toolbox::graph::diameter_tree(g);
-    return check(d == 7, "diameter single edge: 7");
+    return toolbox::test_utils::check(d == 7, "diameter single edge: 7");
 }
 
 bool test_diameter_balanced() {
@@ -239,20 +233,15 @@ bool test_diameter_balanced() {
     add_tree_edge(g, 1, 3, 1);
     add_tree_edge(g, 1, 4, 1);
     long long d = toolbox::graph::diameter_tree(g);
-    return check(d == 3, "diameter balanced tree: 3");
+    return toolbox::test_utils::check(d == 3, "diameter balanced tree: 3");
 }
 
 // ---- runner ----------------------------------------------------------------
 
-struct Test {
-    std::string name;
-    bool (*fn)();
-};
-
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"dijkstra_basic",              test_dijkstra_basic},
         {"dijkstra_disconnected",       test_dijkstra_disconnected},
         {"dijkstra_single_node",        test_dijkstra_single_node},
@@ -270,27 +259,5 @@ int main() {
         {"diameter_single_edge",        test_diameter_single_edge},
         {"diameter_balanced",           test_diameter_balanced},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) {
-            std::cout << toolbox::color::cyan << "PASS " << tests[i].name
-                      << toolbox::color::reset << "\n";
-            ++pass;
-        } else {
-            std::cout << toolbox::color::yellow << "FAIL " << tests[i].name
-                      << toolbox::color::reset << "\n";
-            ++fail;
-        }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!"
-                  << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail)
-                  << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

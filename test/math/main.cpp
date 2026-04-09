@@ -11,23 +11,17 @@ namespace {
 
 // ---- helpers ---------------------------------------------------------------
 
-bool check(bool cond, const std::string &label) {
-    if (!cond)
-        std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 // ---- gcd -------------------------------------------------------------------
 
 bool test_gcd() {
     bool ok = true;
-    ok &= check(toolbox::math::gcd(12, 8)  == 4,  "gcd(12,8)==4");
-    ok &= check(toolbox::math::gcd(7,  13) == 1,  "gcd(7,13)==1");
-    ok &= check(toolbox::math::gcd(100, 25) == 25, "gcd(100,25)==25");
-    ok &= check(toolbox::math::gcd(0,  5)  == 5,  "gcd(0,5)==5");
-    ok &= check(toolbox::math::gcd(5,  0)  == 5,  "gcd(5,0)==5");
-    ok &= check(toolbox::math::gcd(1,  1)  == 1,  "gcd(1,1)==1");
-    ok &= check(toolbox::math::gcd(6,  6)  == 6,  "gcd(6,6)==6");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(12, 8)  == 4,  "gcd(12,8)==4");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(7,  13) == 1,  "gcd(7,13)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(100, 25) == 25, "gcd(100,25)==25");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(0,  5)  == 5,  "gcd(0,5)==5");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(5,  0)  == 5,  "gcd(5,0)==5");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(1,  1)  == 1,  "gcd(1,1)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::gcd(6,  6)  == 6,  "gcd(6,6)==6");
     return ok;
 }
 
@@ -35,10 +29,10 @@ bool test_gcd() {
 
 bool test_lcm() {
     bool ok = true;
-    ok &= check(toolbox::math::lcm(4,  6)  == 12,  "lcm(4,6)==12");
-    ok &= check(toolbox::math::lcm(3,  5)  == 15,  "lcm(3,5)==15");
-    ok &= check(toolbox::math::lcm(7,  7)  == 7,   "lcm(7,7)==7");
-    ok &= check(toolbox::math::lcm(1,  100) == 100, "lcm(1,100)==100");
+    ok &= toolbox::test_utils::check(toolbox::math::lcm(4,  6)  == 12,  "lcm(4,6)==12");
+    ok &= toolbox::test_utils::check(toolbox::math::lcm(3,  5)  == 15,  "lcm(3,5)==15");
+    ok &= toolbox::test_utils::check(toolbox::math::lcm(7,  7)  == 7,   "lcm(7,7)==7");
+    ok &= toolbox::test_utils::check(toolbox::math::lcm(1,  100) == 100, "lcm(1,100)==100");
     return ok;
 }
 
@@ -96,10 +90,10 @@ bool test_inv_mod() {
 
 bool test_pow() {
     bool ok = true;
-    ok &= check(toolbox::math::pow(2LL,  10LL) == 1024LL, "2^10==1024");
-    ok &= check(toolbox::math::pow(3LL,  0LL)  == 1LL,    "3^0==1");
-    ok &= check(toolbox::math::pow(1LL,  100LL)== 1LL,    "1^100==1");
-    ok &= check(toolbox::math::pow(10LL, 3LL)  == 1000LL, "10^3==1000");
+    ok &= toolbox::test_utils::check(toolbox::math::pow(2LL,  10LL) == 1024LL, "2^10==1024");
+    ok &= toolbox::test_utils::check(toolbox::math::pow(3LL,  0LL)  == 1LL,    "3^0==1");
+    ok &= toolbox::test_utils::check(toolbox::math::pow(1LL,  100LL)== 1LL,    "1^100==1");
+    ok &= toolbox::test_utils::check(toolbox::math::pow(10LL, 3LL)  == 1000LL, "10^3==1000");
     return ok;
 }
 
@@ -108,10 +102,10 @@ bool test_pow() {
 bool test_pow_mod() {
     bool ok = true;
     const long long MOD = 1000000007LL;
-    ok &= check(toolbox::math::pow_mod(2LL,  10LL, MOD) == 1024LL,  "pow_mod(2,10,MOD)");
-    ok &= check(toolbox::math::pow_mod(3LL,  0LL,  MOD) == 1LL,     "pow_mod(3,0,MOD)");
-    ok &= check(toolbox::math::pow_mod(2LL,  30LL, MOD) == (1LL<<30) % MOD, "pow_mod(2,30,MOD)");
-    ok &= check(toolbox::math::pow_mod(10LL, 9LL,  MOD) == 1000000000LL, "pow_mod(10,9,MOD)");
+    ok &= toolbox::test_utils::check(toolbox::math::pow_mod(2LL,  10LL, MOD) == 1024LL,  "pow_mod(2,10,MOD)");
+    ok &= toolbox::test_utils::check(toolbox::math::pow_mod(3LL,  0LL,  MOD) == 1LL,     "pow_mod(3,0,MOD)");
+    ok &= toolbox::test_utils::check(toolbox::math::pow_mod(2LL,  30LL, MOD) == (1LL<<30) % MOD, "pow_mod(2,30,MOD)");
+    ok &= toolbox::test_utils::check(toolbox::math::pow_mod(10LL, 9LL,  MOD) == 1000000000LL, "pow_mod(10,9,MOD)");
     return ok;
 }
 
@@ -119,16 +113,16 @@ bool test_pow_mod() {
 
 bool test_is_prime() {
     bool ok = true;
-    ok &= check(!toolbox::math::is_prime(0),  "0 is not prime");
-    ok &= check(!toolbox::math::is_prime(1),  "1 is not prime");
-    ok &= check( toolbox::math::is_prime(2),  "2 is prime");
-    ok &= check( toolbox::math::is_prime(3),  "3 is prime");
-    ok &= check(!toolbox::math::is_prime(4),  "4 is not prime");
-    ok &= check( toolbox::math::is_prime(5),  "5 is prime");
-    ok &= check(!toolbox::math::is_prime(9),  "9 is not prime");
-    ok &= check( toolbox::math::is_prime(97), "97 is prime");
-    ok &= check(!toolbox::math::is_prime(100),"100 is not prime");
-    ok &= check( toolbox::math::is_prime(1000000007), "1e9+7 is prime");
+    ok &= toolbox::test_utils::check(!toolbox::math::is_prime(0),  "0 is not prime");
+    ok &= toolbox::test_utils::check(!toolbox::math::is_prime(1),  "1 is not prime");
+    ok &= toolbox::test_utils::check( toolbox::math::is_prime(2),  "2 is prime");
+    ok &= toolbox::test_utils::check( toolbox::math::is_prime(3),  "3 is prime");
+    ok &= toolbox::test_utils::check(!toolbox::math::is_prime(4),  "4 is not prime");
+    ok &= toolbox::test_utils::check( toolbox::math::is_prime(5),  "5 is prime");
+    ok &= toolbox::test_utils::check(!toolbox::math::is_prime(9),  "9 is not prime");
+    ok &= toolbox::test_utils::check( toolbox::math::is_prime(97), "97 is prime");
+    ok &= toolbox::test_utils::check(!toolbox::math::is_prime(100),"100 is not prime");
+    ok &= toolbox::test_utils::check( toolbox::math::is_prime(1000000007), "1e9+7 is prime");
     return ok;
 }
 
@@ -138,19 +132,19 @@ bool test_prime_list() {
     bool ok = true;
     std::vector<int> primes = toolbox::math::prime_list(30);
     std::vector<int> expected = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
-    ok &= check(primes == expected, "prime_list(30)");
+    ok &= toolbox::test_utils::check(primes == expected, "prime_list(30)");
 
     std::vector<int> p0 = toolbox::math::prime_list(0);
-    ok &= check(p0.empty(), "prime_list(0) is empty");
+    ok &= toolbox::test_utils::check(p0.empty(), "prime_list(0) is empty");
 
     std::vector<int> p1 = toolbox::math::prime_list(1);
-    ok &= check(p1.empty(), "prime_list(1) is empty");
+    ok &= toolbox::test_utils::check(p1.empty(), "prime_list(1) is empty");
 
     std::vector<int> p2 = toolbox::math::prime_list(2);
-    ok &= check(p2.empty(), "prime_list(2) is empty (2 not included)");
+    ok &= toolbox::test_utils::check(p2.empty(), "prime_list(2) is empty (2 not included)");
 
     std::vector<int> p3 = toolbox::math::prime_list(3);
-    ok &= check(p3.size() == 1 && p3[0] == 2, "prime_list(3)=={2}");
+    ok &= toolbox::test_utils::check(p3.size() == 1 && p3[0] == 2, "prime_list(3)=={2}");
     return ok;
 }
 
@@ -210,14 +204,14 @@ bool test_crt() {
     ok &= verify2(1, 6, 0, 4); // gcd(6,4)=2, inconsistent -> (0,0)
     {
         auto res = toolbox::math::chinese_remainder_theorem(1LL, 6LL, 0LL, 4LL);
-        ok &= check(res.second == 0, "CRT inconsistent returns (0,0)");
+        ok &= toolbox::test_utils::check(res.second == 0, "CRT inconsistent returns (0,0)");
     }
 
     // Multi-modulus CRT
     std::vector<long long> a = {2, 3, 2};
     std::vector<long long> m = {3, 5, 7};
     auto res = toolbox::math::chinese_remainder_theorem(a, m);
-    ok &= check(res.first % 3 == 2 && res.first % 5 == 3 && res.first % 7 == 2,
+    ok &= toolbox::test_utils::check(res.first % 3 == 2 && res.first % 5 == 3 && res.first % 7 == 2,
                 "CRT multi: x=23 (mod 105)");
     return ok;
 }
@@ -241,12 +235,12 @@ bool test_combination() {
     }
 
     // C(n,k) values
-    ok &= check(toolbox::math::combination_mod(10LL, 3LL, MOD, fact, fact_inv) == 120, "C(10,3)==120");
-    ok &= check(toolbox::math::combination_mod(10LL, 0LL, MOD, fact, fact_inv) == 1,   "C(10,0)==1");
-    ok &= check(toolbox::math::combination_mod(10LL, 10LL, MOD, fact, fact_inv) == 1,  "C(10,10)==1");
-    ok &= check(toolbox::math::combination_mod(5LL, 6LL, MOD, fact, fact_inv) == 0,    "C(5,6)==0");
-    ok &= check(toolbox::math::combination_mod(5LL, -1LL, MOD, fact, fact_inv) == 0,   "C(5,-1)==0");
-    ok &= check(toolbox::math::combination_mod(20LL, 10LL, MOD, fact, fact_inv) == 184756, "C(20,10)==184756");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(10LL, 3LL, MOD, fact, fact_inv) == 120, "C(10,3)==120");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(10LL, 0LL, MOD, fact, fact_inv) == 1,   "C(10,0)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(10LL, 10LL, MOD, fact, fact_inv) == 1,  "C(10,10)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(5LL, 6LL, MOD, fact, fact_inv) == 0,    "C(5,6)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(5LL, -1LL, MOD, fact, fact_inv) == 0,   "C(5,-1)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::combination_mod(20LL, 10LL, MOD, fact, fact_inv) == 184756, "C(20,10)==184756");
     return ok;
 }
 
@@ -254,13 +248,13 @@ bool test_combination() {
 
 bool test_sqrt() {
     bool ok = true;
-    ok &= check(toolbox::math::sqrt(0LL)  == 0LL,  "sqrt(0)==0");
-    ok &= check(toolbox::math::sqrt(1LL)  == 1LL,  "sqrt(1)==1");
-    ok &= check(toolbox::math::sqrt(4LL)  == 2LL,  "sqrt(4)==2");
-    ok &= check(toolbox::math::sqrt(9LL)  == 3LL,  "sqrt(9)==3");
-    ok &= check(toolbox::math::sqrt(8LL)  == 2LL,  "sqrt(8)==2 (floor)");
-    ok &= check(toolbox::math::sqrt(10LL) == 3LL,  "sqrt(10)==3 (floor)");
-    ok &= check(toolbox::math::sqrt(1000000000000LL) == 1000000LL, "sqrt(1e12)==1e6");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(0LL)  == 0LL,  "sqrt(0)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(1LL)  == 1LL,  "sqrt(1)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(4LL)  == 2LL,  "sqrt(4)==2");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(9LL)  == 3LL,  "sqrt(9)==3");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(8LL)  == 2LL,  "sqrt(8)==2 (floor)");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(10LL) == 3LL,  "sqrt(10)==3 (floor)");
+    ok &= toolbox::test_utils::check(toolbox::math::sqrt(1000000000000LL) == 1000000LL, "sqrt(1e12)==1e6");
     return ok;
 }
 
@@ -272,25 +266,25 @@ bool test_matrix_pow() {
     {
         std::vector<std::vector<long long>> I = {{1,0},{0,1}};
         auto res = toolbox::math::matrix_pow(I, 10LL);
-        ok &= check(res == I, "I^10 == I");
+        ok &= toolbox::test_utils::check(res == I, "I^10 == I");
     }
     // Fibonacci via matrix exponentiation: [[1,1],[1,0]]^n
     {
         std::vector<std::vector<long long>> F = {{1,1},{1,0}};
         auto res = toolbox::math::matrix_pow(F, 10LL);
         // F^10[0][1] == fib(10) == 55
-        ok &= check(res[0][1] == 55, "fib(10) via matrix_pow");
+        ok &= toolbox::test_utils::check(res[0][1] == 55, "fib(10) via matrix_pow");
     }
     {
         std::vector<std::vector<long long>> F = {{1,1},{1,0}};
         auto res = toolbox::math::matrix_pow(F, 1LL);
-        ok &= check(res == F, "F^1 == F");
+        ok &= toolbox::test_utils::check(res == F, "F^1 == F");
     }
     {
         std::vector<std::vector<long long>> F = {{1,1},{1,0}};
         auto res = toolbox::math::matrix_pow(F, 0LL);
         std::vector<std::vector<long long>> I = {{1,0},{0,1}};
-        ok &= check(res == I, "F^0 == I");
+        ok &= toolbox::test_utils::check(res == I, "F^0 == I");
     }
     return ok;
 }
@@ -299,14 +293,14 @@ bool test_matrix_pow() {
 
 bool test_popcount() {
     bool ok = true;
-    ok &= check(toolbox::math::popcount(0)    == 0, "popcount(0)==0");
-    ok &= check(toolbox::math::popcount(1)    == 1, "popcount(1)==1");
-    ok &= check(toolbox::math::popcount(0xFF) == 8, "popcount(0xFF)==8");
-    ok &= check(toolbox::math::popcount(0x7FFFFFFF) == 31, "popcount(INT_MAX)==31");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(0)    == 0, "popcount(0)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(1)    == 1, "popcount(1)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(0xFF) == 8, "popcount(0xFF)==8");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(0x7FFFFFFF) == 31, "popcount(INT_MAX)==31");
 
-    ok &= check(toolbox::math::popcount(0LL)  == 0, "popcount(0LL)==0");
-    ok &= check(toolbox::math::popcount(1LL)  == 1, "popcount(1LL)==1");
-    ok &= check(toolbox::math::popcount((long long)0xFFFFFFFFFFFFFFFFLL) == 64, "popcount(UINT64_MAX)==64");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(0LL)  == 0, "popcount(0LL)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount(1LL)  == 1, "popcount(1LL)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::popcount((long long)0xFFFFFFFFFFFFFFFFLL) == 64, "popcount(UINT64_MAX)==64");
     return ok;
 }
 
@@ -314,13 +308,13 @@ bool test_popcount() {
 
 bool test_clz() {
     bool ok = true;
-    ok &= check(toolbox::math::clz(0)  == 32, "clz(0)==32");
-    ok &= check(toolbox::math::clz(1)  == 31, "clz(1)==31");
-    ok &= check(toolbox::math::clz(2)  == 30, "clz(2)==30");
-    ok &= check(toolbox::math::clz((int)0x80000000) == 0, "clz(MSB_INT)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::clz(0)  == 32, "clz(0)==32");
+    ok &= toolbox::test_utils::check(toolbox::math::clz(1)  == 31, "clz(1)==31");
+    ok &= toolbox::test_utils::check(toolbox::math::clz(2)  == 30, "clz(2)==30");
+    ok &= toolbox::test_utils::check(toolbox::math::clz((int)0x80000000) == 0, "clz(MSB_INT)==0");
 
-    ok &= check(toolbox::math::clz(0LL)  == 64, "clz(0LL)==64");
-    ok &= check(toolbox::math::clz(1LL)  == 63, "clz(1LL)==63");
+    ok &= toolbox::test_utils::check(toolbox::math::clz(0LL)  == 64, "clz(0LL)==64");
+    ok &= toolbox::test_utils::check(toolbox::math::clz(1LL)  == 63, "clz(1LL)==63");
     return ok;
 }
 
@@ -328,31 +322,24 @@ bool test_clz() {
 
 bool test_bit_width() {
     bool ok = true;
-    ok &= check(toolbox::math::bit_width(0)  == 0, "bit_width(0)==0");
-    ok &= check(toolbox::math::bit_width(1)  == 1, "bit_width(1)==1");
-    ok &= check(toolbox::math::bit_width(2)  == 2, "bit_width(2)==2");
-    ok &= check(toolbox::math::bit_width(3)  == 2, "bit_width(3)==2");
-    ok &= check(toolbox::math::bit_width(4)  == 3, "bit_width(4)==3");
-    ok &= check(toolbox::math::bit_width(7)  == 3, "bit_width(7)==3");
-    ok &= check(toolbox::math::bit_width(8)  == 4, "bit_width(8)==4");
-    ok &= check(toolbox::math::bit_width(0x7FFFFFFF) == 31, "bit_width(INT_MAX)==31");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(0)  == 0, "bit_width(0)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(1)  == 1, "bit_width(1)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(2)  == 2, "bit_width(2)==2");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(3)  == 2, "bit_width(3)==2");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(4)  == 3, "bit_width(4)==3");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(7)  == 3, "bit_width(7)==3");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(8)  == 4, "bit_width(8)==4");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(0x7FFFFFFF) == 31, "bit_width(INT_MAX)==31");
 
-    ok &= check(toolbox::math::bit_width(0LL) == 0, "bit_width(0LL)==0");
-    ok &= check(toolbox::math::bit_width(1LL) == 1, "bit_width(1LL)==1");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(0LL) == 0, "bit_width(0LL)==0");
+    ok &= toolbox::test_utils::check(toolbox::math::bit_width(1LL) == 1, "bit_width(1LL)==1");
     return ok;
 }
-
-// ---- runner ----------------------------------------------------------------
-
-struct Test {
-    std::string name;
-    bool (*fn)();
-};
 
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"gcd",              test_gcd},
         {"lcm",              test_lcm},
         {"ext_gcd",          test_ext_gcd},
@@ -370,27 +357,5 @@ int main() {
         {"clz",              test_clz},
         {"bit_width",        test_bit_width},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) {
-            std::cout << toolbox::color::cyan << "PASS " << tests[i].name
-                      << toolbox::color::reset << "\n";
-            ++pass;
-        } else {
-            std::cout << toolbox::color::yellow << "FAIL " << tests[i].name
-                      << toolbox::color::reset << "\n";
-            ++fail;
-        }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!"
-                  << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail)
-                  << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

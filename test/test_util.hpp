@@ -15,8 +15,40 @@ const std::string yellow = "\033[33m";
 }
 
 namespace test_utils {
-    template <typename ArgType>
-    void runTests(const std::vector<std::pair<std::function<bool(ArgType)>, std::string>> &tests, const ArgType &arg) {
+
+// ---- Assertion helper -------------------------------------------------------
+
+inline bool check(bool cond, const std::string &label) {
+    if (!cond) std::cerr << "  FAIL: " << label << "\n";
+    return cond;
+}
+
+// ---- Test case and runner ---------------------------------------------------
+
+struct Test {
+    std::string name;
+    bool (*fn)();
+};
+
+inline int run_tests(const Test *tests, std::size_t num) {
+    int pass = 0, fail = 0;
+    for (std::size_t i = 0; i < num; i++) {
+        bool ok = tests[i].fn();
+        if (ok) { std::cout << color::cyan  << "PASS " << tests[i].name << color::reset << "\n"; ++pass; }
+        else    { std::cout << color::yellow << "FAIL " << tests[i].name << color::reset << "\n"; ++fail; }
+    }
+    std::cout << "\n";
+    if (fail == 0)
+        std::cout << color::green << "All " << pass << " tests passed!" << color::reset << "\n";
+    else
+        std::cout << color::red << fail << " out of " << (pass + fail) << " tests failed." << color::reset << "\n";
+    return fail == 0 ? 0 : 1;
+}
+
+// ---- Legacy: parameterized test runner (wavelet_tree, fm_index) -------------
+
+template <typename ArgType>
+void runTests(const std::vector<std::pair<std::function<bool(ArgType)>, std::string>> &tests, const ArgType &arg) {
     int test_case = 0, success_case = 0, fail_case = 0;
     for (const auto &test : tests) {
         bool result = test.first(arg);
@@ -35,5 +67,6 @@ namespace test_utils {
         std::cout << color::red << fail_case << " out of " << test_case << " tests failed." << color::reset << std::endl;
     }
 }
+
 }
 }

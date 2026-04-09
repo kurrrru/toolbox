@@ -9,11 +9,6 @@
 
 namespace {
 
-bool check(bool cond, const std::string &label) {
-    if (!cond) std::cerr << "  FAIL: " << label << "\n";
-    return cond;
-}
-
 // Verify a suffix array of size n (no sentinel):
 //   - each index in [0, n) appears exactly once
 //   - suffixes are in strictly increasing lexicographic order
@@ -68,34 +63,34 @@ bool verify_lcp(const std::string &s, const std::vector<int> &sa_n,
 bool test_sa_basic() {
     std::string s = "banana";
     auto sa = toolbox::string::suffixarray(s);
-    return check(is_valid_sa(s, sa), "suffixarray basic: banana");
+    return toolbox::test_utils::check(is_valid_sa(s, sa), "suffixarray basic: banana");
 }
 
 bool test_sa_all_same() {
     std::string s = "aaaa";
     auto sa = toolbox::string::suffixarray(s);
-    return check(is_valid_sa(s, sa), "suffixarray all same: aaaa");
+    return toolbox::test_utils::check(is_valid_sa(s, sa), "suffixarray all same: aaaa");
 }
 
 bool test_sa_single_char() {
     std::string s = "a";
     auto sa = toolbox::string::suffixarray(s);
     bool ok = true;
-    ok &= check((int)sa.size() == 1, "single char SA size==1");
-    ok &= check(sa[0] == 0,          "single char SA[0]==0");
+    ok &= toolbox::test_utils::check((int)sa.size() == 1, "single char SA size==1");
+    ok &= toolbox::test_utils::check(sa[0] == 0,          "single char SA[0]==0");
     return ok;
 }
 
 bool test_sa_no_repeat() {
     std::string s = "abcdef";
     auto sa = toolbox::string::suffixarray(s);
-    return check(is_valid_sa(s, sa), "suffixarray no repeat: abcdef");
+    return toolbox::test_utils::check(is_valid_sa(s, sa), "suffixarray no repeat: abcdef");
 }
 
 bool test_sa_mississippi() {
     std::string s = "mississippi";
     auto sa = toolbox::string::suffixarray(s);
-    return check(is_valid_sa(s, sa), "suffixarray mississippi");
+    return toolbox::test_utils::check(is_valid_sa(s, sa), "suffixarray mississippi");
 }
 
 bool test_sa_vs_doubling() {
@@ -107,10 +102,10 @@ bool test_sa_vs_doubling() {
     auto sa_sais     = toolbox::string::suffixarray(s);
     auto sa_doubling = toolbox::string::helper::suffixarray_doubling(sv);
     bool ok = true;
-    ok &= check(is_valid_sa(s, sa_sais), "SAIS valid for abracadabra");
-    ok &= check((int)sa_sais.size() == n && (int)sa_doubling.size() == n,
+    ok &= toolbox::test_utils::check(is_valid_sa(s, sa_sais), "SAIS valid for abracadabra");
+    ok &= toolbox::test_utils::check((int)sa_sais.size() == n && (int)sa_doubling.size() == n,
                 "both SA have size n");
-    ok &= check(sa_sais == sa_doubling, "SAIS and doubling produce same SA");
+    ok &= toolbox::test_utils::check(sa_sais == sa_doubling, "SAIS and doubling produce same SA");
     return ok;
 }
 
@@ -130,7 +125,7 @@ bool test_lcp_basic() {
     auto sa_n   = toolbox::string::suffixarray(s);
     auto sa_np1 = make_sa_np1(s);
     auto lcp    = toolbox::string::lcp_array(s, sa_np1);
-    return check(verify_lcp(s, sa_n, lcp), "lcp_array basic: banana");
+    return toolbox::test_utils::check(verify_lcp(s, sa_n, lcp), "lcp_array basic: banana");
 }
 
 bool test_lcp_all_same() {
@@ -138,7 +133,7 @@ bool test_lcp_all_same() {
     auto sa_n   = toolbox::string::suffixarray(s);
     auto sa_np1 = make_sa_np1(s);
     auto lcp    = toolbox::string::lcp_array(s, sa_np1);
-    return check(verify_lcp(s, sa_n, lcp), "lcp_array all same: aaaa");
+    return toolbox::test_utils::check(verify_lcp(s, sa_n, lcp), "lcp_array all same: aaaa");
 }
 
 bool test_lcp_mississippi() {
@@ -146,7 +141,7 @@ bool test_lcp_mississippi() {
     auto sa_n   = toolbox::string::suffixarray(s);
     auto sa_np1 = make_sa_np1(s);
     auto lcp    = toolbox::string::lcp_array(s, sa_np1);
-    return check(verify_lcp(s, sa_n, lcp), "lcp_array mississippi");
+    return toolbox::test_utils::check(verify_lcp(s, sa_n, lcp), "lcp_array mississippi");
 }
 
 bool test_lcp_no_repeat() {
@@ -157,16 +152,14 @@ bool test_lcp_no_repeat() {
     // No shared prefixes -> all LCP values between non-sentinel pairs should be 0
     bool ok = true;
     for (int i = 1; i < (int)s.size(); i++)
-        ok &= check(lcp[i] == 0, "lcp[" + std::to_string(i) + "]==0 for no-repeat");
+        ok &= toolbox::test_utils::check(lcp[i] == 0, "lcp[" + std::to_string(i) + "]==0 for no-repeat");
     return ok;
 }
-
-struct Test { std::string name; bool (*fn)(); };
 
 } // namespace
 
 int main() {
-    Test tests[] = {
+    toolbox::test_utils::Test tests[] = {
         {"sa_basic",       test_sa_basic},
         {"sa_all_same",    test_sa_all_same},
         {"sa_single_char", test_sa_single_char},
@@ -178,17 +171,5 @@ int main() {
         {"lcp_mississippi",test_lcp_mississippi},
         {"lcp_no_repeat",  test_lcp_no_repeat},
     };
-    const std::size_t num = sizeof(tests) / sizeof(tests[0]);
-    int pass = 0, fail = 0;
-    for (std::size_t i = 0; i < num; i++) {
-        bool ok = tests[i].fn();
-        if (ok) { std::cout << toolbox::color::cyan  << "PASS " << tests[i].name << toolbox::color::reset << "\n"; ++pass; }
-        else    { std::cout << toolbox::color::yellow << "FAIL " << tests[i].name << toolbox::color::reset << "\n"; ++fail; }
-    }
-    std::cout << "\n";
-    if (fail == 0)
-        std::cout << toolbox::color::green << "All " << pass << " tests passed!" << toolbox::color::reset << "\n";
-    else
-        std::cout << toolbox::color::red << fail << " out of " << (pass + fail) << " tests failed." << toolbox::color::reset << "\n";
-    return fail == 0 ? 0 : 1;
+    return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }
