@@ -26,7 +26,7 @@ namespace detail {
 
 // Advance the Jacobsthal pair (current, prev) to the next values.
 // Sequence of "current": 3, 5, 11, 21, 43, ...
-inline void next_jacobsthal(std::pair<std::size_t, std::size_t>& j) {
+inline void next_jacobsthal(std::pair<std::size_t, std::size_t> &j) {
     std::swap(j.first, j.second);
     j.first = j.first * 2 + j.second;
 }
@@ -48,10 +48,9 @@ struct ChainElem {
 // The pair-index field is used internally to track which original pair each
 // element belongs to; callers may set it arbitrarily for the top-level call.
 template <typename T, typename Compare>
-void ford_johnson_indexed(std::vector<std::pair<T, std::size_t> >& container,
-                          Compare comp) {
+void ford_johnson_indexed(std::vector<std::pair<T, std::size_t>> &container, Compare comp) {
     typedef std::pair<T, std::size_t> ValIdx;
-    typedef std::pair<ValIdx, ValIdx> PairType;   // (bigger, smaller)
+    typedef std::pair<ValIdx, ValIdx> PairType;  // (bigger, smaller)
     typedef ChainElem<T> Chain;
 
     std::size_t num_elements = container.size();
@@ -71,8 +70,8 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t> >& container,
     bigger.reserve(num_pairs);
 
     for (std::size_t i = 0; i < num_pairs; ++i) {
-        ValIdx& a = container[2 * i];
-        ValIdx& b = container[2 * i + 1];
+        ValIdx &a = container[2 * i];
+        ValIdx &b = container[2 * i + 1];
         if (comp(a.first, b.first)) {
             pairs.push_back(std::make_pair(b, a));
             bigger.push_back(std::make_pair(b.first, i));
@@ -114,7 +113,7 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t> >& container,
     struct ChainComp {
         Compare c;
         explicit ChainComp(Compare c_) : c(c_) {}
-        bool operator()(const Chain& a, const Chain& b) const {
+        bool operator()(const Chain &a, const Chain &b) const {
             return c(a.value.first, b.value.first);
         }
     } chain_comp(comp);
@@ -126,7 +125,7 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t> >& container,
             if (i > pairs.size()) i = pairs.size();
             if (i <= 1) break;
 
-            const ValIdx& insert_value = pairs[i - 1].second;
+            const ValIdx &insert_value = pairs[i - 1].second;
 
             // Find the upper bound of the search range.
             // For a real pair (not straggler), b_i <= a_i, so we search only up
@@ -171,7 +170,7 @@ void merge_insertion_sort(RandomIt first, RandomIt last, Compare comp) {
     if (n <= 1) return;
 
     // Build indexed vector: (value, position)
-    std::vector<std::pair<T, std::size_t> > indexed;
+    std::vector<std::pair<T, std::size_t>> indexed;
     indexed.reserve(static_cast<std::size_t>(n));
     std::size_t idx = 0;
     for (RandomIt it = first; it != last; ++it, ++idx) {

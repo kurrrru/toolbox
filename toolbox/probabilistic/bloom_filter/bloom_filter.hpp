@@ -1,16 +1,14 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <string>
 #include <bitset>
-#include <functional>
 #include <cstdint>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
 
-namespace toolbox
-{
+namespace toolbox {
 
-namespace datastructure
-{
+namespace datastructure {
 
 /**
  * @brief SplitMix64 based avalanche mixer.
@@ -29,8 +27,8 @@ struct SplitMix64Mixer {
 
 template <std::size_t Size, std::size_t HashCount>
 class BloomFilter {
- public:
-    void add(const std::string& item) {
+public:
+    void add(const std::string &item) {
         uint64_t base_hash = std::hash<std::string>{}(item);
         for (std::size_t i = 0; i < HashCount; ++i) {
             bits.set(get_hash(base_hash, i));
@@ -39,7 +37,7 @@ class BloomFilter {
 
     // [NOTE] THIS FUNCTION MAY RETURN TRUE FOR NON-EXISTING ITEMS (FALSE POSITIVE)
     //        BUT IT WILL NEVER RETURN FALSE FOR EXISTING ITEMS.
-    bool contains(const std::string& item) const {
+    bool contains(const std::string &item) const {
         uint64_t base_hash = std::hash<std::string>{}(item);
         for (std::size_t i = 0; i < HashCount; ++i) {
             if (!bits.test(get_hash(base_hash, i))) {
@@ -49,7 +47,7 @@ class BloomFilter {
         return true;
     }
 
- private:
+private:
     std::bitset<Size> bits;
     SplitMix64Mixer mixer;
 

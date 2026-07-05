@@ -17,15 +17,14 @@ struct TNode {
     T value;
     bool valid;
     TNode() : value(T()), valid(false) {}
-    explicit TNode(const T& v) : value(v), valid(true) {}
+    explicit TNode(const T &v) : value(v), valid(true) {}
 };
 
 // Sift down: replace heap[0] with an invalid node and restore heap property.
 // Uses the same comparator as the original heapDecreaseKey: comp(parent, child)
 // means parent < child, so larger-valued nodes are higher (max-heap).
 template <typename T, typename Compare>
-void heap_decrease_key(std::vector<TNode<T> >& heap, std::size_t index,
-                       Compare comp) {
+void heap_decrease_key(std::vector<TNode<T>> &heap, std::size_t index, Compare comp) {
     heap[index].valid = false;
     std::size_t n = heap.size();
     while (true) {
@@ -67,14 +66,14 @@ void tournament_sort(RandomIt first, RandomIt last, Compare comp) {
     if (n <= 0) return;
 
     // Build tournament tree as a max-heap
-    std::vector<detail::TNode<T> > tree;
+    std::vector<detail::TNode<T>> tree;
     tree.reserve(n);
     for (RandomIt it = first; it != last; ++it) {
         tree.push_back(detail::TNode<T>(*it));
     }
 
     // Build max-heap using comp: comp(a,b) means a < b, so larger elements rise
-    auto node_comp = [&comp](const detail::TNode<T>& a, const detail::TNode<T>& b) {
+    auto node_comp = [&comp](const detail::TNode<T> &a, const detail::TNode<T> &b) {
         if (!a.valid) return true;
         if (!b.valid) return false;
         return comp(a.value, b.value);

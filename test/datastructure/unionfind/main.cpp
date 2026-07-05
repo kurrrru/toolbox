@@ -1,5 +1,5 @@
-#include "toolbox/datastructure/unionfind/unionfind.hpp"
 #include "test/test_util.hpp"
+#include "toolbox/datastructure/unionfind/unionfind.hpp"
 
 #include <iostream>
 #include <string>
@@ -15,8 +15,8 @@ bool test_basic() {
 
     // Unite 0 and 1
     ok &= toolbox::test_utils::check(uf.unite(0, 1) == true, "unite(0,1) returns true");
-    ok &= toolbox::test_utils::check(uf.same(0, 1),          "same(0,1) after unite");
-    ok &= toolbox::test_utils::check(!uf.same(0, 2),         "not same(0,2)");
+    ok &= toolbox::test_utils::check(uf.same(0, 1), "same(0,1) after unite");
+    ok &= toolbox::test_utils::check(!uf.same(0, 2), "not same(0,2)");
 
     // Unite 1 and 2
     uf.unite(1, 2);
@@ -33,9 +33,9 @@ bool test_multiple_components() {
     uf.unite(2, 3);
     uf.unite(4, 5);
     bool ok = true;
-    ok &= toolbox::test_utils::check( uf.same(0, 1), "same(0,1)");
-    ok &= toolbox::test_utils::check( uf.same(2, 3), "same(2,3)");
-    ok &= toolbox::test_utils::check( uf.same(4, 5), "same(4,5)");
+    ok &= toolbox::test_utils::check(uf.same(0, 1), "same(0,1)");
+    ok &= toolbox::test_utils::check(uf.same(2, 3), "same(2,3)");
+    ok &= toolbox::test_utils::check(uf.same(4, 5), "same(4,5)");
     ok &= toolbox::test_utils::check(!uf.same(0, 2), "not same(0,2)");
     ok &= toolbox::test_utils::check(!uf.same(0, 4), "not same(0,4)");
     ok &= toolbox::test_utils::check(!uf.same(2, 4), "not same(2,4)");
@@ -57,7 +57,7 @@ bool test_self_union() {
     toolbox::datastructure::unionfind uf(3);
     bool ok = true;
     ok &= toolbox::test_utils::check(uf.unite(1, 1) == false, "unite(1,1) returns false");
-    ok &= toolbox::test_utils::check(uf.same(1, 1),           "same(1,1) is always true");
+    ok &= toolbox::test_utils::check(uf.same(1, 1), "same(1,1) is always true");
     return ok;
 }
 
@@ -68,19 +68,20 @@ bool test_find_consistency() {
     int rep = uf.find(0);
     bool ok = true;
     for (int i = 1; i < 10; i++)
-        ok &= toolbox::test_utils::check(uf.find(i) == rep, "all find() return same representative");
+        ok &=
+            toolbox::test_utils::check(uf.find(i) == rep, "all find() return same representative");
     return ok;
 }
 
-} // namespace
+}  // namespace
 
 int main() {
     toolbox::test_utils::Test tests[] = {
-        {"basic",              test_basic},
-        {"multiple_components",test_multiple_components},
-        {"chain_union",        test_chain_union},
-        {"self_union",         test_self_union},
-        {"find_consistency",   test_find_consistency},
+        {"basic", test_basic},
+        {"multiple_components", test_multiple_components},
+        {"chain_union", test_chain_union},
+        {"self_union", test_self_union},
+        {"find_consistency", test_find_consistency},
     };
     return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

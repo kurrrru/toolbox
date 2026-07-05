@@ -1,0 +1,51 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - { cc: gcc,   cxx: g++ }
+          - { cc: clang, cxx: clang++ }
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CXX: ${{ matrix.compiler.cxx }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake --preset default
+
+      - name: Build
+        run: cmake --build --preset default
+
+      - name: Test
+        run: ctest --preset default
+
+  sanitize:
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CXX: clang++
+      UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+      ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure (ASan + UBSan)
+        run: cmake --preset asan
+
+      - name: Build
+        run: cmake --build --preset asan
+
+      - name: Test
+        run: ctest --preset asan

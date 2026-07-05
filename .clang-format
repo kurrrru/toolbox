@@ -1,0 +1,23 @@
+---
+Language:        Cpp
+BasedOnStyle:    Google
+Standard:        c++20              # concepts / requires を正しく解釈させる
+
+# ==== Google からの上書き（プロジェクトの好み） ====
+IndentWidth:     4                  # Google=2 → 4スペース
+AccessModifierOffset: -4            # メンバ列に対し public:/private: を1段戻す
+ColumnLimit:     100                # Google=80 → 100（緩め）
+PointerAlignment: Right             # Type &name / Type *name
+DerivePointerAlignment: false       # ★必須: true だと PointerAlignment が無視される
+SortIncludes:    CaseSensitive      # include をソート
+IncludeBlocks:   Regroup
+IncludeCategories:
+  # 自前ヘッダ（"toolbox/..." / "test/..."）→ 先頭グループ
+  - Regex:    '^"(toolbox|test)/'
+    Priority: 1
+  # C++/システムヘッダ <...> → 次
+  - Regex:    '^<'
+    Priority: 2
+  # その他の "..." 形式 → 最後
+  - Regex:    '.*'
+    Priority: 3

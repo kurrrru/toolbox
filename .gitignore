@@ -1,6 +1,14 @@
 .vscode/
 .DS_Store
+
+# CMake build tree
+build/
+
+# Compiled objects / executables
 *.o
 *.out
+*.a
+a.out
 static_lib/toolbox.a
+
 todo.md

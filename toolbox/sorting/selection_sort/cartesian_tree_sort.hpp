@@ -16,23 +16,27 @@ namespace detail {
 // every child (i.e. the root is the "maximum" under comp).
 template <typename T, typename Compare>
 class CartesianTree {
- public:
+public:
     typedef std::pair<T, int> PairType;
 
     struct PairComp {
         Compare c;
         explicit PairComp(Compare c_) : c(c_) {}
-        bool operator()(const PairType& a, const PairType& b) const {
+        bool operator()(const PairType &a, const PairType &b) const {
             if (c(a.first, b.first)) return true;
             if (c(b.first, a.first)) return false;
             return a.second < b.second;
         }
     };
 
-    CartesianTree(const std::vector<T>& arr, Compare comp)
-        : _root(-1), _n(static_cast<int>(arr.size())),
-          _parent(arr.size(), -1), _right(arr.size(), -1),
-          _left(arr.size(), -1), _arr(arr), _comp(comp) {
+    CartesianTree(const std::vector<T> &arr, Compare comp)
+        : _root(-1),
+          _n(static_cast<int>(arr.size())),
+          _parent(arr.size(), -1),
+          _right(arr.size(), -1),
+          _left(arr.size(), -1),
+          _arr(arr),
+          _comp(comp) {
         build();
     }
 
@@ -63,7 +67,7 @@ class CartesianTree {
         return sorted_arr;
     }
 
- private:
+private:
     void build() {
         std::vector<int> st;
         for (int i = 0; i < _n; ++i) {

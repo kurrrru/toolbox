@@ -1,5 +1,5 @@
-#include "toolbox/datastructure/sparse_table/sparse_table.hpp"
 #include "test/test_util.hpp"
+#include "toolbox/datastructure/sparse_table/sparse_table.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -33,10 +33,10 @@ bool test_rmq_min() {
     for (int l = 0; l < n; l++) {
         for (int r = l + 1; r <= n; r++) {
             int expected = brute_min(arr, l, r);
-            int got      = st.staticRMQ(l, r);
+            int got = st.staticRMQ(l, r);
             if (got != expected) {
-                std::cerr << "  FAIL: RMQ_min[" << l << "," << r << ") expected "
-                          << expected << " got " << got << "\n";
+                std::cerr << "  FAIL: RMQ_min[" << l << "," << r << ") expected " << expected
+                          << " got " << got << "\n";
                 ok = false;
             }
         }
@@ -52,10 +52,10 @@ bool test_rmq_max() {
     for (int l = 0; l < n; l++) {
         for (int r = l + 1; r <= n; r++) {
             int expected = brute_max(arr, l, r);
-            int got      = st.staticRMQ(l, r);
+            int got = st.staticRMQ(l, r);
             if (got != expected) {
-                std::cerr << "  FAIL: RMQ_max[" << l << "," << r << ") expected "
-                          << expected << " got " << got << "\n";
+                std::cerr << "  FAIL: RMQ_max[" << l << "," << r << ") expected " << expected
+                          << " got " << got << "\n";
                 ok = false;
             }
         }
@@ -88,15 +88,15 @@ bool test_sorted_array() {
     return ok;
 }
 
-} // namespace
+}  // namespace
 
 int main() {
     toolbox::test_utils::Test tests[] = {
-        {"rmq_min",        test_rmq_min},
-        {"rmq_max",        test_rmq_max},
+        {"rmq_min", test_rmq_min},
+        {"rmq_max", test_rmq_max},
         {"single_element", test_single_element},
-        {"all_same",       test_all_same},
-        {"sorted_array",   test_sorted_array},
+        {"all_same", test_all_same},
+        {"sorted_array", test_sorted_array},
     };
     return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

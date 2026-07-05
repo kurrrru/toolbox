@@ -1,0 +1,29 @@
+name: format
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # ローカルでの整形と結果を一致させるため、PyPI の clang-format をバージョン固定で使う。
+      - name: Install clang-format
+        run: pip install "clang-format==21.1.2"
+
+      - name: Check formatting
+        run: |
+          find toolbox test \
+            \( -name '*.hpp' -o -name '*.cpp' -o -name '*.tpp' -o -name '*.h' -o -name '*.cc' \) \
+            -print0 \
+          | xargs -0 clang-format --dry-run --Werror

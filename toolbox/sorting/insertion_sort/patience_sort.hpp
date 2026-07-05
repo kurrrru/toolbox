@@ -12,7 +12,7 @@ namespace detail {
 
 // k-way merge of piles: each pile is in descending order (top = smallest)
 template <typename T, typename Compare>
-std::vector<T> merge_piles(std::vector<std::vector<T> > piles, std::size_t n, Compare comp) {
+std::vector<T> merge_piles(std::vector<std::vector<T>> piles, std::size_t n, Compare comp) {
     std::vector<T> result;
     result.reserve(n);
     while (true) {
@@ -43,10 +43,10 @@ void patience_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
     if (n <= 1) return;
 
-    std::vector<std::vector<T> > piles;
+    std::vector<std::vector<T>> piles;
 
     for (RandomIt it = first; it != last; ++it) {
-        const T& val = *it;
+        const T &val = *it;
         if (piles.empty()) {
             piles.push_back(std::vector<T>(1, val));
         } else {
@@ -64,8 +64,7 @@ void patience_sort(RandomIt first, RandomIt last, Compare comp) {
         }
     }
 
-    std::vector<T> sorted =
-        detail::merge_piles(piles, static_cast<std::size_t>(n), comp);
+    std::vector<T> sorted = detail::merge_piles(piles, static_cast<std::size_t>(n), comp);
     std::copy(sorted.begin(), sorted.end(), first);
 }
 

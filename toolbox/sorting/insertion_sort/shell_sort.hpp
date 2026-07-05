@@ -19,7 +19,7 @@ inline std::size_t shell_pow(std::size_t base, std::size_t exp) {
     return result;
 }
 
-inline void generate_gap_sequence(std::vector<std::size_t>& gaps, std::size_t max_value) {
+inline void generate_gap_sequence(std::vector<std::size_t> &gaps, std::size_t max_value) {
     gaps.clear();
     gaps.push_back(1);
     std::size_t k = 1;

@@ -1,12 +1,12 @@
 #pragma once
 
+#include "toolbox/sorting/insertion_sort/binary_insertion_sort.hpp"
+
 #include <algorithm>
 #include <cstddef>
 #include <functional>
 #include <iterator>
 #include <vector>
-
-#include "toolbox/sorting/insertion_sort/binary_insertion_sort.hpp"
 
 namespace toolbox {
 namespace sorting {
@@ -30,7 +30,7 @@ inline std::size_t tim_min_run_length(std::size_t n) {
 }
 
 template <typename T, typename Compare>
-std::size_t count_run_and_make_ascending(std::vector<T>& v, std::size_t start, Compare comp) {
+std::size_t count_run_and_make_ascending(std::vector<T> &v, std::size_t start, Compare comp) {
     std::size_t size = v.size();
     if (start >= size - 1) return size - start;
 
@@ -51,25 +51,22 @@ std::size_t count_run_and_make_ascending(std::vector<T>& v, std::size_t start, C
 }
 
 template <typename T, typename Compare>
-void merge_at(std::vector<T>& v, std::vector<TimRun>& run_stack, std::size_t idx, Compare comp) {
-    TimRun& left = run_stack[idx];
-    TimRun& right = run_stack[idx + 1];
-    std::inplace_merge(v.begin() + left.start,
-                       v.begin() + right.start,
-                       v.begin() + right.start + right.length,
-                       comp);
+void merge_at(std::vector<T> &v, std::vector<TimRun> &run_stack, std::size_t idx, Compare comp) {
+    TimRun &left = run_stack[idx];
+    TimRun &right = run_stack[idx + 1];
+    std::inplace_merge(v.begin() + left.start, v.begin() + right.start,
+                       v.begin() + right.start + right.length, comp);
     left.length += right.length;
     run_stack.erase(run_stack.begin() + idx + 1);
 }
 
 template <typename T, typename Compare>
-void merge_collapse(std::vector<T>& v, std::vector<TimRun>& run_stack, Compare comp) {
+void merge_collapse(std::vector<T> &v, std::vector<TimRun> &run_stack, Compare comp) {
     while (run_stack.size() > 1) {
         std::size_t n = run_stack.size() - 1;
         std::size_t lenX = run_stack[n].length;
         std::size_t lenY = run_stack[n - 1].length;
-        std::size_t lenZ = (n >= 2) ? run_stack[n - 2].length
-                                    : static_cast<std::size_t>(-1);
+        std::size_t lenZ = (n >= 2) ? run_stack[n - 2].length : static_cast<std::size_t>(-1);
 
         if (n >= 2 && lenZ <= lenY + lenX) {
             if (lenZ < lenX) {
@@ -86,7 +83,7 @@ void merge_collapse(std::vector<T>& v, std::vector<TimRun>& run_stack, Compare c
 }
 
 template <typename T, typename Compare>
-void merge_force_collapse(std::vector<T>& v, std::vector<TimRun>& run_stack, Compare comp) {
+void merge_force_collapse(std::vector<T> &v, std::vector<TimRun> &run_stack, Compare comp) {
     while (run_stack.size() > 1) {
         std::size_t n = run_stack.size() - 1;
         if (n >= 2 && run_stack[n - 2].length < run_stack[n].length) {
@@ -118,8 +115,7 @@ void tim_sort(RandomIt first, RandomIt last, Compare comp) {
         if (run_len < min_run) {
             std::size_t forced = std::min(min_run, static_cast<std::size_t>(n) - start);
             // Extend run using binary insertion sort
-            binary_insertion_sort(v.begin() + start,
-                                  v.begin() + start + forced, comp);
+            binary_insertion_sort(v.begin() + start, v.begin() + start + forced, comp);
             run_len = forced;
         }
         detail::TimRun new_run;

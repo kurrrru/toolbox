@@ -1,5 +1,5 @@
-#include "toolbox/sorting/sorting.hpp"
 #include "test/test_util.hpp"
+#include "toolbox/sorting/sorting.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -46,14 +46,14 @@ typedef void (*SortFn)(std::vector<int>::iterator, std::vector<int>::iterator);
 typedef void (*SortFnComp)(std::vector<int>::iterator, std::vector<int>::iterator,
                            std::greater<int>);
 
-bool is_sorted_asc(const std::vector<int>& v) {
+bool is_sorted_asc(const std::vector<int> &v) {
     for (std::size_t i = 1; i < v.size(); ++i) {
         if (v[i] < v[i - 1]) return false;
     }
     return true;
 }
 
-bool is_sorted_desc(const std::vector<int>& v) {
+bool is_sorted_desc(const std::vector<int> &v) {
     for (std::size_t i = 1; i < v.size(); ++i) {
         if (v[i] > v[i - 1]) return false;
     }
@@ -72,7 +72,7 @@ struct SortTestCase {
 };
 
 template <typename SortFunc>
-bool run_sort_test(const SortTestCase& tc, SortFunc sort_fn) {
+bool run_sort_test(const SortTestCase &tc, SortFunc sort_fn) {
     std::vector<int> original = tc.data;
     std::vector<int> v = original;
     sort_fn(v.begin(), v.end());
@@ -88,7 +88,7 @@ bool run_sort_test(const SortTestCase& tc, SortFunc sort_fn) {
 }
 
 template <typename SortFuncComp>
-bool run_sort_test_desc(const SortTestCase& tc, SortFuncComp sort_fn) {
+bool run_sort_test_desc(const SortTestCase &tc, SortFuncComp sort_fn) {
     std::vector<int> original = tc.data;
     std::vector<int> v = original;
     sort_fn(v.begin(), v.end(), std::greater<int>());
@@ -166,172 +166,167 @@ std::vector<SortTestCase> make_test_cases() {
 // ---- Per-algorithm test wrappers -----------------------------------------
 
 // Ascending (default comparator)
-bool test_bubble_sort_asc(const SortTestCase& tc) {
+bool test_bubble_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::bubble_sort<std::vector<int>::iterator>);
 }
-bool test_insertion_sort_asc(const SortTestCase& tc) {
+bool test_insertion_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::insertion_sort<std::vector<int>::iterator>);
 }
-bool test_binary_insertion_sort_asc(const SortTestCase& tc) {
+bool test_binary_insertion_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::binary_insertion_sort<std::vector<int>::iterator>);
 }
-bool test_selection_sort_asc(const SortTestCase& tc) {
+bool test_selection_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::selection_sort<std::vector<int>::iterator>);
 }
-bool test_shell_sort_asc(const SortTestCase& tc) {
+bool test_shell_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::shell_sort<std::vector<int>::iterator>);
 }
-bool test_comb_sort_asc(const SortTestCase& tc) {
+bool test_comb_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::comb_sort<std::vector<int>::iterator>);
 }
-bool test_gnome_sort_asc(const SortTestCase& tc) {
+bool test_gnome_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::gnome_sort<std::vector<int>::iterator>);
 }
-bool test_shaker_sort_asc(const SortTestCase& tc) {
+bool test_shaker_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::shaker_sort<std::vector<int>::iterator>);
 }
-bool test_odd_even_sort_asc(const SortTestCase& tc) {
+bool test_odd_even_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::odd_even_sort<std::vector<int>::iterator>);
 }
-bool test_cycle_sort_asc(const SortTestCase& tc) {
+bool test_cycle_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::cycle_sort<std::vector<int>::iterator>);
 }
-bool test_merge_sort_asc(const SortTestCase& tc) {
+bool test_merge_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::merge_sort<std::vector<int>::iterator>);
 }
-bool test_quick_sort_asc(const SortTestCase& tc) {
+bool test_quick_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::quick_sort<std::vector<int>::iterator>);
 }
-bool test_heap_sort_asc(const SortTestCase& tc) {
+bool test_heap_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::heap_sort<std::vector<int>::iterator>);
 }
-bool test_intro_sort_asc(const SortTestCase& tc) {
+bool test_intro_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::intro_sort<std::vector<int>::iterator>);
 }
-bool test_tim_sort_asc(const SortTestCase& tc) {
+bool test_tim_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::tim_sort<std::vector<int>::iterator>);
 }
-bool test_patience_sort_asc(const SortTestCase& tc) {
+bool test_patience_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::patience_sort<std::vector<int>::iterator>);
 }
-bool test_tournament_sort_asc(const SortTestCase& tc) {
+bool test_tournament_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::tournament_sort<std::vector<int>::iterator>);
 }
-bool test_tree_sort_asc(const SortTestCase& tc) {
+bool test_tree_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc, toolbox::sorting::tree_sort<std::vector<int>::iterator>);
 }
-bool test_cartesian_tree_sort_asc(const SortTestCase& tc) {
-    return run_sort_test(tc,
-        toolbox::sorting::cartesian_tree_sort<std::vector<int>::iterator>);
+bool test_cartesian_tree_sort_asc(const SortTestCase &tc) {
+    return run_sort_test(tc, toolbox::sorting::cartesian_tree_sort<std::vector<int>::iterator>);
 }
-bool test_ternary_split_quick_sort_asc(const SortTestCase& tc) {
+bool test_ternary_split_quick_sort_asc(const SortTestCase &tc) {
     return run_sort_test(tc,
-        toolbox::sorting::ternary_split_quick_sort<std::vector<int>::iterator>);
+                         toolbox::sorting::ternary_split_quick_sort<std::vector<int>::iterator>);
 }
-bool test_merge_insertion_sort_asc(const SortTestCase& tc) {
-    return run_sort_test(tc,
-        toolbox::sorting::merge_insertion_sort<std::vector<int>::iterator>);
+bool test_merge_insertion_sort_asc(const SortTestCase &tc) {
+    return run_sort_test(tc, toolbox::sorting::merge_insertion_sort<std::vector<int>::iterator>);
 }
 
 // Descending (custom comparator)
-bool test_bubble_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::bubble_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_bubble_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::bubble_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_insertion_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::insertion_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_insertion_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::insertion_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_binary_insertion_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::binary_insertion_sort<std::vector<int>::iterator,
-                                                std::greater<int> >);
+bool test_binary_insertion_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::binary_insertion_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_selection_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::selection_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_selection_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::selection_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_shell_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::shell_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_shell_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::shell_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_comb_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::comb_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_comb_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::comb_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_gnome_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::gnome_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_gnome_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::gnome_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_shaker_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::shaker_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_shaker_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::shaker_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_odd_even_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::odd_even_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_odd_even_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::odd_even_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_cycle_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::cycle_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_cycle_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::cycle_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_merge_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::merge_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_merge_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::merge_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_quick_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::quick_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_quick_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::quick_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_heap_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::heap_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_heap_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::heap_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_intro_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::intro_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_intro_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::intro_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_tim_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::tim_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_tim_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::tim_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_patience_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::patience_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_patience_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::patience_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_tournament_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::tournament_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_tournament_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::tournament_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_tree_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::tree_sort<std::vector<int>::iterator, std::greater<int> >);
+bool test_tree_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::tree_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_cartesian_tree_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::cartesian_tree_sort<std::vector<int>::iterator,
-                                              std::greater<int> >);
+bool test_cartesian_tree_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::cartesian_tree_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_ternary_split_quick_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::ternary_split_quick_sort<std::vector<int>::iterator,
-                                                   std::greater<int> >);
+bool test_ternary_split_quick_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc,
+        toolbox::sorting::ternary_split_quick_sort<std::vector<int>::iterator, std::greater<int>>);
 }
-bool test_merge_insertion_sort_desc(const SortTestCase& tc) {
-    return run_sort_test_desc(tc,
-        toolbox::sorting::merge_insertion_sort<std::vector<int>::iterator,
-                                               std::greater<int> >);
+bool test_merge_insertion_sort_desc(const SortTestCase &tc) {
+    return run_sort_test_desc(
+        tc, toolbox::sorting::merge_insertion_sort<std::vector<int>::iterator, std::greater<int>>);
 }
 
 // ---- Algorithm test runner -----------------------------------------------
 
 struct AlgoTest {
     std::string name;
-    bool (*fn_asc)(const SortTestCase&);
-    bool (*fn_desc)(const SortTestCase&);
+    bool (*fn_asc)(const SortTestCase &);
+    bool (*fn_desc)(const SortTestCase &);
 };
 
-bool run_algorithm(const AlgoTest& algo, const std::vector<SortTestCase>& cases) {
+bool run_algorithm(const AlgoTest &algo, const std::vector<SortTestCase> &cases) {
     bool all_ok = true;
     for (std::size_t i = 0; i < cases.size(); ++i) {
         if (!algo.fn_asc(cases[i])) {
@@ -352,27 +347,28 @@ int main() {
     std::vector<SortTestCase> cases = make_test_cases();
 
     AlgoTest algos[] = {
-        {"bubble_sort",              test_bubble_sort_asc,              test_bubble_sort_desc},
-        {"insertion_sort",           test_insertion_sort_asc,           test_insertion_sort_desc},
-        {"binary_insertion_sort",    test_binary_insertion_sort_asc,    test_binary_insertion_sort_desc},
-        {"selection_sort",           test_selection_sort_asc,           test_selection_sort_desc},
-        {"shell_sort",               test_shell_sort_asc,               test_shell_sort_desc},
-        {"comb_sort",                test_comb_sort_asc,                test_comb_sort_desc},
-        {"gnome_sort",               test_gnome_sort_asc,               test_gnome_sort_desc},
-        {"shaker_sort",              test_shaker_sort_asc,              test_shaker_sort_desc},
-        {"odd_even_sort",            test_odd_even_sort_asc,            test_odd_even_sort_desc},
-        {"cycle_sort",               test_cycle_sort_asc,               test_cycle_sort_desc},
-        {"merge_sort",               test_merge_sort_asc,               test_merge_sort_desc},
-        {"quick_sort",               test_quick_sort_asc,               test_quick_sort_desc},
-        {"heap_sort",                test_heap_sort_asc,                test_heap_sort_desc},
-        {"intro_sort",               test_intro_sort_asc,               test_intro_sort_desc},
-        {"tim_sort",                 test_tim_sort_asc,                 test_tim_sort_desc},
-        {"patience_sort",            test_patience_sort_asc,            test_patience_sort_desc},
-        {"tournament_sort",          test_tournament_sort_asc,          test_tournament_sort_desc},
-        {"tree_sort",                test_tree_sort_asc,                test_tree_sort_desc},
-        {"cartesian_tree_sort",      test_cartesian_tree_sort_asc,      test_cartesian_tree_sort_desc},
-        {"ternary_split_quick_sort", test_ternary_split_quick_sort_asc, test_ternary_split_quick_sort_desc},
-        {"merge_insertion_sort",     test_merge_insertion_sort_asc,     test_merge_insertion_sort_desc},
+        {"bubble_sort", test_bubble_sort_asc, test_bubble_sort_desc},
+        {"insertion_sort", test_insertion_sort_asc, test_insertion_sort_desc},
+        {"binary_insertion_sort", test_binary_insertion_sort_asc, test_binary_insertion_sort_desc},
+        {"selection_sort", test_selection_sort_asc, test_selection_sort_desc},
+        {"shell_sort", test_shell_sort_asc, test_shell_sort_desc},
+        {"comb_sort", test_comb_sort_asc, test_comb_sort_desc},
+        {"gnome_sort", test_gnome_sort_asc, test_gnome_sort_desc},
+        {"shaker_sort", test_shaker_sort_asc, test_shaker_sort_desc},
+        {"odd_even_sort", test_odd_even_sort_asc, test_odd_even_sort_desc},
+        {"cycle_sort", test_cycle_sort_asc, test_cycle_sort_desc},
+        {"merge_sort", test_merge_sort_asc, test_merge_sort_desc},
+        {"quick_sort", test_quick_sort_asc, test_quick_sort_desc},
+        {"heap_sort", test_heap_sort_asc, test_heap_sort_desc},
+        {"intro_sort", test_intro_sort_asc, test_intro_sort_desc},
+        {"tim_sort", test_tim_sort_asc, test_tim_sort_desc},
+        {"patience_sort", test_patience_sort_asc, test_patience_sort_desc},
+        {"tournament_sort", test_tournament_sort_asc, test_tournament_sort_desc},
+        {"tree_sort", test_tree_sort_asc, test_tree_sort_desc},
+        {"cartesian_tree_sort", test_cartesian_tree_sort_asc, test_cartesian_tree_sort_desc},
+        {"ternary_split_quick_sort", test_ternary_split_quick_sort_asc,
+         test_ternary_split_quick_sort_desc},
+        {"merge_insertion_sort", test_merge_insertion_sort_asc, test_merge_insertion_sort_desc},
     };
     const std::size_t num_algos = sizeof(algos) / sizeof(algos[0]);
 
@@ -380,25 +376,23 @@ int main() {
     for (std::size_t a = 0; a < num_algos; ++a) {
         bool ok = run_algorithm(algos[a], cases);
         if (ok) {
-            std::cout << toolbox::color::cyan << "PASS " << algos[a].name
-                      << toolbox::color::reset << "\n";
+            std::cout << toolbox::color::cyan << "PASS " << algos[a].name << toolbox::color::reset
+                      << "\n";
             ++pass;
         } else {
-            std::cout << toolbox::color::yellow << "FAIL " << algos[a].name
-                      << toolbox::color::reset << "\n";
+            std::cout << toolbox::color::yellow << "FAIL " << algos[a].name << toolbox::color::reset
+                      << "\n";
             ++fail;
         }
     }
 
     std::cout << "\n";
     if (fail == 0) {
-        std::cout << toolbox::color::green
-                  << "All " << pass << " algorithms passed all tests!"
+        std::cout << toolbox::color::green << "All " << pass << " algorithms passed all tests!"
                   << toolbox::color::reset << "\n";
     } else {
-        std::cout << toolbox::color::red
-                  << fail << " out of " << (pass + fail) << " algorithms had failures."
-                  << toolbox::color::reset << "\n";
+        std::cout << toolbox::color::red << fail << " out of " << (pass + fail)
+                  << " algorithms had failures." << toolbox::color::reset << "\n";
     }
     return fail == 0 ? 0 : 1;
 }

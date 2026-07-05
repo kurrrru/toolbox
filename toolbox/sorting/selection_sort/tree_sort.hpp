@@ -11,11 +11,11 @@ namespace detail {
 
 template <typename T, typename Compare>
 class BST {
- public:
+public:
     explicit BST(Compare comp) : _root(NULL), _comp(comp) {}
     ~BST() { clear(_root); }
 
-    void insert(const T& value) { insert(_root, value); }
+    void insert(const T &value) { insert(_root, value); }
 
     std::vector<T> in_order_traversal() const {
         std::vector<T> result;
@@ -23,20 +23,20 @@ class BST {
         return result;
     }
 
- private:
+private:
     struct Node {
         T value;
-        Node* child[2];  // child[0]: left, child[1]: right
-        explicit Node(const T& val) : value(val) {
+        Node *child[2];  // child[0]: left, child[1]: right
+        explicit Node(const T &val) : value(val) {
             child[0] = NULL;
             child[1] = NULL;
         }
     };
 
-    Node* _root;
+    Node *_root;
     Compare _comp;
 
-    void insert(Node*& node, const T& value) {
+    void insert(Node *&node, const T &value) {
         if (!node) {
             node = new Node(value);
             return;
@@ -45,22 +45,22 @@ class BST {
         insert(node->child[_comp(node->value, value) ? 1 : 0], value);
     }
 
-    void in_order_traversal(Node* node, std::vector<T>& result) const {
+    void in_order_traversal(Node *node, std::vector<T> &result) const {
         if (!node) return;
         in_order_traversal(node->child[0], result);
         result.push_back(node->value);
         in_order_traversal(node->child[1], result);
     }
 
-    void clear(Node* node) {
+    void clear(Node *node) {
         if (!node) return;
         clear(node->child[0]);
         clear(node->child[1]);
         delete node;
     }
 
-    BST(const BST&);
-    BST& operator=(const BST&);
+    BST(const BST &);
+    BST &operator=(const BST &);
 };
 
 }  // namespace detail

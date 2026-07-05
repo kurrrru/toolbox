@@ -14,9 +14,7 @@ struct IsLessThan {
     T pivot_value;
     Compare comp;
     IsLessThan(T pivot, Compare c) : pivot_value(pivot), comp(c) {}
-    bool operator()(const T& value) const {
-        return comp(value, pivot_value);
-    }
+    bool operator()(const T &value) const { return comp(value, pivot_value); }
 };
 
 template <typename RandomIt, typename Compare>
@@ -26,8 +24,7 @@ void quick_sort_impl(RandomIt first, RandomIt last, Compare comp) {
 
     RandomIt pivot_it = last - 1;
     T pivot = *pivot_it;
-    RandomIt pivot_pos = std::partition(first, pivot_it,
-        IsLessThan<T, Compare>(pivot, comp));
+    RandomIt pivot_pos = std::partition(first, pivot_it, IsLessThan<T, Compare>(pivot, comp));
     std::swap(*pivot_pos, *pivot_it);
     quick_sort_impl(first, pivot_pos, comp);
     quick_sort_impl(pivot_pos + 1, last, comp);

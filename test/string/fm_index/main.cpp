@@ -1,9 +1,8 @@
-#include <toolbox/string/fm_index.hpp>
-#include <test/test_util.hpp>
-
+#include <algorithm>
 #include <iostream>
 #include <string>
-#include <algorithm>
+#include <test/test_util.hpp>
+#include <toolbox/string/fm_index.hpp>
 
 namespace {
 bool test_count(const std::pair<std::string, std::vector<std::string>> &test_case) {
@@ -20,9 +19,9 @@ bool test_count(const std::pair<std::string, std::vector<std::string>> &test_cas
             pos = text.find(pattern, pos + 1);
         }
         if (count != expected_count) {
-            std::cerr << "Count test failed for\n- text    '" << text
-                    << "'\n- pattern '" << pattern << "'\n- expected " 
-                    << expected_count << "\n- got      " << count << std::endl;
+            std::cerr << "Count test failed for\n- text    '" << text << "'\n- pattern '" << pattern
+                      << "'\n- expected " << expected_count << "\n- got      " << count
+                      << std::endl;
             all_passed = false;
         }
     }
@@ -45,8 +44,8 @@ bool test_locate(const std::pair<std::string, std::vector<std::string>> &test_ca
         std::sort(expected_positions.begin(), expected_positions.end());
         std::sort(positions.begin(), positions.end());
         if (positions != expected_positions) {
-            std::cerr << "Locate test failed for \n- text    '" << text
-                    << "'\n- pattern '" << pattern << "'\n- expected [";
+            std::cerr << "Locate test failed for \n- text    '" << text << "'\n- pattern '"
+                      << pattern << "'\n- expected [";
             for (std::size_t i = 0; i < expected_positions.size(); ++i) {
                 std::cerr << expected_positions[i];
                 if (i < expected_positions.size() - 1) {
@@ -67,7 +66,8 @@ bool test_locate(const std::pair<std::string, std::vector<std::string>> &test_ca
     return all_passed;
 }
 
-bool test_count_order(const std::tuple<std::string, std::vector<std::string>, std::string> &test_case) {
+bool test_count_order(
+    const std::tuple<std::string, std::vector<std::string>, std::string> &test_case) {
     const std::string &text = std::get<0>(test_case);
     const std::vector<std::string> &patterns = std::get<1>(test_case);
     const std::string &order = std::get<2>(test_case);
@@ -82,16 +82,17 @@ bool test_count_order(const std::tuple<std::string, std::vector<std::string>, st
             pos = text.find(pattern, pos + 1);
         }
         if (count != expected_count) {
-            std::cerr << "Count test failed for\n- text    '" << text
-                    << "'\n- pattern '" << pattern << "'\n- expected " 
-                    << expected_count << "\n- got      " << count << std::endl;
+            std::cerr << "Count test failed for\n- text    '" << text << "'\n- pattern '" << pattern
+                      << "'\n- expected " << expected_count << "\n- got      " << count
+                      << std::endl;
             all_passed = false;
         }
     }
     return all_passed;
 }
 
-bool test_locate_order(const std::tuple<std::string, std::vector<std::string>, std::string> &test_case) {
+bool test_locate_order(
+    const std::tuple<std::string, std::vector<std::string>, std::string> &test_case) {
     const std::string &text = std::get<0>(test_case);
     const std::vector<std::string> &patterns = std::get<1>(test_case);
     const std::string &order = std::get<2>(test_case);
@@ -108,8 +109,8 @@ bool test_locate_order(const std::tuple<std::string, std::vector<std::string>, s
         std::sort(expected_positions.begin(), expected_positions.end());
         std::sort(positions.begin(), positions.end());
         if (positions != expected_positions) {
-            std::cerr << "Locate test failed for \n- text    '" << text
-                    << "'\n- pattern '" << pattern << "'\n- expected [";
+            std::cerr << "Locate test failed for \n- text    '" << text << "'\n- pattern '"
+                      << pattern << "'\n- expected [";
             for (std::size_t i = 0; i < expected_positions.size(); ++i) {
                 std::cerr << expected_positions[i];
                 if (i < expected_positions.size() - 1) {
@@ -130,40 +131,34 @@ bool test_locate_order(const std::tuple<std::string, std::vector<std::string>, s
     return all_passed;
 }
 
-}
-
-
+}  // namespace
 
 int main() {
     std::string text = "ACGTACGTACGCAACCTCGATCGATCGTACGTACGTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGC";
-    std::vector<std::string> patterns = {"", "A", "C", "GT", "ACGT", "GCA", "CTAG", "TACG", "GATCG", "AGCTAGC", "AAA"};
-    toolbox::test_utils::runTests<std::pair<std::string, std::vector<std::string>>>({
-        {test_count, "Count Test"},
-        {test_locate, "Locate Test"}
-    }, std::make_pair(text, patterns));
+    std::vector<std::string> patterns = {"",     "A",    "C",     "GT",      "ACGT", "GCA",
+                                         "CTAG", "TACG", "GATCG", "AGCTAGC", "AAA"};
+    toolbox::test_utils::runTests<std::pair<std::string, std::vector<std::string>>>(
+        {{test_count, "Count Test"}, {test_locate, "Locate Test"}}, std::make_pair(text, patterns));
 
     std::string order = "GTCA";
-    toolbox::test_utils::runTests<std::tuple<std::string, std::vector<std::string>, std::string>>({
-        {test_count_order, "Count Test with Order"},
-        {test_locate_order, "Locate Test with Order"}
-    }, std::make_tuple(text, patterns, order));
+    toolbox::test_utils::runTests<std::tuple<std::string, std::vector<std::string>, std::string>>(
+        {{test_count_order, "Count Test with Order"},
+         {test_locate_order, "Locate Test with Order"}},
+        std::make_tuple(text, patterns, order));
 
     std::string empty_string = "";
     std::vector<std::string> empty_patterns = {"A", "C", "G", "T"};
-    toolbox::test_utils::runTests<std::pair<std::string, std::vector<std::string>>>({
-        {test_count, "Count Test on Empty String"},
-        {test_locate, "Locate Test on Empty String"}
-    }, std::make_pair(empty_string, empty_patterns));
-
+    toolbox::test_utils::runTests<std::pair<std::string, std::vector<std::string>>>(
+        {{test_count, "Count Test on Empty String"}, {test_locate, "Locate Test on Empty String"}},
+        std::make_pair(empty_string, empty_patterns));
 
     text = "AAAAhorgh sacace";
     patterns = {"A", "AA", "AAA", "AAAA", "B"};
     order = "CGT";
-    toolbox::test_utils::runTests<std::tuple<std::string, std::vector<std::string>, std::string>>({
-        {test_count_order, "Count Test on Repeated Characters"},
-        {test_locate_order, "Locate Test on Repeated Characters"}
-    }, std::make_tuple(text, patterns, order));
-
+    toolbox::test_utils::runTests<std::tuple<std::string, std::vector<std::string>, std::string>>(
+        {{test_count_order, "Count Test on Repeated Characters"},
+         {test_locate_order, "Locate Test on Repeated Characters"}},
+        std::make_tuple(text, patterns, order));
 
     return 0;
 }

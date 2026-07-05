@@ -1,10 +1,9 @@
-#include "toolbox/datastructure/treap/treap.hpp"
 #include "test/test_util.hpp"
+#include "toolbox/datastructure/treap/treap.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
-
 
 namespace {
 
@@ -19,8 +18,8 @@ bool test_insert_lookup() {
     ok &= toolbox::test_utils::check(t[2] == 20, "t[2]==20");
     ok &= toolbox::test_utils::check(t[3] == 30, "t[3]==30");
     ok &= toolbox::test_utils::check(t[5] == 50, "t[5]==50");
-    ok &= toolbox::test_utils::check( t.is_in(1), "is_in(1)");
-    ok &= toolbox::test_utils::check( t.is_in(3), "is_in(3)");
+    ok &= toolbox::test_utils::check(t.is_in(1), "is_in(1)");
+    ok &= toolbox::test_utils::check(t.is_in(3), "is_in(3)");
     ok &= toolbox::test_utils::check(!t.is_in(4), "not is_in(4)");
     ok &= toolbox::test_utils::check(!t.is_in(0), "not is_in(0)");
     return ok;
@@ -33,7 +32,7 @@ bool test_to_vector() {
     bool ok = true;
     ok &= toolbox::test_utils::check(v.size() == 8, "to_vector size==8");
     for (std::size_t i = 0; i + 1 < v.size(); i++)
-        ok &= toolbox::test_utils::check(v[i].first < v[i+1].first, "to_vector sorted by key");
+        ok &= toolbox::test_utils::check(v[i].first < v[i + 1].first, "to_vector sorted by key");
     for (auto &p : v)
         ok &= toolbox::test_utils::check(p.second == p.first * 10, "to_vector value correct");
     auto vv = t.to_value_vector();
@@ -62,10 +61,10 @@ bool test_erase() {
     t.insert(2, 20);
     t.insert(3, 30);
     bool ok = true;
-    ok &= toolbox::test_utils::check(t.erase(2) == true,  "erase existing key returns true");
-    ok &= toolbox::test_utils::check(t.size() == 2,       "size==2 after erase");
-    ok &= toolbox::test_utils::check(t[1] == 10,          "t[1] intact after erase(2)");
-    ok &= toolbox::test_utils::check(t[3] == 30,          "t[3] intact after erase(2)");
+    ok &= toolbox::test_utils::check(t.erase(2) == true, "erase existing key returns true");
+    ok &= toolbox::test_utils::check(t.size() == 2, "size==2 after erase");
+    ok &= toolbox::test_utils::check(t[1] == 10, "t[1] intact after erase(2)");
+    ok &= toolbox::test_utils::check(t[3] == 30, "t[3] intact after erase(2)");
     ok &= toolbox::test_utils::check(t.erase(9) == false, "erase non-existent returns false");
     return ok;
 }
@@ -92,28 +91,29 @@ bool test_many_inserts() {
     const int N = 100;
     for (int i = 0; i < N; i++) t.insert(i, i * 2);
     bool ok = true;
-    ok &= toolbox::test_utils::check(t.size() == (std::size_t)N, "size==N after N inserts");
-    for (int i = 0; i < N; i++)
-        ok &= toolbox::test_utils::check(t[i] == i * 2, "t[i] correct");
+    ok &= toolbox::test_utils::check(t.size() == static_cast<std::size_t>(N),
+                                     "size==N after N inserts");
+    for (int i = 0; i < N; i++) ok &= toolbox::test_utils::check(t[i] == i * 2, "t[i] correct");
     // Erase all even keys
     for (int i = 0; i < N; i += 2) t.erase(i);
-    ok &= toolbox::test_utils::check(t.size() == (std::size_t)(N / 2), "size==N/2 after erasing evens");
+    ok &= toolbox::test_utils::check(t.size() == static_cast<std::size_t>(N / 2),
+                                     "size==N/2 after erasing evens");
     for (int i = 1; i < N; i += 2)
         ok &= toolbox::test_utils::check(t[i] == i * 2, "odd keys remain");
     return ok;
 }
 
-} // namespace
+}  // namespace
 
 int main() {
     toolbox::test_utils::Test tests[] = {
         {"insert_lookup", test_insert_lookup},
-        {"to_vector",     test_to_vector},
-        {"size",          test_size},
-        {"erase",         test_erase},
-        {"update_value",  test_update_value},
-        {"clear",         test_clear},
-        {"many_inserts",  test_many_inserts},
+        {"to_vector", test_to_vector},
+        {"size", test_size},
+        {"erase", test_erase},
+        {"update_value", test_update_value},
+        {"clear", test_clear},
+        {"many_inserts", test_many_inserts},
     };
     return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }

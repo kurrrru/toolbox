@@ -1,7 +1,7 @@
 /*
 Wavelet Tree
 
-This is an implementation of a wavelet tree data structure. 
+This is an implementation of a wavelet tree data structure.
 It supports the following operations:
 - build: build a wavelet tree from an input array
 - access: get the value of the bit at index i
@@ -17,10 +17,10 @@ It will support the following operations in the future:
 
 #pragma once
 
-#include <vector>
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <vector>
 
 namespace {
 
@@ -44,17 +44,16 @@ uint32_t bit_width(uint32_t x) {
 
 }  // namespace
 
-namespace toolbox
-{
+namespace toolbox {
 
-namespace datastructure
-{
+namespace datastructure {
 
 class bitvector {
 public:
-    bitvector(): _num_blocks(0), _len(0) {}
+    bitvector() : _num_blocks(0), _len(0) {}
     explicit bitvector(std::vector<bool> &arr) { build(arr); }
-    bitvector(const bitvector &other): _bit(other._bit), _sum(other._sum), _num_blocks(other._num_blocks), _len(other._len) {}
+    bitvector(const bitvector &other)
+        : _bit(other._bit), _sum(other._sum), _num_blocks(other._num_blocks), _len(other._len) {}
     bitvector &operator=(const bitvector &other) {
         if (this != &other) {
             _bit = other._bit;
@@ -65,7 +64,6 @@ public:
         return (*this);
     }
     ~bitvector() {}
-
 
     // build
     // @ arr: input array
@@ -95,14 +93,13 @@ public:
     // return: the occurrence of 1 in [0, i)
     uint32_t rank(std::size_t i) const {
         assert(i <= _len);
-        if (i == 0)
-            return (0);
+        if (i == 0) return (0);
         return (_sum[i >> 5] + popcount(_bit[i >> 5] & ((1u << (i & 0b11111)) - 1)));
     }
 
     // select
     // @ j: the j-th occurrence of 1
-    // Ideally, time complexity is O(1), but it is O(log n) in this implementation 
+    // Ideally, time complexity is O(1), but it is O(log n) in this implementation
     // return: the index of the j-th occurrence of 1
     std::size_t select(uint32_t j) const {
         assert(0 < j && j <= _sum[_num_blocks]);
@@ -125,23 +122,25 @@ private:
 
     void _set(std::vector<bool> &arr) {
         for (std::size_t i = 0; i < _len; i++)
-            if (arr[i])
-                _bit[i >> 5] |= 1u << (i & 0b11111);
+            if (arr[i]) _bit[i >> 5] |= 1u << (i & 0b11111);
     }
 };
 
 class wavelet_tree {
 public:
-    wavelet_tree(): root(nullptr), _len(0), _size(0), _capacity(0) {}
-    explicit wavelet_tree(std::vector<uint32_t> &arr): root(nullptr), _len(0), _size(0), _capacity(0) {
+    wavelet_tree() : root(nullptr), _len(0), _size(0), _capacity(0) {}
+    explicit wavelet_tree(std::vector<uint32_t> &arr)
+        : root(nullptr), _len(0), _size(0), _capacity(0) {
         build(arr);
     }
-    wavelet_tree(const wavelet_tree &other): root(nullptr), _len(other._len), _size(other._size), _capacity(other._capacity) {
+    wavelet_tree(const wavelet_tree &other)
+        : root(nullptr), _len(other._len), _size(other._size), _capacity(other._capacity) {
         if (other.root) {
             try {
                 root = new _node(*other.root);
             } catch (const std::bad_alloc &e) {
-                std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what() << std::endl;
+                std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what()
+                          << std::endl;
                 exit(EXIT_FAILURE);
             }
         }
@@ -159,7 +158,8 @@ public:
                 try {
                     root = new _node(*other.root);
                 } catch (const std::bad_alloc &e) {
-                    std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what() << std::endl;
+                    std::cerr << "Memory allocation failed while copying wavelet tree: " << e.what()
+                              << std::endl;
                     exit(EXIT_FAILURE);
                 }
             }
@@ -216,8 +216,7 @@ public:
     // return: the occurrence of c in [0, i)
     uint32_t rank(std::size_t i, uint32_t c) const {
         assert(i <= _len);
-        if (i == 0 || c >= _size)
-            return (0);
+        if (i == 0 || c >= _size) return (0);
         _node *cur = root;
         while (cur->_l < cur->_r - 1) {
             uint32_t mid = (cur->_r + cur->_l) >> 1;
@@ -228,8 +227,7 @@ public:
                 i = i - cur->_bv.rank(i);
                 cur = cur->_left;
             }
-            if (cur == nullptr)
-                return (0);
+            if (cur == nullptr) return (0);
         }
         return (i);
     }
@@ -252,9 +250,7 @@ public:
     // @ c: character
     // Count the number of k that satisfies i <= k < j and T[k] = c
     // return: the number of k that satisfies the condition
-    uint32_t freq(std::size_t i, std::size_t j, uint32_t c) {
-        return (rank(j, c) - rank(i, c));
-    }
+    uint32_t freq(std::size_t i, std::size_t j, uint32_t c) { return (rank(j, c) - rank(i, c)); }
 
     // wavelet_tree::is_range_unary
     // @ i: index (inclusive)
@@ -273,7 +269,8 @@ public:
     // @ upper: upper bound of the range of characters (exclusive)
     // list the characters in [i, j) that satisfies lower <= T[k] < upper
     // return: the list of characters
-    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) const {
+    std::vector<uint32_t> range_list(std::size_t i, std::size_t j, uint32_t lower,
+                                     uint32_t upper) const {
         std::vector<uint32_t> v;
         range_list_rec(root, i, j, lower, upper, v);
         return (v);
@@ -286,23 +283,25 @@ private:
             : _l(l), _r(r), _bv(arr), _left(nullptr), _right(nullptr) {}
         _node(const _node &other)
             : _l(other._l), _r(other._r), _bv(other._bv), _left(nullptr), _right(nullptr) {
-                if (other._left) {
-                    try {
-                        _left = new _node(*other._left);
-                    } catch (const std::bad_alloc &e) {
-                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
-                        exit(EXIT_FAILURE);
-                    }
-                }
-                if (other._right) {
-                    try {
-                        _right = new _node(*other._right);
-                    } catch (const std::bad_alloc &e) {
-                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
-                        exit(EXIT_FAILURE);
-                    }
+            if (other._left) {
+                try {
+                    _left = new _node(*other._left);
+                } catch (const std::bad_alloc &e) {
+                    std::cerr << "Memory allocation failed while copying wavelet tree node: "
+                              << e.what() << std::endl;
+                    exit(EXIT_FAILURE);
                 }
             }
+            if (other._right) {
+                try {
+                    _right = new _node(*other._right);
+                } catch (const std::bad_alloc &e) {
+                    std::cerr << "Memory allocation failed while copying wavelet tree node: "
+                              << e.what() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            }
+        }
         _node &operator=(const _node &other) {
             if (this != &other) {
                 _l = other._l;
@@ -320,7 +319,8 @@ private:
                     try {
                         _left = new _node(*other._left);
                     } catch (const std::bad_alloc &e) {
-                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: "
+                                  << e.what() << std::endl;
                         exit(EXIT_FAILURE);
                     }
                 }
@@ -328,7 +328,8 @@ private:
                     try {
                         _right = new _node(*other._right);
                     } catch (const std::bad_alloc &e) {
-                        std::cerr << "Memory allocation failed while copying wavelet tree node: " << e.what() << std::endl;
+                        std::cerr << "Memory allocation failed while copying wavelet tree node: "
+                                  << e.what() << std::endl;
                         exit(EXIT_FAILURE);
                     }
                 }
@@ -355,8 +356,7 @@ private:
     void build_rec(_node **cur, std::vector<uint32_t> &arr, uint32_t lower, uint32_t upper) {
         std::vector<bool> bit(arr.size());
         std::vector<uint32_t> left_arr, right_arr;
-        if (lower >= _size || upper == lower)
-            return ;
+        if (lower >= _size || upper == lower) return;
         uint32_t mid = (lower + upper) >> 1;
         for (std::size_t i = 0; i < arr.size(); i++) {
             bit[i] = (arr[i] >= mid);
@@ -368,30 +368,30 @@ private:
         try {
             *cur = new _node(lower, upper, bit);
         } catch (const std::bad_alloc &e) {
-            std::cerr << "Memory allocation failed while building wavelet tree: " << e.what() << std::endl;
+            std::cerr << "Memory allocation failed while building wavelet tree: " << e.what()
+                      << std::endl;
             exit(EXIT_FAILURE);
         }
-        if (lower == upper - 1)
-            return ;
+        if (lower == upper - 1) return;
         build_rec(&((*cur)->_left), left_arr, lower, mid);
         build_rec(&((*cur)->_right), right_arr, mid, upper);
     }
 
-    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper) const {
-        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
-            return (0);
-        if (lower <= cur->_l && cur->_r <= upper)
-            return (j - i);
-        return (range_count_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper) +
-                range_count_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
+    uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower,
+                             uint32_t upper) const {
+        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) return (0);
+        if (lower <= cur->_l && cur->_r <= upper) return (j - i);
+        return (
+            range_count_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper) +
+            range_count_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
     }
 
-    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper, std::vector<uint32_t> &v) const {
-        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r)
-            return ;
+    void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper,
+                        std::vector<uint32_t> &v) const {
+        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) return;
         if (lower <= cur->_l && cur->_r <= upper && cur->_l == cur->_r - 1) {
             v.push_back(cur->_l);
-            return ;
+            return;
         }
         range_list_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper, v);
         range_list_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper, v);
