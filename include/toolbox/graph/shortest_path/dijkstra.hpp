@@ -36,7 +36,7 @@ std::vector<Cost> dijkstra(const Vertex s,
         auto [s_dist, u] = que.top();
         que.pop();
         if (dist[u] < s_dist) continue;
-        for (auto [t, t_cost] : cost[u]) {
+        for (const auto &[t, t_cost] : cost[u]) {
             if (dist[t] <= dist[u] + t_cost) continue;
             dist[t] = dist[u] + t_cost;
             que.push({dist[t], t});

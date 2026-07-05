@@ -1,7 +1,5 @@
 #pragma once
 
-#include <popcntintrin.h>
-
 namespace toolbox {
 
 namespace math {

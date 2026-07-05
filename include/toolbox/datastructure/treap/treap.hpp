@@ -142,7 +142,10 @@ struct treap {
     bool erase(node *&t, Key key) {
         if (!t) return (false);
         if (key == t->_key) {
+            node *victim = t;
+            // merge reattaches victim's children into the tree; free only the node itself.
             merge(t, t->_child[0], t->_child[1]);
+            delete victim;
             return (true);
         }
         return (erase(t->_child[key > t->_key], key));

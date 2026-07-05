@@ -277,6 +277,7 @@ struct implicit_treap {
         node *mid;
         split(t, key, left, right);
         split(right, 1, mid, right);
+        clear(mid);  // mid is the single erased element; free it (was leaked).
         merge(t, left, right);
     }
 

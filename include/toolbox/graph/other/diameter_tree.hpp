@@ -25,7 +25,7 @@ T diameter_tree(const std::vector<std::vector<std::pair<long long, T>>> &adjacen
     while (!que.empty()) {
         u = que.front();
         que.pop();
-        for (const auto [adj, cost] : adjacent[u]) {
+        for (const auto &[adj, cost] : adjacent[u]) {
             if (dist[adj] != -1) continue;
             dist[adj] = dist[u] + cost;
             que.push(adj);
@@ -38,7 +38,7 @@ T diameter_tree(const std::vector<std::vector<std::pair<long long, T>>> &adjacen
     while (!que.empty()) {
         u = que.front();
         que.pop();
-        for (const auto [adj, cost] : adjacent[u]) {
+        for (const auto &[adj, cost] : adjacent[u]) {
             if (dist[adj] != -1) continue;
             dist[adj] = dist[u] + cost;
             que.push(adj);

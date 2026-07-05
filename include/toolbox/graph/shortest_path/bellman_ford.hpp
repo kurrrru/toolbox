@@ -28,7 +28,7 @@ std::vector<Cost> bellman_ford(const Vertex s,
     for (int i = 0; i <= N; i++) {
         bool update = false;
         for (int j = 0; j < N; j++) {
-            for (auto [t, t_cost] : cost[j]) {
+            for (const auto &[t, t_cost] : cost[j]) {
                 if (dist[j] == INF) continue;
                 if (dist[t] > dist[j] + t_cost) {
                     dist[t] = dist[j] + t_cost;

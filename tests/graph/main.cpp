@@ -222,11 +222,11 @@ bool test_diameter_single_edge() {
 }
 
 bool test_diameter_balanced() {
-    // Balanced binary tree with equal weights
+    // Balanced binary tree with equal weights (each edge weight=1)
     //       0
-    //      / \
-    //     1   2   (each edge weight=1)
-    //    / \
+    //      / \        <- 0's children: 1, 2
+    //     1   2
+    //    / \          <- 1's children: 3, 4
     //   3   4
     // diameter: 3->1->0->2 = 3
     TreeGraph g(5);
