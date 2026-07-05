@@ -15,10 +15,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # ---- ヘッダオンリーライブラリ ----------------------------------------------
-# インクルードルートはリポジトリ直下。テストは "toolbox/..." / "test/..." で解決する。
+# インクルードルートは include/。すべてのヘッダは "toolbox/..." で解決する。
 add_library(toolbox INTERFACE)
 add_library(toolbox::toolbox ALIAS toolbox)
-target_include_directories(toolbox INTERFACE ${PROJECT_SOURCE_DIR})
+target_include_directories(toolbox INTERFACE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(toolbox INTERFACE cxx_std_20)
 
 # ---- テスト ----------------------------------------------------------------
@@ -48,20 +48,22 @@ if(TOOLBOX_BUILD_TESTS)
     function(toolbox_add_test name src)
         add_executable(${name} ${src})
         target_link_libraries(${name} PRIVATE toolbox::toolbox)
+        # tests/ を include パスに追加（"test_util.hpp" を解決するため）
+        target_include_directories(${name} PRIVATE ${PROJECT_SOURCE_DIR}/tests)
         target_compile_options(${name} PRIVATE ${_toolbox_warn} ${_toolbox_sanitize})
         target_link_options(${name}    PRIVATE ${_toolbox_sanitize})
         add_test(NAME ${name} COMMAND ${name})
     endfunction()
 
     # ---- テストの自動検出 --------------------------------------------------
-    # test/ 以下の任意の階層に置かれた main.cpp を自動でテストとして登録する。
+    # tests/ 以下の任意の階層に置かれた main.cpp を自動でテストとして登録する。
     # 新しいアルゴリズムを追加するときは
-    #     test/<category>/<algorithm>/main.cpp
+    #     tests/<category>/<algorithm>/main.cpp
     # を作るだけでよい（CMakeLists.txt の編集は不要）。
     # テスト名は main.cpp を含むディレクトリ名 + "_test"。
-    #   例) test/datastructure/unionfind/main.cpp -> unionfind_test
+    #   例) tests/datastructure/unionfind/main.cpp -> unionfind_test
     file(GLOB_RECURSE _toolbox_test_srcs CONFIGURE_DEPENDS
-         ${PROJECT_SOURCE_DIR}/test/*.cpp)
+         ${PROJECT_SOURCE_DIR}/tests/*.cpp)
     foreach(_src ${_toolbox_test_srcs})
         get_filename_component(_base ${_src} NAME)
         if(NOT _base STREQUAL "main.cpp")

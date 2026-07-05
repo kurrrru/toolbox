@@ -1,7 +1,7 @@
 # toolbox
 
-アルゴリズムとデータ構造のヘッダオンリー集。各実装は `toolbox/` 以下に置き、
-テストは `test/` 以下に置く。ビルド・テストは CMake + CTest で行う。
+アルゴリズムとデータ構造のヘッダオンリー集。各実装は `include/toolbox/` 以下に置き、
+テストは `tests/` 以下に置く。ビルド・テストは CMake + CTest で行う。
 
 ## 必要環境
 
@@ -40,11 +40,13 @@ ctest --preset asan
 
 ## 新しいアルゴリズムの追加
 
-1. 実装を `toolbox/<category>/<algorithm>/<algorithm>.hpp` に置く。
-2. テストを `test/<category>/<algorithm>/main.cpp` に置く。
-   - `#include "toolbox/..."` と `#include "test/test_util.hpp"` はリポジトリ
-     直下を起点に解決される。
-   - テストランナは `test/test_util.hpp` の `toolbox::test_utils::run_tests` を使う。
+1. 実装を `include/toolbox/<category>/<algorithm>/<algorithm>.hpp` に置く。
+2. テストを `tests/<category>/<algorithm>/main.cpp` に置く。
+   - ライブラリのヘッダはすべて `#include "toolbox/..."` の形で参照する
+     （include ルートは `include/`）。
+   - テストヘルパは `#include "utils/test_util.hpp"` で参照する
+     （`tests/` が include パスに入っている）。
+   - テストランナは `tests/utils/test_util.hpp` の `toolbox::test_utils::run_tests` を使う。
 3. これだけでよい。`main.cpp` は CMake が自動検出し、`<ディレクトリ名>_test`
    という名前のテストとして登録する（`CMakeLists.txt` の編集は不要）。
 
@@ -57,11 +59,11 @@ ctest --preset asan
 
 ```bash
 # 差分チェック（CI と同じ）
-find toolbox test \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
+find include tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
   | xargs -0 clang-format --dry-run --Werror
 
 # 一括整形
-find toolbox test \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
+find include tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
   | xargs -0 clang-format -i
 ```
 
