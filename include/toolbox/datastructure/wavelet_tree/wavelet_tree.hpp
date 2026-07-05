@@ -19,6 +19,7 @@ It will support the following operations in the future:
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include <iostream>
 #include <vector>
 
