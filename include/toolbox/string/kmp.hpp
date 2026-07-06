@@ -13,6 +13,7 @@ namespace string {
  * @return A vector lps where lps[i] is the length of the longest proper prefix
  *         of s[0..i] that is also a suffix of s[0..i].
  * @note [Complexity]: O(|s|) time, O(|s|) space.
+ *       LPS[i] = 0 for i = 0, and for i > 0, LPS[i] = max { k < i | s[0..k-1] == s[i-k+1..i] }.
  */
 std::vector<int> kmp_failure(const std::string &s) {
     const int n = s.size();
