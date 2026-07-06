@@ -1,3 +1,5 @@
+[![tests](https://github.com/kurrrru/toolbox/actions/workflows/tests.yml/badge.svg)](https://github.com/kurrrru/toolbox/actions/workflows/tests.yml)
+[![format](https://github.com/kurrrru/toolbox/actions/workflows/format.yml/badge.svg)](https://github.com/kurrrru/toolbox/actions/workflows/format.yml)
 # toolbox
 
 アルゴリズムとデータ構造のヘッダオンリー集。各実装は `include/toolbox/` 以下に置き、
