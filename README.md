@@ -19,9 +19,9 @@ CMake プリセットを利用する。
 # 構成（Debug + テスト有効）
 cmake --preset default
 # ビルド
-cmake --build --preset default
+cmake --build --preset default -j
 # テスト実行
-ctest --preset default
+ctest --preset default -j
 ```
 
 利用可能なプリセット:
@@ -36,8 +36,8 @@ ctest --preset default
 
 ```bash
 cmake --preset asan
-cmake --build --preset asan
-ctest --preset asan
+cmake --build --preset asan -j
+ctest --preset asan -j
 ```
 
 ## 新しいアルゴリズムの追加
