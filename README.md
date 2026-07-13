@@ -16,11 +16,8 @@
 CMake プリセットを利用する。
 
 ```bash
-# 構成（Debug + テスト有効）
 cmake --preset default
-# ビルド
 cmake --build --preset default -j
-# テスト実行
 ctest --preset default -j
 ```
 
