@@ -2,7 +2,7 @@
 [![format](https://github.com/kurrrru/toolbox/actions/workflows/format.yml/badge.svg)](https://github.com/kurrrru/toolbox/actions/workflows/format.yml)
 # toolbox
 
-アルゴリズムとデータ構造のヘッダオンリー集。各実装は `include/toolbox/` 以下に置き、
+アルゴリズムとデータ構造のヘッダオンリー集。各実装は `includes/toolbox/` 以下に置き、
 テストは `tests/` 以下に置く。ビルド・テストは CMake + CTest で行う。
 
 ## 必要環境
@@ -42,10 +42,10 @@ ctest --preset asan
 
 ## 新しいアルゴリズムの追加
 
-1. 実装を `include/toolbox/<category>/<algorithm>/<algorithm>.hpp` に置く。
+1. 実装を `includes/toolbox/<category>/<algorithm>/<algorithm>.hpp` に置く。
 2. テストを `tests/<category>/<algorithm>/main.cpp` に置く。
    - ライブラリのヘッダはすべて `#include "toolbox/..."` の形で参照する
-     （include ルートは `include/`）。
+     （include ルートは `includes/`）。
    - テストヘルパは `#include "utils/test_util.hpp"` で参照する
      （`tests/` が include パスに入っている）。
    - テストランナは `tests/utils/test_util.hpp` の `toolbox::test_utils::run_tests` を使う。
@@ -61,11 +61,11 @@ ctest --preset asan
 
 ```bash
 # 差分チェック（CI と同じ）
-find include tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
+find includes tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
   | xargs -0 clang-format --dry-run --Werror
 
 # 一括整形
-find include tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
+find includes tests \( -name '*.hpp' -o -name '*.cpp' \) -print0 \
   | xargs -0 clang-format -i
 ```
 
