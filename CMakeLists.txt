@@ -15,10 +15,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # ---- ヘッダオンリーライブラリ ----------------------------------------------
-# インクルードルートは include/。すべてのヘッダは "toolbox/..." で解決する。
+# インクルードルートは includes/。すべてのヘッダは "toolbox/..." で解決する。
 add_library(toolbox INTERFACE)
 add_library(toolbox::toolbox ALIAS toolbox)
-target_include_directories(toolbox INTERFACE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(toolbox INTERFACE ${PROJECT_SOURCE_DIR}/includes)
 target_compile_features(toolbox INTERFACE cxx_std_20)
 
 # ---- テスト ----------------------------------------------------------------

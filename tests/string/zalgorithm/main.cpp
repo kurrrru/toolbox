@@ -14,7 +14,9 @@ std::vector<int> brute_z(const std::string &s) {
     std::vector<int> z(n, 0);
     z[0] = n;
     for (int i = 1; i < n; i++) {
-        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
+            z[i]++;
+        }
     }
     return z;
 }
@@ -71,8 +73,11 @@ bool test_pattern_search() {
     int plen = pat.size();
     int prefix = plen + 1;
     std::vector<int> positions;
-    for (int i = prefix; i < static_cast<int>(s.size()); i++)
-        if (z[i] >= plen) positions.push_back(i - prefix);
+    for (int i = prefix; i < static_cast<int>(s.size()); i++) {
+        if (z[i] >= plen) {
+            positions.push_back(i - prefix);
+        }
+    }
     bool ok = true;
     ok &= toolbox::test_utils::check(positions.size() == 3,
                                      "pattern search: 3 occurrences of 'ab' in 'ababab'");

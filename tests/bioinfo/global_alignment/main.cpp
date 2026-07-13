@@ -14,12 +14,20 @@ namespace {
 // gap characters are removed, the original sequences are recovered.
 bool is_valid_alignment(const std::string &s1, const std::string &s2, const std::string &a1,
                         const std::string &a2) {
-    if (a1.size() != a2.size()) return false;
+    if (a1.size() != a2.size()) {
+        return false;
+    }
     std::string r1, r2;
-    for (char c : a1)
-        if (c != '-') r1 += c;
-    for (char c : a2)
-        if (c != '-') r2 += c;
+    for (char c : a1) {
+        if (c != '-') {
+            r1 += c;
+        }
+    }
+    for (char c : a2) {
+        if (c != '-') {
+            r2 += c;
+        }
+    }
     return r1 == s1 && r2 == s2;
 }
 

@@ -23,7 +23,7 @@ jobs:
 
       - name: Check formatting
         run: |
-          find include tests \
+          find includes tests \
             \( -name '*.hpp' -o -name '*.cpp' -o -name '*.tpp' -o -name '*.h' -o -name '*.cc' \) \
             -print0 \
           | xargs -0 clang-format --dry-run --Werror

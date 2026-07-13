@@ -28,18 +28,23 @@ bool test_insert_lookup() {
 
 bool test_to_vector() {
     toolbox::datastructure::treap<int, int> t;
-    for (int k : {5, 2, 8, 1, 4, 7, 3, 6}) t.insert(k, k * 10);
+    for (int k : {5, 2, 8, 1, 4, 7, 3, 6}) {
+        t.insert(k, k * 10);
+    }
     auto v = t.to_vector();
     bool ok = true;
     ok &= toolbox::test_utils::check(v.size() == 8, "to_vector size==8");
-    for (std::size_t i = 0; i + 1 < v.size(); i++)
+    for (std::size_t i = 0; i + 1 < v.size(); i++) {
         ok &= toolbox::test_utils::check(v[i].first < v[i + 1].first, "to_vector sorted by key");
-    for (auto &p : v)
+    }
+    for (auto &p : v) {
         ok &= toolbox::test_utils::check(p.second == p.first * 10, "to_vector value correct");
+    }
     auto vv = t.to_value_vector();
     ok &= toolbox::test_utils::check(vv.size() == 8, "to_value_vector size==8");
-    for (std::size_t i = 0; i < vv.size(); i++)
+    for (std::size_t i = 0; i < vv.size(); i++) {
         ok &= toolbox::test_utils::check(vv[i] == v[i].second, "to_value_vector matches to_vector");
+    }
     return ok;
 }
 
@@ -90,17 +95,24 @@ bool test_clear() {
 bool test_many_inserts() {
     toolbox::datastructure::treap<int, int> t;
     const int N = 100;
-    for (int i = 0; i < N; i++) t.insert(i, i * 2);
+    for (int i = 0; i < N; i++) {
+        t.insert(i, i * 2);
+    }
     bool ok = true;
     ok &= toolbox::test_utils::check(t.size() == static_cast<std::size_t>(N),
                                      "size==N after N inserts");
-    for (int i = 0; i < N; i++) ok &= toolbox::test_utils::check(t[i] == i * 2, "t[i] correct");
+    for (int i = 0; i < N; i++) {
+        ok &= toolbox::test_utils::check(t[i] == i * 2, "t[i] correct");
+    }
     // Erase all even keys
-    for (int i = 0; i < N; i += 2) t.erase(i);
+    for (int i = 0; i < N; i += 2) {
+        t.erase(i);
+    }
     ok &= toolbox::test_utils::check(t.size() == static_cast<std::size_t>(N / 2),
                                      "size==N/2 after erasing evens");
-    for (int i = 1; i < N; i += 2)
+    for (int i = 1; i < N; i += 2) {
         ok &= toolbox::test_utils::check(t[i] == i * 2, "odd keys remain");
+    }
     return ok;
 }
 

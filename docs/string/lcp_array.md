@@ -32,25 +32,8 @@ std::vector<int> toolbox::string::lcp_array(
 ```
 
 - `s`: 元の文字列（長さ $n$）
-- `sa`: 長さ $n+1$ の接尾辞配列（**センチネル付き**。先頭が $n$、残りが `suffixarray(s)` の出力）
-- 戻り値: 長さ $n$ の LCP 配列。`lcp[0]` はセンチネルとの LCP なので `0`
-
-### 注意: SA のフォーマット
-
-本実装の `lcp_array` は、**センチネル（位置 $n$）を先頭に付加した $n+1$ 要素の SA** を要求する。
-
-```cpp
-// suffixarray(s) は n 要素の SA を返す
-auto sa_n   = toolbox::string::suffixarray(s);
-
-// lcp_array 用に n+1 要素の SA を構築
-std::vector<int> sa_np1;
-sa_np1.push_back((int)s.size()); // センチネル位置
-sa_np1.insert(sa_np1.end(), sa_n.begin(), sa_n.end());
-
-auto lcp = toolbox::string::lcp_array(s, sa_np1);
-// lcp[i+1] が sa_n[i] と sa_n[i+1] のLCP長に対応
-```
+- `sa`: 長さ $n$ の接尾辞配列（**センチネルなし**。`suffixarray(s)` の出力をそのまま渡す）
+- 戻り値: 長さ $n$ の LCP 配列。`lcp[0]` は `0`（先頭には比較対象がないため）
 
 ## 使用例
 
@@ -59,15 +42,10 @@ auto lcp = toolbox::string::lcp_array(s, sa_np1);
 #include "toolbox/string/lcp_array.hpp"
 
 std::string s = "banana";
-auto sa_n   = toolbox::string::suffixarray(s);
-
-std::vector<int> sa_np1;
-sa_np1.push_back((int)s.size());
-sa_np1.insert(sa_np1.end(), sa_n.begin(), sa_n.end());
-
-auto lcp = toolbox::string::lcp_array(s, sa_np1);
-// sa_n  = {5, 3, 1, 0, 4, 2}
-// lcp[1..5] = 接尾辞間のLCP
+auto sa  = toolbox::string::suffixarray(s);
+auto lcp = toolbox::string::lcp_array(s, sa);
+// sa  = {5, 3, 1, 0, 4, 2}
+// lcp[0] = 0（先頭）
 // lcp[1] = LCP("a", "ana")     = 1
 // lcp[2] = LCP("ana", "anana") = 3
 // lcp[3] = LCP("anana", "banana") = 0
@@ -77,7 +55,7 @@ auto lcp = toolbox::string::lcp_array(s, sa_np1);
 
 ## 実装上の注意
 
-- `sa` の長さは `s.size() + 1` でなければならない。`suffixarray` の出力をそのまま渡すと配列外アクセスが発生する。
+- `sa` の長さは `s.size()` と一致していなければならない（`assert` で検査）。
 - LCP 配列の用途例: 最長重複部分文字列（`max(lcp)`）、異なる部分文字列の個数（$\binom{n}{2} + n - \sum \text{lcp}$）、文字列検索の高速化。
 
 ## 参考文献

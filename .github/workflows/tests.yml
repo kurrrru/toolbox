@@ -25,10 +25,10 @@ jobs:
         run: cmake --preset default
 
       - name: Build
-        run: cmake --build --preset default
+        run: cmake --build --preset default -j
 
       - name: Test
-        run: ctest --preset default
+        run: ctest --preset default -j
 
   sanitize:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
         run: cmake --preset asan
 
       - name: Build
-        run: cmake --build --preset asan
+        run: cmake --build --preset asan -j
 
       - name: Test
-        run: ctest --preset asan
+        run: ctest --preset asan -j

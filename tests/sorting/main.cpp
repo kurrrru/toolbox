@@ -24,7 +24,9 @@ std::vector<int> make_random(std::size_t n, unsigned seed = 42) {
 
 std::vector<int> make_sorted(std::size_t n) {
     std::vector<int> v(n);
-    for (std::size_t i = 0; i < n; ++i) v[i] = static_cast<int>(i);
+    for (std::size_t i = 0; i < n; ++i) {
+        v[i] = static_cast<int>(i);
+    }
     return v;
 }
 
@@ -36,8 +38,12 @@ std::vector<int> make_reverse(std::size_t n) {
 
 std::vector<int> make_duplicates(std::size_t n) {
     std::vector<int> v(n, 7);
-    for (std::size_t i = 0; i < n; i += 3) v[i] = 3;
-    for (std::size_t i = 0; i < n; i += 5) v[i] = 5;
+    for (std::size_t i = 0; i < n; i += 3) {
+        v[i] = 3;
+    }
+    for (std::size_t i = 0; i < n; i += 5) {
+        v[i] = 5;
+    }
     return v;
 }
 
@@ -49,14 +55,18 @@ typedef void (*SortFnComp)(std::vector<int>::iterator, std::vector<int>::iterato
 
 bool is_sorted_asc(const std::vector<int> &v) {
     for (std::size_t i = 1; i < v.size(); ++i) {
-        if (v[i] < v[i - 1]) return false;
+        if (v[i] < v[i - 1]) {
+            return false;
+        }
     }
     return true;
 }
 
 bool is_sorted_desc(const std::vector<int> &v) {
     for (std::size_t i = 1; i < v.size(); ++i) {
-        if (v[i] > v[i - 1]) return false;
+        if (v[i] > v[i - 1]) {
+            return false;
+        }
     }
     return true;
 }

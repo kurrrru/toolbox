@@ -13,10 +13,13 @@ bool test_membership() {
     toolbox::datastructure::BloomFilter<1000, 5> bf;
     std::vector<std::string> keys = {"apple",  "orange", "banana", "grape", "melon",
                                      "cherry", "kiwi",   "mango",  "pear",  "plum"};
-    for (const auto &k : keys) bf.add(k);
+    for (const auto &k : keys) {
+        bf.add(k);
+    }
     bool ok = true;
-    for (const auto &k : keys)
+    for (const auto &k : keys) {
         ok &= toolbox::test_utils::check(bf.contains(k), "contains after add: " + k);
+    }
     return ok;
 }
 
@@ -26,14 +29,19 @@ bool test_non_member_unlikely() {
     toolbox::datastructure::BloomFilter<4096, 7> bf;
     std::vector<std::string> inserted = {"aaa", "bbb", "ccc", "ddd", "eee",
                                          "fff", "ggg", "hhh", "iii", "jjj"};
-    for (const auto &k : inserted) bf.add(k);
+    for (const auto &k : inserted) {
+        bf.add(k);
+    }
 
     std::vector<std::string> absent = {"zzz", "yyy", "xxx", "www", "vvv", "uuu", "ttt",
                                        "sss", "rrr", "qqq", "ppp", "ooo", "nnn", "mmm",
                                        "lll", "kkk", "123", "456", "789", "000"};
     int false_pos = 0;
-    for (const auto &k : absent)
-        if (bf.contains(k)) false_pos++;
+    for (const auto &k : absent) {
+        if (bf.contains(k)) {
+            false_pos++;
+        }
+    }
     return toolbox::test_utils::check(false_pos <= 1,
                                       "false positive count <= 1 for 4096-bit filter");
 }
@@ -49,11 +57,16 @@ bool test_large_insertion() {
     // Insert 200 items, verify all are found
     toolbox::datastructure::BloomFilter<65536, 7> bf;
     std::vector<std::string> keys;
-    for (int i = 0; i < 200; i++) keys.push_back("key_" + std::to_string(i));
-    for (const auto &k : keys) bf.add(k);
+    for (int i = 0; i < 200; i++) {
+        keys.push_back("key_" + std::to_string(i));
+    }
+    for (const auto &k : keys) {
+        bf.add(k);
+    }
     bool ok = true;
-    for (const auto &k : keys)
+    for (const auto &k : keys) {
         ok &= toolbox::test_utils::check(bf.contains(k), "large insertion: " + k);
+    }
     return ok;
 }
 
