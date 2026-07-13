@@ -27,15 +27,21 @@ struct treap {
     ~treap() { clear(); }
 
     explicit treap(std::vector<std::pair<Key, Value>> &vec) : _rnd(seed), _root(nullptr), _size(0) {
-        for (auto &p : vec) insert(p.first, p.second);
+        for (auto &p : vec) {
+            insert(p.first, p.second);
+        }
     }
 
     explicit treap(std::vector<Value> &vec) : _rnd(seed), _root(nullptr), _size(0) {
-        for (size_t i = 0; i < vec.size(); i++) insert(i, vec[i]);
+        for (size_t i = 0; i < vec.size(); i++) {
+            insert(i, vec[i]);
+        }
     }
 
     explicit treap(Key key_size) : _rnd(seed), _root(nullptr), _size(0) {
-        for (Key i = 0; i < key_size; i++) insert(i, Value());
+        for (Key i = 0; i < key_size; i++) {
+            insert(i, Value());
+        }
     }
 
     Value &operator[](Key key) {
@@ -55,7 +61,9 @@ struct treap {
     }
 
     bool erase(Key key) {
-        if (!erase(_root, key)) return (false);
+        if (!erase(_root, key)) {
+            return (false);
+        }
         _size--;
         return (true);
     }
@@ -83,7 +91,9 @@ struct treap {
     std::vector<Value> to_value_vector() const {
         std::vector<std::pair<Key, Value>> vec = to_vector();
         std::vector<Value> res;
-        for (auto &p : vec) res.push_back(p.second);
+        for (auto &p : vec) {
+            res.push_back(p.second);
+        }
         return (res);
     }
 
@@ -107,11 +117,12 @@ struct treap {
         }
 
         friend std::ostream &operator<<(std::ostream &stream, const node *t) {
-            if (!t)
+            if (!t) {
                 return (stream << "");
-            else
+            } else {
                 return (stream << "(" << t->_child[0] << "[" << t->_key << ", " << t->_val << "]"
                                << t->_child[1] << ")");
+            }
         }
 
         Key _key;
@@ -123,13 +134,19 @@ struct treap {
     size_t _size;
 
     node *search(node *t, Key key) const {
-        if (!t) return (nullptr);
-        if (t->_key == key) return (t);
+        if (!t) {
+            return (nullptr);
+        }
+        if (t->_key == key) {
+            return (t);
+        }
         return (search(t->_child[key > t->_key], key));
     }
 
     node *insert(node *t, node *item) {
-        if (!t) return (item);
+        if (!t) {
+            return (item);
+        }
         assert(t->_key != item->_key);
         if (item->_priority < t->_priority) {
             t->_child[item->_key > t->_key] = insert(t->_child[item->_key > t->_key], item);
@@ -140,7 +157,9 @@ struct treap {
     }
 
     bool erase(node *&t, Key key) {
-        if (!t) return (false);
+        if (!t) {
+            return (false);
+        }
         if (key == t->_key) {
             node *victim = t;
             // merge reattaches victim's children into the tree; free only the node itself.
@@ -178,14 +197,18 @@ struct treap {
     }
 
     void clear(node *t) {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         clear(t->_child[0]);
         clear(t->_child[1]);
         delete t;
     }
 
     void to_vector(node *t, std::vector<std::pair<Key, Value>> &vec) const {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         to_vector(t->_child[0], vec);
         vec.push_back(std::make_pair(t->_key, t->_val));
         to_vector(t->_child[1], vec);

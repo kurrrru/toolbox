@@ -18,9 +18,15 @@ namespace detail {
 template <typename RandomIt, typename Compare>
 typename std::iterator_traits<RandomIt>::value_type median_to_last(RandomIt first, RandomIt mid,
                                                                    RandomIt last, Compare comp) {
-    if (comp(*mid, *first)) std::swap(*mid, *first);
-    if (comp(*last, *mid)) std::swap(*last, *mid);
-    if (comp(*mid, *first)) std::swap(*mid, *first);
+    if (comp(*mid, *first)) {
+        std::swap(*mid, *first);
+    }
+    if (comp(*last, *mid)) {
+        std::swap(*last, *mid);
+    }
+    if (comp(*mid, *first)) {
+        std::swap(*mid, *first);
+    }
     std::swap(*mid, *last);
     return *last;
 }
@@ -49,7 +55,9 @@ void intro_sort_impl(RandomIt first, RandomIt last, std::size_t depth_limit, Com
 template <typename RandomIt, typename Compare>
 void intro_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
     std::size_t depth_limit =
         static_cast<std::size_t>(std::log(static_cast<double>(n)) / std::log(2.0));
     detail::intro_sort_impl(first, last, depth_limit, comp);

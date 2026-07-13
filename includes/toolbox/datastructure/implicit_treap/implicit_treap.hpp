@@ -84,11 +84,15 @@ struct implicit_treap {
     ~implicit_treap() { clear(); }
 
     explicit implicit_treap(std::vector<S> &vec) : _rnd(seed) {
-        for (size_t i = 0; i < vec.size(); i++) insert(i, vec[i]);
+        for (size_t i = 0; i < vec.size(); i++) {
+            insert(i, vec[i]);
+        }
     }
     implicit_treap(int size, S val) : _rnd(seed) {
         assert(size >= 0);
-        for (int i = 0; i < size; i++) insert(i, val);
+        for (int i = 0; i < size; i++) {
+            insert(i, val);
+        }
     }
 
     S query(int l, int r) {
@@ -122,7 +126,9 @@ struct implicit_treap {
     }
 
     int size() const {
-        if (!_root) return (0);
+        if (!_root) {
+            return (0);
+        }
         return (cnt(_root));
     }
 
@@ -184,33 +190,47 @@ struct implicit_treap {
     } *_root = nullptr;
 
     int cnt(node *t) const {
-        if (!t) return (0);
+        if (!t) {
+            return (0);
+        }
         return (t->_cnt);
     }
 
     S acc(node *t) const {
-        if (!t) return (operations::query_id());
+        if (!t) {
+            return (operations::query_id());
+        }
         return (t->_acc);
     }
 
     void update(node *t) {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         t->_cnt = 1 + cnt(t->_child[0]) + cnt(t->_child[1]);
         t->_acc = operations::query_op(operations::query_op(acc(t->_child[0]), t->_value),
                                        acc(t->_child[1]));
     }
 
     void pushup(node *t) {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         update(t);
     }
 
     void pushdown(node *t) {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         if (t->_rev) {
             std::swap(t->_child[0], t->_child[1]);
-            if (t->_child[0]) t->_child[0]->_rev ^= 1;
-            if (t->_child[1]) t->_child[1]->_rev ^= 1;
+            if (t->_child[0]) {
+                t->_child[0]->_rev ^= 1;
+            }
+            if (t->_child[1]) {
+                t->_child[1]->_rev ^= 1;
+            }
             t->_rev = false;
         }
         if (t->_lazy != operations::update_id()) {
@@ -282,7 +302,9 @@ struct implicit_treap {
     }
 
     void update(node *&t, int l, int r, S val) {
-        if (l >= r) return;
+        if (l >= r) {
+            return;
+        }
         node *left;
         node *right;
         node *mid;
@@ -301,7 +323,9 @@ struct implicit_treap {
         split(t, l, left, right);
         split(right, r - l, mid, right);
         S res = operations::query_id();
-        if (mid) res = mid->_acc;
+        if (mid) {
+            res = mid->_acc;
+        }
         merge(right, mid, right);
         merge(t, left, right);
         return (res);
@@ -328,7 +352,9 @@ struct implicit_treap {
     // }
 
     void reverse(node *t, int l, int r) {
-        if (l >= r) return;
+        if (l >= r) {
+            return;
+        }
         node *left;
         node *right;
         node *mid;
@@ -340,14 +366,18 @@ struct implicit_treap {
     }
 
     void rotate(node *t, int l, int m, int r) {
-        if (l >= m || m >= r) return;
+        if (l >= m || m >= r) {
+            return;
+        }
         reverse(t, l, r);
         reverse(t, l, l + r - m);
         reverse(t, l + r - m, r);
     }
 
     void clear(node *t) {
-        if (!t) return;
+        if (!t) {
+            return;
+        }
         clear(t->_child[0]);
         clear(t->_child[1]);
         delete t;

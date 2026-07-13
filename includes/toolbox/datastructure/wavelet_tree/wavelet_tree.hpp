@@ -75,8 +75,9 @@ class bitvector {
         _bit.assign(_num_blocks, 0u);
         _sum.assign(_num_blocks + 1, 0u);
         _set(arr);
-        for (std::size_t i = 1; i <= _num_blocks; i++)
+        for (std::size_t i = 1; i <= _num_blocks; i++) {
             _sum[i] = _sum[i - 1] + popcount(_bit[i - 1]);
+        }
     }
 
     // operator[]
@@ -94,7 +95,9 @@ class bitvector {
     // return: the occurrence of 1 in [0, i)
     uint32_t rank(std::size_t i) const {
         assert(i <= _len);
-        if (i == 0) return (0);
+        if (i == 0) {
+            return (0);
+        }
         return (_sum[i >> 5] + popcount(_bit[i >> 5] & ((1u << (i & 0b11111)) - 1)));
     }
 
@@ -107,10 +110,11 @@ class bitvector {
         int left = -1, right = _len;
         while (left + 1 < right) {
             int mid = (left + right) >> 1;
-            if (rank(static_cast<std::size_t>(mid)) < j)
+            if (rank(static_cast<std::size_t>(mid)) < j) {
                 left = mid;
-            else
+            } else {
                 right = mid;
+            }
         }
         return (left);
     }
@@ -122,8 +126,11 @@ class bitvector {
     std::size_t _len;
 
     void _set(std::vector<bool> &arr) {
-        for (std::size_t i = 0; i < _len; i++)
-            if (arr[i]) _bit[i >> 5] |= 1u << (i & 0b11111);
+        for (std::size_t i = 0; i < _len; i++) {
+            if (arr[i]) {
+                _bit[i >> 5] |= 1u << (i & 0b11111);
+            }
+        }
     }
 };
 
@@ -181,10 +188,11 @@ class wavelet_tree {
     // return: void
     void build(std::vector<uint32_t> &arr) {
         _len = arr.size();
-        if (_len == 0)
+        if (_len == 0) {
             _size = 0;
-        else
+        } else {
             _size = *std::max_element(arr.begin(), arr.end()) + 1;
+        }
         _capacity = 1 << bit_width(_size);
         build_rec(&root, arr, 0, _capacity);
     }
@@ -217,7 +225,9 @@ class wavelet_tree {
     // return: the occurrence of c in [0, i)
     uint32_t rank(std::size_t i, uint32_t c) const {
         assert(i <= _len);
-        if (i == 0 || c >= _size) return (0);
+        if (i == 0 || c >= _size) {
+            return (0);
+        }
         _node *cur = root;
         while (cur->_l < cur->_r - 1) {
             uint32_t mid = (cur->_r + cur->_l) >> 1;
@@ -228,7 +238,9 @@ class wavelet_tree {
                 i = i - cur->_bv.rank(i);
                 cur = cur->_left;
             }
-            if (cur == nullptr) return (0);
+            if (cur == nullptr) {
+                return (0);
+            }
         }
         return (i);
     }
@@ -338,8 +350,12 @@ class wavelet_tree {
             return (*this);
         }
         ~_node() {
-            if (_left) delete _left;
-            if (_right) delete _right;
+            if (_left) {
+                delete _left;
+            }
+            if (_right) {
+                delete _right;
+            }
         }
         // void free_node() {
         //     if (_left) _left->free_node();
@@ -357,14 +373,17 @@ class wavelet_tree {
     void build_rec(_node **cur, std::vector<uint32_t> &arr, uint32_t lower, uint32_t upper) {
         std::vector<bool> bit(arr.size());
         std::vector<uint32_t> left_arr, right_arr;
-        if (lower >= _size || upper == lower) return;
+        if (lower >= _size || upper == lower) {
+            return;
+        }
         uint32_t mid = (lower + upper) >> 1;
         for (std::size_t i = 0; i < arr.size(); i++) {
             bit[i] = (arr[i] >= mid);
-            if (bit[i])
+            if (bit[i]) {
                 right_arr.push_back(arr[i]);
-            else
+            } else {
                 left_arr.push_back(arr[i]);
+            }
         }
         try {
             *cur = new _node(lower, upper, bit);
@@ -373,15 +392,21 @@ class wavelet_tree {
                       << std::endl;
             exit(EXIT_FAILURE);
         }
-        if (lower == upper - 1) return;
+        if (lower == upper - 1) {
+            return;
+        }
         build_rec(&((*cur)->_left), left_arr, lower, mid);
         build_rec(&((*cur)->_right), right_arr, mid, upper);
     }
 
     uint32_t range_count_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower,
                              uint32_t upper) const {
-        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) return (0);
-        if (lower <= cur->_l && cur->_r <= upper) return (j - i);
+        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) {
+            return (0);
+        }
+        if (lower <= cur->_l && cur->_r <= upper) {
+            return (j - i);
+        }
         return (
             range_count_rec(cur->_right, cur->_bv.rank(i), cur->_bv.rank(j), lower, upper) +
             range_count_rec(cur->_left, i - cur->_bv.rank(i), j - cur->_bv.rank(j), lower, upper));
@@ -389,7 +414,9 @@ class wavelet_tree {
 
     void range_list_rec(_node *cur, std::size_t i, std::size_t j, uint32_t lower, uint32_t upper,
                         std::vector<uint32_t> &v) const {
-        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) return;
+        if (cur == nullptr || i >= j || upper <= cur->_l || lower >= cur->_r) {
+            return;
+        }
         if (lower <= cur->_l && cur->_r <= upper && cur->_l == cur->_r - 1) {
             v.push_back(cur->_l);
             return;

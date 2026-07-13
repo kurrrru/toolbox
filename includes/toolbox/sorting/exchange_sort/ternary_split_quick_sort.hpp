@@ -16,7 +16,9 @@ namespace detail {
 template <typename RandomIt, typename Compare>
 void ternary_quick_sort_impl(RandomIt first, std::ptrdiff_t left, std::ptrdiff_t right,
                              Compare comp) {
-    if (left >= right) return;
+    if (left >= right) {
+        return;
+    }
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     T pivot = *(first + left + (right - left) / 2);
     std::ptrdiff_t lt = left;
@@ -44,7 +46,9 @@ void ternary_quick_sort_impl(RandomIt first, std::ptrdiff_t left, std::ptrdiff_t
 template <typename RandomIt, typename Compare>
 void ternary_split_quick_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
     detail::ternary_quick_sort_impl(first, 0, n - 1, comp);
 }
 

@@ -29,15 +29,21 @@ std::vector<Cost> bellman_ford(const Vertex s,
         bool update = false;
         for (int j = 0; j < N; j++) {
             for (const auto &[t, t_cost] : cost[j]) {
-                if (dist[j] == INF) continue;
+                if (dist[j] == INF) {
+                    continue;
+                }
                 if (dist[t] > dist[j] + t_cost) {
                     dist[t] = dist[j] + t_cost;
                     update = true;
-                    if (i == N) return std::vector<Cost>();
+                    if (i == N) {
+                        return std::vector<Cost>();
+                    }
                 }
             }
         }
-        if (!update) break;
+        if (!update) {
+            break;
+        }
     }
     return dist;
 }

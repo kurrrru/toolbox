@@ -132,10 +132,16 @@ bool is_valid_topological(const std::vector<long long> &order,
                           const std::vector<std::vector<long long>> &edge) {
     int n = edge.size();
     std::vector<int> pos(n);
-    for (int i = 0; i < static_cast<int>(order.size()); i++) pos[order[i]] = i;
-    for (int u = 0; u < n; u++)
-        for (long long v : edge[u])
-            if (pos[u] >= pos[v]) return false;
+    for (int i = 0; i < static_cast<int>(order.size()); i++) {
+        pos[order[i]] = i;
+    }
+    for (int u = 0; u < n; u++) {
+        for (long long v : edge[u]) {
+            if (pos[u] >= pos[v]) {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -176,7 +182,9 @@ bool test_topological_single() {
 bool test_topological_chain() {
     // 0 -> 1 -> 2 -> 3 -> 4
     std::vector<std::vector<long long>> edge(5);
-    for (int i = 0; i < 4; i++) edge[i].push_back(i + 1);
+    for (int i = 0; i < 4; i++) {
+        edge[i].push_back(i + 1);
+    }
     auto order = toolbox::graph::topological(edge);
     bool ok = true;
     ok &= toolbox::test_utils::check(order.size() == 5, "topological chain: all nodes");

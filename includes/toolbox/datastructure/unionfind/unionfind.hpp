@@ -41,10 +41,11 @@ struct unionfind {
      */
     int find(int x) {
         assert(0 <= x && x < _n);
-        if (_p[x] == -1)
+        if (_p[x] == -1) {
             return x;
-        else
+        } else {
             return (_p[x] = find(_p[x]));
+        }
     }
 
     /**
@@ -60,9 +61,15 @@ struct unionfind {
         assert(0 <= y && y < _n);
         x = find(x);
         y = find(y);
-        if (x == y) return false;
-        if (_r[x] > _r[y]) std::swap(x, y);
-        if (_r[x] == _r[y]) _r[y]++;
+        if (x == y) {
+            return false;
+        }
+        if (_r[x] > _r[y]) {
+            std::swap(x, y);
+        }
+        if (_r[x] == _r[y]) {
+            _r[y]++;
+        }
         _p[x] = y;
         return true;
     }

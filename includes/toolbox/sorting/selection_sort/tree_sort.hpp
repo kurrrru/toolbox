@@ -47,14 +47,18 @@ class BST {
     }
 
     void in_order_traversal(Node *node, std::vector<T> &result) const {
-        if (!node) return;
+        if (!node) {
+            return;
+        }
         in_order_traversal(node->child[0], result);
         result.push_back(node->value);
         in_order_traversal(node->child[1], result);
     }
 
     void clear(Node *node) {
-        if (!node) return;
+        if (!node) {
+            return;
+        }
         clear(node->child[0]);
         clear(node->child[1]);
         delete node;
@@ -69,7 +73,9 @@ class BST {
 template <typename RandomIt, typename Compare>
 void tree_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
-    if (first == last) return;
+    if (first == last) {
+        return;
+    }
 
     detail::BST<T, Compare> bst(comp);
     for (RandomIt it = first; it != last; ++it) {

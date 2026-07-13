@@ -10,7 +10,9 @@ namespace sorting {
 
 template <typename RandomIt, typename Compare>
 void selection_sort(RandomIt first, RandomIt last, Compare comp) {
-    if (std::distance(first, last) <= 1) return;
+    if (std::distance(first, last) <= 1) {
+        return;
+    }
     for (RandomIt i = first; i != last - 1; ++i) {
         RandomIt min_it = std::min_element(i, last, comp);
         if (min_it != i) {

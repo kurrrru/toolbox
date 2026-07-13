@@ -161,7 +161,9 @@ bool test_factorize() {
         auto factors = toolbox::math::factorize(n);
         long long product = 1;
         for (auto &pf : factors) {
-            for (long long k = 0; k < pf.second; k++) product *= pf.first;
+            for (long long k = 0; k < pf.second; k++) {
+                product *= pf.first;
+            }
         }
         if (product != n) {
             std::cerr << "  FAIL: factorize(" << n << ") product mismatch\n";
@@ -192,7 +194,9 @@ bool test_crt() {
     // x = a1 (mod m1), x = a2 (mod m2)
     auto verify2 = [&](long long a1, long long m1, long long a2, long long m2) -> bool {
         auto res = toolbox::math::chinese_remainder_theorem(a1, m1, a2, m2);
-        if (res.second == 0) return true;  // no solution, skip
+        if (res.second == 0) {
+            return true;  // no solution, skip
+        }
         long long x = res.first;
         if (x % m1 != a1 % m1 || x % m2 != a2 % m2) {
             std::cerr << "  FAIL: CRT2(" << a1 << "," << m1 << "," << a2 << "," << m2 << ")=" << x

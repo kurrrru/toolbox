@@ -9,7 +9,9 @@ namespace sorting {
 
 template <typename RandomIt, typename Compare>
 void insertion_sort(RandomIt first, RandomIt last, Compare comp) {
-    if (std::distance(first, last) <= 1) return;
+    if (std::distance(first, last) <= 1) {
+        return;
+    }
     for (RandomIt it = first + 1; it != last; ++it) {
         typename std::iterator_traits<RandomIt>::value_type key = *it;
         RandomIt j = it;

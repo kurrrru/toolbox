@@ -11,7 +11,9 @@ namespace sorting {
 template <typename RandomIt, typename Compare>
 void comb_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     std::ptrdiff_t gap = n;
     bool swapped = false;

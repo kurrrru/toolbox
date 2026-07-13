@@ -32,7 +32,9 @@ inline std::size_t tim_min_run_length(std::size_t n) {
 template <typename T, typename Compare>
 std::size_t count_run_and_make_ascending(std::vector<T> &v, std::size_t start, Compare comp) {
     std::size_t size = v.size();
-    if (start >= size - 1) return size - start;
+    if (start >= size - 1) {
+        return size - start;
+    }
 
     std::size_t run_end = start + 2;
     if (comp(v[start + 1], v[start])) {
@@ -100,7 +102,9 @@ template <typename RandomIt, typename Compare>
 void tim_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     // Copy to internal vector for efficient index access
     std::vector<T> v(first, last);

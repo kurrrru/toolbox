@@ -64,7 +64,9 @@ template <typename RandomIt, typename Compare>
 void tournament_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 0) return;
+    if (n <= 0) {
+        return;
+    }
 
     // Build tournament tree as a max-heap
     std::vector<detail::TNode<T>> tree;
@@ -75,8 +77,12 @@ void tournament_sort(RandomIt first, RandomIt last, Compare comp) {
 
     // Build max-heap using comp: comp(a,b) means a < b, so larger elements rise
     auto node_comp = [&comp](const detail::TNode<T> &a, const detail::TNode<T> &b) {
-        if (!a.valid) return true;
-        if (!b.valid) return false;
+        if (!a.valid) {
+            return true;
+        }
+        if (!b.valid) {
+            return false;
+        }
         return comp(a.value, b.value);
     };
     std::make_heap(tree.begin(), tree.end(), node_comp);

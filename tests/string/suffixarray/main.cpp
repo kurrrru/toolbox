@@ -15,15 +15,23 @@ namespace {
 //   - suffixes are in strictly increasing lexicographic order
 bool is_valid_sa(const std::string &s, const std::vector<int> &sa) {
     int n = s.size();
-    if (static_cast<int>(sa.size()) != n) return false;
+    if (static_cast<int>(sa.size()) != n) {
+        return false;
+    }
     std::vector<bool> seen(n, false);
     for (int x : sa) {
-        if (x < 0 || x >= n) return false;
-        if (seen[x]) return false;
+        if (x < 0 || x >= n) {
+            return false;
+        }
+        if (seen[x]) {
+            return false;
+        }
         seen[x] = true;
     }
     for (int i = 0; i + 1 < n; i++) {
-        if (s.substr(sa[i]) >= s.substr(sa[i + 1])) return false;
+        if (s.substr(sa[i]) >= s.substr(sa[i + 1])) {
+            return false;
+        }
     }
     return true;
 }
@@ -32,11 +40,15 @@ bool is_valid_sa(const std::string &s, const std::vector<int> &sa) {
 //   lcp[i] == LCP length of suffix sa[i-1] and suffix sa[i], lcp[0] == 0.
 bool verify_lcp(const std::string &s, const std::vector<int> &sa_n, const std::vector<int> &lcp) {
     int n = s.size();
-    if (static_cast<int>(lcp.size()) != n) return false;
+    if (static_cast<int>(lcp.size()) != n) {
+        return false;
+    }
     for (int i = 0; i + 1 < n; i++) {
         int a = sa_n[i], b = sa_n[i + 1];
         int l = 0;
-        while (a + l < n && b + l < n && s[a + l] == s[b + l]) l++;
+        while (a + l < n && b + l < n && s[a + l] == s[b + l]) {
+            l++;
+        }
         // lcp[i+1] corresponds to the pair (sa_n[i], sa_n[i+1])
         if (lcp[i + 1] != l) {
             std::cerr << "  FAIL: lcp[" << (i + 1) << "] expected " << l << " got " << lcp[i + 1]
@@ -87,7 +99,9 @@ bool test_sa_vs_doubling() {
     std::string s = "abracadabra";
     int n = s.size();
     std::vector<int> sv(n);
-    for (int i = 0; i < n; i++) sv[i] = s[i];
+    for (int i = 0; i < n; i++) {
+        sv[i] = s[i];
+    }
     auto sa_sais = toolbox::string::suffixarray(s);
     auto sa_doubling = toolbox::string::helper::suffixarray_doubling(sv);
     bool ok = true;
@@ -128,9 +142,10 @@ bool test_lcp_no_repeat() {
     auto lcp = toolbox::string::lcp_array(s, sa_n);
     // No shared prefixes -> all LCP values between adjacent pairs should be 0
     bool ok = true;
-    for (int i = 1; i < static_cast<int>(s.size()); i++)
+    for (int i = 1; i < static_cast<int>(s.size()); i++) {
         ok &= toolbox::test_utils::check(lcp[i] == 0,
                                          "lcp[" + std::to_string(i) + "]==0 for no-repeat");
+    }
     return ok;
 }
 

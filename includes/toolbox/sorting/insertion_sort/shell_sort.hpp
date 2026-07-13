@@ -12,7 +12,9 @@ namespace detail {
 inline std::size_t shell_pow(std::size_t base, std::size_t exp) {
     std::size_t result = 1;
     while (exp) {
-        if (exp % 2 == 1) result *= base;
+        if (exp % 2 == 1) {
+            result *= base;
+        }
         base *= base;
         exp /= 2;
     }
@@ -25,7 +27,9 @@ inline void generate_gap_sequence(std::vector<std::size_t> &gaps, std::size_t ma
     std::size_t k = 1;
     while (true) {
         std::size_t gap = shell_pow(4, k) + 3 * shell_pow(2, k - 1) + 1;
-        if (gap > max_value) break;
+        if (gap > max_value) {
+            break;
+        }
         gaps.push_back(gap);
         ++k;
     }
@@ -37,7 +41,9 @@ template <typename RandomIt, typename Compare>
 void shell_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     std::vector<std::size_t> gaps;
     detail::generate_gap_sequence(gaps, static_cast<std::size_t>(n) / 2);

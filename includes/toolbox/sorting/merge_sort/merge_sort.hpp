@@ -14,7 +14,9 @@ template <typename RandomIt, typename Compare>
 void merge_sort_impl(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     RandomIt mid = first + n / 2;
     std::vector<T> left(first, mid);

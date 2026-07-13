@@ -10,7 +10,9 @@ namespace sorting {
 
 template <typename RandomIt, typename Compare>
 void bubble_sort(RandomIt first, RandomIt last, Compare comp) {
-    if (first == last) return;
+    if (first == last) {
+        return;
+    }
     bool swapped;
     for (RandomIt i = first; i != last - 1; ++i) {
         swapped = false;
@@ -20,7 +22,9 @@ void bubble_sort(RandomIt first, RandomIt last, Compare comp) {
                 swapped = true;
             }
         }
-        if (!swapped) break;
+        if (!swapped) {
+            break;
+        }
     }
 }
 

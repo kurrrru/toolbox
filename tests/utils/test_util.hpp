@@ -19,7 +19,9 @@ namespace test_utils {
 // ---- Assertion helper -------------------------------------------------------
 
 inline bool check(bool cond, const std::string &label) {
-    if (!cond) std::cerr << "  FAIL: " << label << "\n";
+    if (!cond) {
+        std::cerr << "  FAIL: " << label << "\n";
+    }
     return cond;
 }
 
@@ -43,11 +45,12 @@ inline int run_tests(const Test *tests, std::size_t num) {
         }
     }
     std::cout << "\n";
-    if (fail == 0)
+    if (fail == 0) {
         std::cout << color::green << "All " << pass << " tests passed!" << color::reset << "\n";
-    else
+    } else {
         std::cout << color::red << fail << " out of " << (pass + fail) << " tests failed."
                   << color::reset << "\n";
+    }
     return fail == 0 ? 0 : 1;
 }
 

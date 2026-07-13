@@ -16,12 +16,16 @@ int op_max(const int a, const int b) { return std::max(a, b); }
 // Brute-force RMQ for verification
 int brute_min(const std::vector<int> &v, int l, int r) {
     int res = std::numeric_limits<int>::max();
-    for (int i = l; i < r; i++) res = std::min(res, v[i]);
+    for (int i = l; i < r; i++) {
+        res = std::min(res, v[i]);
+    }
     return res;
 }
 int brute_max(const std::vector<int> &v, int l, int r) {
     int res = std::numeric_limits<int>::min();
-    for (int i = l; i < r; i++) res = std::max(res, v[i]);
+    for (int i = l; i < r; i++) {
+        res = std::max(res, v[i]);
+    }
     return res;
 }
 

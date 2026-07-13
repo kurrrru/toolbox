@@ -93,7 +93,9 @@ T pow(T base, T exp) {
     assert(exp >= 0);
     T ret = 1;
     while (exp) {
-        if (exp & 1) ret *= base;
+        if (exp & 1) {
+            ret *= base;
+        }
         base *= base;
         exp >>= 1;
     }
@@ -113,10 +115,14 @@ template <typename T>
 T pow_mod(T base, T exp, T mod) {
     assert(mod > 0);
     assert(base > 0 || exp >= 0);
-    if (exp < 0) return pow_mod(inv_mod(base, mod), -exp, mod);
+    if (exp < 0) {
+        return pow_mod(inv_mod(base, mod), -exp, mod);
+    }
     T ret = 1;
     while (exp) {
-        if (exp & 1) ret = (ret * base) % mod;
+        if (exp & 1) {
+            ret = (ret * base) % mod;
+        }
         base = (base * base) % mod;
         exp >>= 1;
     }
@@ -133,11 +139,19 @@ T pow_mod(T base, T exp, T mod) {
 template <typename T>
 bool is_prime(T n) {
     assert(n >= 0);
-    if (n < 2) return false;
-    if (n == 2 || n == 3) return true;
-    if (n % 2 == 0 || n % 3 == 0) return false;
+    if (n < 2) {
+        return false;
+    }
+    if (n == 2 || n == 3) {
+        return true;
+    }
+    if (n % 2 == 0 || n % 3 == 0) {
+        return false;
+    }
     for (T i = 5; i <= n / i; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0) return false;
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return false;
+        }
     }
     return true;
 }
@@ -152,16 +166,24 @@ bool is_prime(T n) {
 template <typename T>
 std::vector<T> prime_list(T n) {
     assert(n >= 0);
-    if (n < 2) return std::vector<T>();
+    if (n < 2) {
+        return std::vector<T>();
+    }
     std::vector<bool> is_prime(n, true);
     is_prime[0] = is_prime[1] = false;
     for (T i = 2; i <= n / i; i++) {
-        if (!is_prime[i]) continue;
-        for (T j = i * i; j < n; j += i) is_prime[j] = false;
+        if (!is_prime[i]) {
+            continue;
+        }
+        for (T j = i * i; j < n; j += i) {
+            is_prime[j] = false;
+        }
     }
     std::vector<T> ret;
     for (T i = 2; i < n; i++) {
-        if (is_prime[i]) ret.push_back(i);
+        if (is_prime[i]) {
+            ret.push_back(i);
+        }
     }
     return ret;
 }
@@ -185,9 +207,13 @@ std::vector<std::pair<T, T>> factorize(T n) {
                 ret.back().second++;
             }
         }
-        if (n == 1) break;
+        if (n == 1) {
+            break;
+        }
     }
-    if (n != 1) ret.push_back(std::make_pair(n, 1));
+    if (n != 1) {
+        ret.push_back(std::make_pair(n, 1));
+    }
     return ret;
 }
 
@@ -207,7 +233,9 @@ std::pair<T, T> chinese_remainder_theorem(T a1, T m1, T a2, T m2) {
     assert(m2 > 0);
     T x, y;
     T d = ext_gcd(m1, m2, x, y);
-    if ((a1 - a2) % d != 0) return std::make_pair(0, 0);
+    if ((a1 - a2) % d != 0) {
+        return std::make_pair(0, 0);
+    }
     T m = m1 / d * m2;
     T t = (a2 - a1) / d * x % (m2 / d);
     T r = (a1 + m1 * t + m) % m;
@@ -230,7 +258,9 @@ std::pair<T, T> chinese_remainder_theorem(const std::vector<T> &a, const std::ve
     std::pair<T, T> ret = std::make_pair(a[0], m[0]);
     for (int i = 1; i < n; i++) {
         ret = chinese_remainder_theorem(ret.first, ret.second, a[i], m[i]);
-        if (ret.second == 0) break;
+        if (ret.second == 0) {
+            break;
+        }
     }
     return ret;
 }
@@ -248,7 +278,9 @@ std::vector<T> factorial_mod(T n, T mod) {
     assert(n >= 0);
     assert(mod > 0);
     std::vector<T> fact(n + 1, 1);
-    for (T i = 1; i <= n; i++) fact[i] = (fact[i - 1] * i) % mod;
+    for (T i = 1; i <= n; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
+    }
     return fact;
 }
 
@@ -266,9 +298,13 @@ std::vector<T> factorial_inv_mod(T n, T mod) {
     assert(mod > 0);
     std::vector<T> fact_inv(n + 1, 1);
     std::vector<T> fact(n + 1, 1);
-    for (T i = 1; i <= n; i++) fact[i] = (fact[i - 1] * i) % mod;
+    for (T i = 1; i <= n; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
+    }
     fact_inv[n] = inv_mod(fact[n], mod);
-    for (T i = n - 1; i >= 0; i--) fact_inv[i] = (fact_inv[i + 1] * (i + 1)) % mod;
+    for (T i = n - 1; i >= 0; i--) {
+        fact_inv[i] = (fact_inv[i + 1] * (i + 1)) % mod;
+    }
     return fact_inv;
 }
 
@@ -292,9 +328,15 @@ std::vector<T> factorial_inv_mod(T n, T mod) {
  */
 template <typename T>
 T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector<T> &fact_inv) {
-    if (k < 0) return 0;
-    if (k == 0) return 1;
-    if (k > n) return 0;
+    if (k < 0) {
+        return 0;
+    }
+    if (k == 0) {
+        return 1;
+    }
+    if (k > n) {
+        return 0;
+    }
     assert(n >= 0);
     assert(static_cast<std::size_t>(n) < fact.size());
     assert(static_cast<std::size_t>(k) < fact_inv.size() &&
@@ -312,14 +354,17 @@ T combination_mod(T n, T k, T mod, const std::vector<T> &fact, const std::vector
 template <typename T>
 T sqrt(T n) {
     assert(n >= 0);
-    if (n == 0) return 0;
+    if (n == 0) {
+        return 0;
+    }
     T left = 0, right = n + 1;
     while (right - left > 1) {
         T mid = (left + right) / 2;
-        if (mid <= n / mid)
+        if (mid <= n / mid) {
             left = mid;
-        else
+        } else {
             right = mid;
+        }
     }
     return left;
 }
@@ -329,7 +374,9 @@ std::vector<std::vector<T>> matrix_pow(const std::vector<std::vector<T>> &a, T e
     assert(a.size() == a[0].size());
     int n = a.size();
     std::vector<std::vector<T>> ret(n, std::vector<T>(n, 0));
-    for (int i = 0; i < n; i++) ret[i][i] = 1;
+    for (int i = 0; i < n; i++) {
+        ret[i][i] = 1;
+    }
     std::vector<std::vector<T>> base = a;
     while (exp) {
         if (exp & 1) {

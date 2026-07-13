@@ -21,7 +21,9 @@ struct IsLessThan {
 template <typename RandomIt, typename Compare>
 void quick_sort_impl(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
-    if (std::distance(first, last) <= 1) return;
+    if (std::distance(first, last) <= 1) {
+        return;
+    }
 
     RandomIt pivot_it = last - 1;
     T pivot = *pivot_it;

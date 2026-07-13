@@ -25,7 +25,9 @@ std::vector<T> merge_piles(std::vector<std::vector<T>> piles, std::size_t n, Com
                 }
             }
         }
-        if (min_index == -1) break;
+        if (min_index == -1) {
+            break;
+        }
         result.push_back(piles[min_index].back());
         piles[min_index].pop_back();
         if (piles[min_index].empty()) {
@@ -41,7 +43,9 @@ template <typename RandomIt, typename Compare>
 void patience_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     std::vector<std::vector<T>> piles;
 

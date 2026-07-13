@@ -23,8 +23,12 @@ class CartesianTree {
         Compare c;
         explicit PairComp(Compare c_) : c(c_) {}
         bool operator()(const PairType &a, const PairType &b) const {
-            if (c(a.first, b.first)) return true;
-            if (c(b.first, a.first)) return false;
+            if (c(a.first, b.first)) {
+                return true;
+            }
+            if (c(b.first, a.first)) {
+                return false;
+            }
             return a.second < b.second;
         }
     };
@@ -41,7 +45,9 @@ class CartesianTree {
     }
 
     std::vector<T> sort() const {
-        if (_root == -1) return std::vector<T>();
+        if (_root == -1) {
+            return std::vector<T>();
+        }
 
         std::vector<T> sorted_arr;
         sorted_arr.reserve(static_cast<std::size_t>(_n));
@@ -109,7 +115,9 @@ template <typename RandomIt, typename Compare>
 void cartesian_tree_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     std::vector<T> v(first, last);
     detail::CartesianTree<T, Compare> tree(v, comp);

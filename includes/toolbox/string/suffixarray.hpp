@@ -27,10 +27,14 @@ std::vector<int> suffixarray_doubling(const std::vector<int> &s) {
     std::iota(SA.begin(), SA.end(), 0);
     std::sort(SA.begin(), SA.end(), [&](int i, int j) { return s[i] < s[j]; });
     ISA[SA[0]] = 0;
-    for (int i = 1; i < n; i++) ISA[SA[i]] = ISA[SA[i - 1]] + (s[SA[i - 1]] != s[SA[i]]);
+    for (int i = 1; i < n; i++) {
+        ISA[SA[i]] = ISA[SA[i - 1]] + (s[SA[i - 1]] != s[SA[i]]);
+    }
     for (int k = 1; k < n; k *= 2) {
         auto cmp = [&](int i, int j) {
-            if (ISA[i] != ISA[j]) return ISA[i] < ISA[j];
+            if (ISA[i] != ISA[j]) {
+                return ISA[i] < ISA[j];
+            }
             int rank_i = i + k < n ? ISA[i + k] : -1;
             int rank_j = j + k < n ? ISA[j + k] : -1;
             return rank_i < rank_j;
@@ -38,12 +42,18 @@ std::vector<int> suffixarray_doubling(const std::vector<int> &s) {
         int start = 0;
         while (start < n) {
             int end = start + 1;
-            while (end < n && ISA[SA[start]] == ISA[SA[end]]) end++;
-            if (end - start > 1) std::sort(SA.begin() + start, SA.begin() + end, cmp);
+            while (end < n && ISA[SA[start]] == ISA[SA[end]]) {
+                end++;
+            }
+            if (end - start > 1) {
+                std::sort(SA.begin() + start, SA.begin() + end, cmp);
+            }
             start = end;
         }
         nextISA[SA[0]] = 0;
-        for (int i = 1; i < n; i++) nextISA[SA[i]] = nextISA[SA[i - 1]] + cmp(SA[i - 1], SA[i]);
+        for (int i = 1; i < n; i++) {
+            nextISA[SA[i]] = nextISA[SA[i - 1]] + cmp(SA[i - 1], SA[i]);
+        }
         std::swap(ISA, nextISA);
     }
     return SA;
@@ -61,10 +71,11 @@ void sais_classify_sl(const std::vector<int> &s, std::vector<bool> &ls) {
     int n = s.size();
     ls[n - 1] = false;
     for (int i = n - 2; i >= 0; i--) {
-        if (s[i] == s[i + 1])
+        if (s[i] == s[i + 1]) {
             ls[i] = ls[i + 1];
-        else
+        } else {
             ls[i] = s[i] < s[i + 1];
+        }
     }
 }
 
@@ -83,14 +94,17 @@ void sais_character_count(const std::vector<int> &s, std::vector<int> &cnt_l,
                           std::vector<int> &cnt_s, const std::vector<bool> &ls, const int max_s) {
     int n = s.size();
     for (int i = 0; i < n; i++) {
-        if (!ls[i])
+        if (!ls[i]) {
             cnt_s[s[i]]++;
-        else
+        } else {
             cnt_l[s[i] + 1]++;
+        }
     }
     for (int i = 0; i <= max_s; i++) {
         cnt_s[i] += cnt_l[i];
-        if (i < max_s) cnt_l[i + 1] += cnt_s[i];
+        if (i < max_s) {
+            cnt_l[i + 1] += cnt_s[i];
+        }
     }
 }
 
@@ -134,16 +148,24 @@ void sais_induce(const std::vector<int> &s, std::vector<int> &sa, const std::vec
     std::fill(sa.begin(), sa.end(), -1);
     std::vector<int> buf = cnt_s;
     for (auto d : lms) {
-        if (d == n) continue;
+        if (d == n) {
+            continue;
+        }
         sa[buf[s[d]]++] = d;
     }
     buf = cnt_l;
     sa[buf[s[n - 1]]++] = n - 1;
-    for (int i = 0; i < n; i++)
-        if (sa[i] >= 1 && !ls[sa[i] - 1]) sa[buf[s[sa[i] - 1]]++] = sa[i] - 1;
+    for (int i = 0; i < n; i++) {
+        if (sa[i] >= 1 && !ls[sa[i] - 1]) {
+            sa[buf[s[sa[i] - 1]]++] = sa[i] - 1;
+        }
+    }
     buf = cnt_l;
-    for (int i = n - 1; i >= 0; i--)
-        if (sa[i] >= 1 && ls[sa[i] - 1]) sa[--buf[s[sa[i] - 1] + 1]] = sa[i] - 1;
+    for (int i = n - 1; i >= 0; i--) {
+        if (sa[i] >= 1 && ls[sa[i] - 1]) {
+            sa[--buf[s[sa[i] - 1] + 1]] = sa[i] - 1;
+        }
+    }
 }
 
 /**
@@ -164,10 +186,15 @@ void sais_resolve(const std::vector<int> &s, std::vector<int> &sa, const std::ve
                   const std::vector<int> &lms_map) {
     int n = s.size();
     int m = lms.size();
-    if (m == 0) return;
+    if (m == 0) {
+        return;
+    }
     std::vector<int> sorted_lms;
-    for (int i = 0; i < n; i++)
-        if (lms_map[sa[i]] != -1) sorted_lms.push_back(sa[i]);
+    for (int i = 0; i < n; i++) {
+        if (lms_map[sa[i]] != -1) {
+            sorted_lms.push_back(sa[i]);
+        }
+    }
     std::vector<int> rec_s(m);
     int rec_max_s = 0;
     rec_s[lms_map[sorted_lms[0]]] = 0;
@@ -183,13 +210,17 @@ void sais_resolve(const std::vector<int> &s, std::vector<int> &sa, const std::ve
                 l++;
                 r++;
             }
-            if (l == n || s[l] != s[r]) rec_max_s++;
+            if (l == n || s[l] != s[r]) {
+                rec_max_s++;
+            }
         }
         rec_s[lms_map[sorted_lms[i]]] = rec_max_s;
     }
     std::vector<int> rec_sa = sais(rec_s, rec_max_s);
     std::copy(lms.begin(), lms.end(), sorted_lms.begin());
-    for (int i = 0; i < m; i++) lms[i] = sorted_lms[rec_sa[i]];
+    for (int i = 0; i < m; i++) {
+        lms[i] = sorted_lms[rec_sa[i]];
+    }
     sais_induce(s, sa, cnt_l, cnt_s, ls, lms);
 }
 
@@ -203,15 +234,22 @@ void sais_resolve(const std::vector<int> &s, std::vector<int> &sa, const std::ve
 std::vector<int> sais(const std::vector<int> &s, const int max_s) {
     const int threshold_doubling = 100;
     int n = s.size();
-    if (n == 0) return std::vector<int>();
-    if (n == 1) return std::vector<int>({0});
-    if (n == 2) {
-        if (s[0] < s[1])
-            return std::vector<int>({0, 1});
-        else
-            return std::vector<int>({1, 0});
+    if (n == 0) {
+        return std::vector<int>();
     }
-    if (n < threshold_doubling) return suffixarray_doubling(s);
+    if (n == 1) {
+        return std::vector<int>({0});
+    }
+    if (n == 2) {
+        if (s[0] < s[1]) {
+            return std::vector<int>({0, 1});
+        } else {
+            return std::vector<int>({1, 0});
+        }
+    }
+    if (n < threshold_doubling) {
+        return suffixarray_doubling(s);
+    }
     std::vector<int> sa(n);
     std::vector<bool> ls(n, false);
     std::vector<int> cnt_l(max_s + 1), cnt_s(max_s + 1);
@@ -258,7 +296,9 @@ std::vector<int> suffixarray(const std::vector<int> &s) {
 std::vector<int> suffixarray(const std::string &str) {
     int n = str.size();
     std::vector<int> s(n);
-    for (int i = 0; i < n; i++) s[i] = str[i];
+    for (int i = 0; i < n; i++) {
+        s[i] = str[i];
+    }
     return helper::sais(s, 255);
 }
 

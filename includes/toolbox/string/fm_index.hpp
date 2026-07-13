@@ -32,12 +32,15 @@ struct fm_index {
         int m = p.size();
         int l = 0, r = _n - 1;
         for (int i = m - 1; i >= 0; i--) {
-            if (_order[static_cast<int>(p[i])] == -1) return 0;
-            if (l - 1 == -1)
+            if (_order[static_cast<int>(p[i])] == -1) {
+                return 0;
+            }
+            if (l - 1 == -1) {
                 l = _c[_order[static_cast<int>(p[i])]];
-            else
+            } else {
                 l = _c[_order[static_cast<int>(p[i])]] +
                     _occ[_order[static_cast<int>(p[i])]][l - 1];
+            }
             r = _c[_order[static_cast<int>(p[i])]] + _occ[_order[static_cast<int>(p[i])]][r] - 1;
         }
         return r - l + 1;
@@ -54,12 +57,15 @@ struct fm_index {
         int m = p.size();
         int l = 0, r = _n - 1;
         for (int i = m - 1; i >= 0; i--) {
-            if (_order[static_cast<int>(p[i])] == -1) return std::vector<int>();
-            if (l - 1 == -1)
+            if (_order[static_cast<int>(p[i])] == -1) {
+                return std::vector<int>();
+            }
+            if (l - 1 == -1) {
                 l = _c[_order[static_cast<int>(p[i])]];
-            else
+            } else {
                 l = _c[_order[static_cast<int>(p[i])]] +
                     _occ[_order[static_cast<int>(p[i])]][l - 1];
+            }
             r = _c[_order[static_cast<int>(p[i])]] + _occ[_order[static_cast<int>(p[i])]][r] - 1;
         }
         std::vector<int> res(_sa.begin() + l, _sa.begin() + r + 1);
@@ -80,7 +86,9 @@ struct fm_index {
         _n = s.size();
         _s = s;
         std::vector<int> cnt(256, 0);
-        for (int i = 0; i < _n; i++) cnt[static_cast<int>(_s[i])]++;
+        for (int i = 0; i < _n; i++) {
+            cnt[static_cast<int>(_s[i])]++;
+        }
         assert(cnt[static_cast<int>('$')] == 0 ||
                (cnt[static_cast<int>('$')] == 1 && _s[_n - 1] == '$'));
         if (cnt[static_cast<int>('$')] == 0) {
@@ -90,8 +98,11 @@ struct fm_index {
         _order.assign(256, -1);
         _order['$'] = 0;
         int rank = 0;
-        for (int i = 1; i < 256; i++)
-            if (cnt[i] > 0 && static_cast<char>(i) != '$') _order[i] = ++rank;
+        for (int i = 1; i < 256; i++) {
+            if (cnt[i] > 0 && static_cast<char>(i) != '$') {
+                _order[i] = ++rank;
+            }
+        }
         _num_c = rank;
         build_sa_bwt();
         build_occ();
@@ -110,7 +121,9 @@ struct fm_index {
         _order[static_cast<int>('$')] = 0;
         int rank = 0;
         for (std::size_t i = 0; i < order.size(); i++) {
-            if (_order[static_cast<int>(order[i])] != -1) continue;
+            if (_order[static_cast<int>(order[i])] != -1) {
+                continue;
+            }
             _order[static_cast<int>(order[i])] = ++rank;
         }
         _num_c = rank;
@@ -130,23 +143,33 @@ struct fm_index {
         }
         _sa = toolbox::string::suffixarray(s_int, _num_c);
         _bwt.resize(_n);
-        for (int i = 0; i < _n; i++) _bwt[i] = _s[(_sa[i] + _n - 1) % _n];
+        for (int i = 0; i < _n; i++) {
+            _bwt[i] = _s[(_sa[i] + _n - 1) % _n];
+        }
     }
 
     void build_occ() {
         _occ.assign(_num_c + 1, std::vector<int>(_n, 0));
         _occ[_order[static_cast<int>(_bwt[0])]][0]++;
         for (int i = 1; i < _n; i++) {
-            for (int j = 0; j <= _num_c; j++) _occ[j][i] = _occ[j][i - 1];
+            for (int j = 0; j <= _num_c; j++) {
+                _occ[j][i] = _occ[j][i - 1];
+            }
             _occ[_order[static_cast<int>(_bwt[i])]][i]++;
         }
     }
 
     void build_c() {
         _c.assign(_num_c + 1, 0);
-        for (int i = 0; i < _n; i++) _c[_order[static_cast<int>(_bwt[i])]]++;
-        for (int i = 1; i <= _num_c; i++) _c[i] += _c[i - 1];
-        for (int i = _num_c; i > 0; i--) _c[i] = _c[i - 1];
+        for (int i = 0; i < _n; i++) {
+            _c[_order[static_cast<int>(_bwt[i])]]++;
+        }
+        for (int i = 1; i <= _num_c; i++) {
+            _c[i] += _c[i - 1];
+        }
+        for (int i = _num_c; i > 0; i--) {
+            _c[i] = _c[i - 1];
+        }
         _c[0] = 0;
     }
 };

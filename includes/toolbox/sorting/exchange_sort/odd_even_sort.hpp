@@ -11,7 +11,9 @@ namespace sorting {
 template <typename RandomIt, typename Compare>
 void odd_even_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     bool sorted = false;
     while (!sorted) {

@@ -11,7 +11,9 @@ namespace sorting {
 template <typename RandomIt, typename Compare>
 void shaker_sort(RandomIt first, RandomIt last, Compare comp) {
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     std::ptrdiff_t left = 0;
     std::ptrdiff_t right = n - 1;
@@ -24,7 +26,9 @@ void shaker_sort(RandomIt first, RandomIt last, Compare comp) {
             }
         }
         right = last_swap;
-        if (left == right) break;
+        if (left == right) {
+            break;
+        }
 
         last_swap = right;
         for (std::ptrdiff_t i = right; i > left; --i) {
@@ -34,7 +38,9 @@ void shaker_sort(RandomIt first, RandomIt last, Compare comp) {
             }
         }
         left = last_swap;
-        if (left == right) break;
+        if (left == right) {
+            break;
+        }
     }
 }
 

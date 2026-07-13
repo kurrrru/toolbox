@@ -20,21 +20,32 @@ template <typename Vertex>
 std::vector<Vertex> topological(const std::vector<std::vector<Vertex>> &edge) {
     int N = edge.size();
     std::vector<int> indegree(N);
-    for (int i = 0; i < N; i++)
-        for (Vertex j : edge[i]) indegree[j]++;
+    for (int i = 0; i < N; i++) {
+        for (Vertex j : edge[i]) {
+            indegree[j]++;
+        }
+    }
     std::stack<Vertex> st;
-    for (int i = 0; i < N; i++)
-        if (indegree[i] == 0) st.push(i);
+    for (int i = 0; i < N; i++) {
+        if (indegree[i] == 0) {
+            st.push(i);
+        }
+    }
     std::vector<Vertex> order;
     order.reserve(N);
     while (!st.empty()) {
         Vertex v = st.top();
         st.pop();
         order.push_back(v);
-        for (Vertex u : edge[v])
-            if (--indegree[u] == 0) st.push(u);
+        for (Vertex u : edge[v]) {
+            if (--indegree[u] == 0) {
+                st.push(u);
+            }
+        }
     }
-    if (order.size() != static_cast<std::size_t>(N)) return std::vector<Vertex>();
+    if (order.size() != static_cast<std::size_t>(N)) {
+        return std::vector<Vertex>();
+    }
     return order;
 }
 

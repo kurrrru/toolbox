@@ -46,11 +46,15 @@ bool test_multiple_components() {
 bool test_chain_union() {
     // 0-1-2-3-4 all connected via chain
     toolbox::datastructure::unionfind uf(5);
-    for (int i = 0; i < 4; i++) uf.unite(i, i + 1);
+    for (int i = 0; i < 4; i++) {
+        uf.unite(i, i + 1);
+    }
     bool ok = true;
-    for (int i = 0; i < 5; i++)
-        for (int j = i + 1; j < 5; j++)
+    for (int i = 0; i < 5; i++) {
+        for (int j = i + 1; j < 5; j++) {
             ok &= toolbox::test_utils::check(uf.same(i, j), "chain: all same");
+        }
+    }
     return ok;
 }
 
@@ -65,12 +69,15 @@ bool test_self_union() {
 bool test_find_consistency() {
     // After many operations, find should return a stable representative
     toolbox::datastructure::unionfind uf(10);
-    for (int i = 0; i < 9; i++) uf.unite(i, i + 1);
+    for (int i = 0; i < 9; i++) {
+        uf.unite(i, i + 1);
+    }
     int rep = uf.find(0);
     bool ok = true;
-    for (int i = 1; i < 10; i++)
+    for (int i = 1; i < 10; i++) {
         ok &=
             toolbox::test_utils::check(uf.find(i) == rep, "all find() return same representative");
+    }
     return ok;
 }
 

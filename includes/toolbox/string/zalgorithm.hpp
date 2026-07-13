@@ -19,7 +19,9 @@ std::vector<int> zalgorithm(const std::string &S) {
     ans[0] = n;
     int start = 1, length = 0;
     while (start < n) {
-        while (start + length < n && S[length] == S[start + length]) ++length;
+        while (start + length < n && S[length] == S[start + length]) {
+            ++length;
+        }
         ans[start] = length;
         if (length == 0) {
             ++start;

@@ -42,7 +42,9 @@ struct unionfind_weighted {
      */
     int find(int x) {
         assert(0 <= x && x < _n);
-        if (_p[x] == -1) return x;
+        if (_p[x] == -1) {
+            return x;
+        }
         int r = find(_p[x]);
         _diff_weight[x] += _diff_weight[_p[x]];
         return (_p[x] = r);
@@ -64,12 +66,16 @@ struct unionfind_weighted {
         w -= weight(y);
         x = find(x);
         y = find(y);
-        if (x == y) return false;
+        if (x == y) {
+            return false;
+        }
         if (_r[x] < _r[y]) {
             std::swap(x, y);
             w = -w;
         }
-        if (_r[x] == _r[y]) _r[x]++;
+        if (_r[x] == _r[y]) {
+            _r[x]++;
+        }
         _p[y] = x;
         _diff_weight[y] = w;
         return true;
@@ -114,7 +120,9 @@ struct unionfind_weighted {
         assert(0 <= x && x < _n);
         assert(0 <= y && y < _n);
         const int inf = static_cast<int>(1e9);
-        if (!same(x, y)) return inf;
+        if (!same(x, y)) {
+            return inf;
+        }
         return (weight(y) - weight(x));
     }
 

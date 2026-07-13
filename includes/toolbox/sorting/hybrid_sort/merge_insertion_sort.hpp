@@ -54,7 +54,9 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t>> &container, Com
     typedef ChainElem<T> Chain;
 
     std::size_t num_elements = container.size();
-    if (num_elements <= 1) return;
+    if (num_elements <= 1) {
+        return;
+    }
 
     std::size_t num_pairs = num_elements / 2;
     bool has_straggler = (num_elements % 2) == 1;
@@ -122,8 +124,12 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t>> &container, Com
     while (true) {
         next_jacobsthal(jacobsthal);
         for (std::size_t i = jacobsthal.first; i > jacobsthal.second; --i) {
-            if (i > pairs.size()) i = pairs.size();
-            if (i <= 1) break;
+            if (i > pairs.size()) {
+                i = pairs.size();
+            }
+            if (i <= 1) {
+                break;
+            }
 
             const ValIdx &insert_value = pairs[i - 1].second;
 
@@ -152,7 +158,9 @@ void ford_johnson_indexed(std::vector<std::pair<T, std::size_t>> &container, Com
                 std::lower_bound(main_chain.begin(), end_it, probe, chain_comp);
             main_chain.insert(pos, probe);
         }
-        if (jacobsthal.first >= pairs.size()) break;
+        if (jacobsthal.first >= pairs.size()) {
+            break;
+        }
     }
 
     // --- Step 6: writeBack ---
@@ -167,7 +175,9 @@ template <typename RandomIt, typename Compare>
 void merge_insertion_sort(RandomIt first, RandomIt last, Compare comp) {
     typedef typename std::iterator_traits<RandomIt>::value_type T;
     std::ptrdiff_t n = std::distance(first, last);
-    if (n <= 1) return;
+    if (n <= 1) {
+        return;
+    }
 
     // Build indexed vector: (value, position)
     std::vector<std::pair<T, std::size_t>> indexed;

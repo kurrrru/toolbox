@@ -23,7 +23,9 @@ std::vector<int> lcp_array(const std::string &s, const std::vector<int> &sa) {
     int n = s.size();
     assert(static_cast<int>(sa.size()) == n);
     std::vector<int> rank(n);
-    for (int i = 0; i < n; i++) rank[sa[i]] = i;
+    for (int i = 0; i < n; i++) {
+        rank[sa[i]] = i;
+    }
     std::vector<int> lcp(n, 0);
     int h = 0;
     for (int i = 0; i < n; i++) {
@@ -32,9 +34,13 @@ std::vector<int> lcp_array(const std::string &s, const std::vector<int> &sa) {
             continue;
         }
         int j = sa[rank[i] - 1];
-        while (i + h < n && j + h < n && s[i + h] == s[j + h]) h++;
+        while (i + h < n && j + h < n && s[i + h] == s[j + h]) {
+            h++;
+        }
         lcp[rank[i]] = h;
-        if (h > 0) h--;
+        if (h > 0) {
+            h--;
+        }
     }
     return lcp;
 }

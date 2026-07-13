@@ -13,7 +13,9 @@ namespace sorting {
 // cmp(container[index-1], container[index]) || container[index-1] == container[index].
 template <typename RandomIt, typename Compare>
 void gnome_sort(RandomIt first, RandomIt last, Compare comp) {
-    if (first == last) return;
+    if (first == last) {
+        return;
+    }
     RandomIt it = first + 1;
     while (it != last) {
         if (!comp(*it, *(it - 1))) {

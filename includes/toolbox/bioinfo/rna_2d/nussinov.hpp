@@ -12,7 +12,9 @@ namespace toolbox {
 namespace rna_2d {
 
 bool is_base_pair(char a, char b) {
-    if (a > b) std::swap(a, b);
+    if (a > b) {
+        std::swap(a, b);
+    }
     return ((a == 'A' && b == 'U') || (a == 'C' && b == 'G') || (a == 'G' && b == 'U'));
 }
 
@@ -30,7 +32,9 @@ int nussinov_dp(const std::string &seq, std::vector<std::vector<int>> &dp) {
         for (int i = 0; i < n - k; i++) {
             int j = i + k;
             dp[i][j] = dp[i + 1][j - 1] + is_base_pair(seq[i], seq[j]);
-            for (int l = i; l < j; l++) dp[i][j] = std::max(dp[i][j], dp[i][l] + dp[l + 1][j]);
+            for (int l = i; l < j; l++) {
+                dp[i][j] = std::max(dp[i][j], dp[i][l] + dp[l + 1][j]);
+            }
         }
     }
     return dp[0][n - 1];
@@ -53,7 +57,9 @@ std::string nussinov_traceback(const std::string &seq, const std::vector<std::ve
         int left = st.top().first;
         int right = st.top().second;
         st.pop();
-        if (left >= right) continue;
+        if (left >= right) {
+            continue;
+        }
         if (dp[left][right] == dp[left + 1][right - 1] + is_base_pair(seq[left], seq[right])) {
             if (is_base_pair(seq[left], seq[right])) {
                 structure[left] = '(';

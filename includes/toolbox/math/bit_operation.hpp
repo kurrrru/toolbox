@@ -30,7 +30,9 @@ int popcount(long long x) { return __builtin_popcountll(x); }
  * zeros in the given integer.
  */
 int clz(int x) {
-    if (x == 0) return 32;
+    if (x == 0) {
+        return 32;
+    }
     return __builtin_clz(x);
 }
 
@@ -42,7 +44,9 @@ int clz(int x) {
  * zeros in the given long long integer.
  */
 int clz(long long x) {
-    if (x == 0) return 64;
+    if (x == 0) {
+        return 64;
+    }
     return __builtin_clzll(x);
 }
 
@@ -54,7 +58,9 @@ int clz(long long x) {
  * subtracting the number of leading zeros from 32.
  */
 int bit_width(int x) {
-    if (x == 0) return 0;
+    if (x == 0) {
+        return 0;
+    }
     return 32 - clz(x);
 }
 
@@ -66,7 +72,9 @@ int bit_width(int x) {
  * integer by subtracting the number of leading zeros from 64.
  */
 int bit_width(long long x) {
-    if (x == 0) return 0;
+    if (x == 0) {
+        return 0;
+    }
     return 64 - clz(x);
 }
 
