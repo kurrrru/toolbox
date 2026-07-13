@@ -1,6 +1,11 @@
 #pragma once
+#include "toolbox/string/boyer_moore.hpp"
 #include "toolbox/string/fm_index.hpp"
 #include "toolbox/string/kmp.hpp"
 #include "toolbox/string/lcp_array.hpp"
+#include "toolbox/string/morris_pratt.hpp"
+#include "toolbox/string/patricia_trie.hpp"
+#include "toolbox/string/rabin_karp.hpp"
 #include "toolbox/string/suffixarray.hpp"
+#include "toolbox/string/trie.hpp"
 #include "toolbox/string/zalgorithm.hpp"

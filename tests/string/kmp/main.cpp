@@ -88,15 +88,47 @@ bool test_empty_pattern() {
                                       "empty pattern matches every position");
 }
 
+// ---- Knuth's optimized failure function ------------------------------------
+// Hand-verified reference case (a standard textbook example for this optimization):
+// pattern "aabaaab" has plain failure function [0,1,0,1,2,2,3] but optimized [0,1,0,0,2,1,3]
+// (e.g. opt[3]=0 because s[4]=='a' equals s[lps[3]]=s[1]=='a', so falling back to lps[3]=1
+// would immediately fail again, and opt[0]==0 already, so opt[3] chains to opt[0]==0).
+
+bool test_optimized_failure_known_case() {
+    const std::vector<int> opt = toolbox::string::kmp_optimized_failure("aabaaab");
+    return toolbox::test_utils::check(opt == std::vector<int>({0, 1, 0, 0, 2, 1, 3}),
+                                      "optimized failure function: known case 'aabaaab'");
+}
+
+bool test_optimized_failure_never_exceeds_plain() {
+    bool ok = true;
+    for (const std::string s : {"ababaca", "aaaaaa", "abcdef", "aabaaab", "abababab"}) {
+        const std::vector<int> lps = toolbox::string::kmp_failure(s);
+        const std::vector<int> opt = toolbox::string::kmp_optimized_failure(s);
+        for (std::size_t i = 0; i < s.size(); ++i) {
+            ok &= toolbox::test_utils::check(opt[i] <= lps[i],
+                                             "optimized failure never exceeds plain: " + s);
+        }
+    }
+    return ok;
+}
+
 }  // namespace
 
 int main() {
     toolbox::test_utils::Test tests[] = {
-        {"failure_basic", test_failure_basic},         {"failure_all_same", test_failure_all_same},
-        {"failure_no_repeat", test_failure_no_repeat}, {"search_multiple", test_search_multiple},
-        {"search_overlap", test_search_overlap},       {"search_not_found", test_search_not_found},
-        {"search_full_match", test_search_full_match}, {"search_dna", test_search_dna},
-        {"search_positions", test_search_positions},   {"empty_pattern", test_empty_pattern},
+        {"failure_basic", test_failure_basic},
+        {"failure_all_same", test_failure_all_same},
+        {"failure_no_repeat", test_failure_no_repeat},
+        {"search_multiple", test_search_multiple},
+        {"search_overlap", test_search_overlap},
+        {"search_not_found", test_search_not_found},
+        {"search_full_match", test_search_full_match},
+        {"search_dna", test_search_dna},
+        {"search_positions", test_search_positions},
+        {"empty_pattern", test_empty_pattern},
+        {"optimized_failure_known_case", test_optimized_failure_known_case},
+        {"optimized_failure_never_exceeds_plain", test_optimized_failure_never_exceeds_plain},
     };
     return toolbox::test_utils::run_tests(tests, sizeof(tests) / sizeof(tests[0]));
 }
