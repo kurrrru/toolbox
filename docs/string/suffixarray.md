@@ -69,6 +69,6 @@ std::string pat = "an";
 ## 実装上の注意
 
 - `suffixarray(string)` の内部では各文字を `int` に変換し、`max_s = 255` として SA-IS を呼び出す。
-- `lcp_array` と組み合わせて使う場合は、`lcp_array` の仕様に合わせてセンチネル（最小文字 `$`）付きの $n+1$ 要素 SA を作成する必要がある（詳細は [lcp_array.md](lcp_array.md) 参照）。
+- `lcp_array` はこの $n$ 要素 SA をそのまま受け取る（詳細は [lcp_array.md](lcp_array.md) 参照）。
 
 ## 参考文献
