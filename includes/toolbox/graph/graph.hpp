@@ -1,5 +1,6 @@
 #pragma once
 #include "toolbox/graph/directed/topological.hpp"
+#include "toolbox/graph/mst/boruvka.hpp"
 #include "toolbox/graph/mst/kruskal.hpp"
 #include "toolbox/graph/mst/prim.hpp"
 #include "toolbox/graph/other/diameter_tree.hpp"
