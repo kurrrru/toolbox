@@ -11,25 +11,27 @@ namespace toolbox {
 namespace graph {
 
 /**
- * @brief Boruvka's algorithm for finding a minimum spanning tree.
+ * @brief Boruvka's algorithm returning the edges of a minimum spanning tree.
  * @tparam Vertex Type of vertex
  * @tparam Cost Type of cost
  * @param n Number of vertices
  * @param edges Edge list, each edge given as {cost, u, v}
- * @return The total cost of the minimum spanning tree, or std::nullopt if the graph is not
- * connected (no spanning tree exists).
+ * @return The edges forming a minimum spanning tree (each as {cost, u, v}), or std::nullopt if
+ * the graph is not connected (no spanning tree exists). A connected graph yields exactly n-1
+ * edges; a single vertex yields an empty vector.
  * @note [constraint]: n > 0
  * @note [complexity]: O(E log V). Each round every component picks its cheapest outgoing edge
  * and those edges are merged in; the number of components at least halves per round, so there
  * are O(log V) rounds and each round scans all edges in O(E).
- * @note Uses toolbox::datastructure::unionfind for components; like kruskal/prim (see
- * kruskal.hpp, prim.hpp), it returns only the total cost, not the selected edges.
+ * @note Uses toolbox::datastructure::unionfind for components. The returned edges are given in
+ * the order they are merged across rounds.
  */
 template <typename Vertex, typename Cost>
-std::optional<Cost> boruvka(int n, const std::vector<std::tuple<Cost, Vertex, Vertex>> &edges) {
+std::optional<std::vector<std::tuple<Cost, Vertex, Vertex>>> boruvka_edges(
+    int n, const std::vector<std::tuple<Cost, Vertex, Vertex>> &edges) {
     const int m = static_cast<int>(edges.size());
     datastructure::unionfind uf(n);
-    Cost total = Cost();
+    std::vector<std::tuple<Cost, Vertex, Vertex>> tree;
     int num_components = n;
 
     // A consistent tie-break (cost first, then edge index) makes every edge effectively
@@ -68,7 +70,7 @@ std::optional<Cost> boruvka(int n, const std::vector<std::tuple<Cost, Vertex, Ve
             }
             const auto &[cost, u, v] = edges[cheapest[c]];
             if (uf.unite(static_cast<int>(u), static_cast<int>(v))) {
-                total += cost;
+                tree.push_back({cost, u, v});
                 --num_components;
                 progress = true;
             }
@@ -81,11 +83,49 @@ std::optional<Cost> boruvka(int n, const std::vector<std::tuple<Cost, Vertex, Ve
     if (num_components != 1) {
         return std::nullopt;
     }
+    return tree;
+}
+
+/**
+ * @brief Boruvka's algorithm returning the edges of a minimum spanning tree.
+ * @param n Number of vertices
+ * @param edges Edge list, each edge given as {cost, u, v}
+ * @return The edges of a minimum spanning tree, or std::nullopt if not connected.
+ * @note [constraint]: n > 0
+ * @note [complexity]: O(E log V)
+ */
+std::optional<std::vector<std::tuple<long long, long long, long long>>> boruvka_edges(
+    int n, const std::vector<std::tuple<long long, long long, long long>> &edges) {
+    return boruvka_edges<long long, long long>(n, edges);
+}
+
+/**
+ * @brief Boruvka's algorithm returning the total cost of a minimum spanning tree.
+ * @tparam Vertex Type of vertex
+ * @tparam Cost Type of cost
+ * @param n Number of vertices
+ * @param edges Edge list, each edge given as {cost, u, v}
+ * @return The total cost of the minimum spanning tree, or std::nullopt if the graph is not
+ * connected (no spanning tree exists).
+ * @note [constraint]: n > 0
+ * @note [complexity]: O(E log V)
+ * @note Use boruvka_edges if the selected edges themselves are needed.
+ */
+template <typename Vertex, typename Cost>
+std::optional<Cost> boruvka(int n, const std::vector<std::tuple<Cost, Vertex, Vertex>> &edges) {
+    const auto tree = boruvka_edges<Vertex, Cost>(n, edges);
+    if (!tree) {
+        return std::nullopt;
+    }
+    Cost total = Cost();
+    for (const auto &[cost, u, v] : *tree) {
+        total += cost;
+    }
     return total;
 }
 
 /**
- * @brief Boruvka's algorithm for finding a minimum spanning tree.
+ * @brief Boruvka's algorithm returning the total cost of a minimum spanning tree.
  * @param n Number of vertices
  * @param edges Edge list, each edge given as {cost, u, v}
  * @return The total cost of the minimum spanning tree, or std::nullopt if the graph is not

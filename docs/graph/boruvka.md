@@ -24,15 +24,25 @@
 ```cpp
 #include "toolbox/graph/mst/boruvka.hpp"
 
-// long long 特殊化
+// 総コストを返す（long long 特殊化 / 汎用版）
 std::optional<long long> toolbox::graph::boruvka(
     int n,
     const std::vector<std::tuple<long long, long long, long long>> &edges
 );
-
-// 汎用版
 template <typename Vertex, typename Cost>
 std::optional<Cost> toolbox::graph::boruvka(
+    int n,
+    const std::vector<std::tuple<Cost, Vertex, Vertex>> &edges
+);
+
+// 具体的なMST（採用辺の集合）を返す（long long 特殊化 / 汎用版）
+std::optional<std::vector<std::tuple<long long, long long, long long>>>
+toolbox::graph::boruvka_edges(
+    int n,
+    const std::vector<std::tuple<long long, long long, long long>> &edges
+);
+template <typename Vertex, typename Cost>
+std::optional<std::vector<std::tuple<Cost, Vertex, Vertex>>> toolbox::graph::boruvka_edges(
     int n,
     const std::vector<std::tuple<Cost, Vertex, Vertex>> &edges
 );
@@ -40,7 +50,8 @@ std::optional<Cost> toolbox::graph::boruvka(
 
 - `n`: 頂点数
 - `edges[i]`: `{コスト, 端点u, 端点v}` の辺
-- 戻り値: 最小全域木の総コスト。グラフが連結でない場合は `std::nullopt`
+- `boruvka` の戻り値: 最小全域木の総コスト。グラフが連結でない場合は `std::nullopt`
+- `boruvka_edges` の戻り値: 最小全域木を構成する辺の集合(各辺 `{コスト, u, v}`、ラウンドをまたいで併合した順)。連結な場合はちょうど $n-1$ 本、頂点1個なら空、非連結なら `std::nullopt`。`boruvka` は内部的に `boruvka_edges` の結果を合計している
 
 ### 制約
 
